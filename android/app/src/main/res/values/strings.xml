@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">The Grocery Guys</string>
+    <string name="default_notification_channel_id">1234</string>
+    <string name="facebook_app_id">178562364328370</string>
+    <string name="fb_login_protocol_scheme">fb178562364328370</string>
+    <string name="map_key">AIzaSyCm79uKNpURe47O6ijVuismolzxTEOZnhM</string>
+</resources>
