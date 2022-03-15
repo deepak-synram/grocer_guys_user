@@ -9,6 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:google_place/google_place.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:user/Locale/locales.dart';
@@ -22,12 +23,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class SignIn extends StatefulWidget {
+  // const SignIn({Key key}) : super(key: key);
+
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-  static final FacebookLogin facebookSignIn = new FacebookLogin();
+  static final FacebookLogin facebookSignIn = FacebookLogin();
   GoogleSignIn _googleSignIn;
   bool showProgress = false;
   bool enteredFirst = false;
@@ -63,7 +66,7 @@ class _SignInState extends State<SignIn> {
   }
 
   void hitAsyncInit() async {
-    try{
+    try {
       FirebaseApp app;
       List<FirebaseApp> firebase = Firebase.apps;
       for (FirebaseApp appd in firebase) {
@@ -73,19 +76,20 @@ class _SignInState extends State<SignIn> {
         }
       }
       if (app == null) {
-        if(Platform.isIOS){
+        if (Platform.isIOS) {
           await Firebase.initializeApp(
             name: 'TheGroceryGuys',
-            options: const FirebaseOptions(apiKey: 'AIzaSyCN5YHSeA-6rB4B4gApnjzAqffibeFD8WY',
+            options: const FirebaseOptions(
+                apiKey: 'AIzaSyCN5YHSeA-6rB4B4gApnjzAqffibeFD8WY',
                 appId: '1:857676187722:ios:7735d516dcd902efb87eb3',
                 messagingSenderId: '857676187722',
                 projectId: 'thegroceryguys-68e6b'),
           );
-        }else{
+        } else {
           await Firebase.initializeApp();
         }
       }
-    }finally{
+    } finally {
       messaging = FirebaseMessaging.instance;
       messaging.getToken().then((value) {
         token = value;
@@ -104,7 +108,7 @@ class _SignInState extends State<SignIn> {
       if (value.statusCode == 200) {
         AppInfoModel data1 = AppInfoModel.fromJson(jsonDecode(value.body));
         print('data - ${data1.toString()}');
-        if (data1!=null && '${data1.status}' == '1') {
+        if (data1 != null && '${data1.status}' == '1') {
           setState(() {
             appInfoModeld = data1;
             appNameA = '${appInfoModeld.appName}';
@@ -142,7 +146,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
-    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom!=0;
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return SafeArea(
       top: true,
       bottom: true,
@@ -150,387 +154,536 @@ class _SignInState extends State<SignIn> {
       left: false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: (appInfoModeld!=null)?Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            (!isKeyboardOpen)?Expanded(
-              child: Stack(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.asset('assets/loginImage.jpg',width: MediaQuery.of(context).size.width,fit: BoxFit.fill,),
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: GestureDetector(
-                      onTap: () async{
-                        SharedPreferences.getInstance().then((value){
-                          value.setBool('islogin', false);
-                          value.setBool('skip', true);
-                          Navigator.of(context).pushNamedAndRemoveUntil(PageRoutes.homePage, (Route<dynamic> route) => false);
-                        });
-                      },
-                      behavior: HitTestBehavior.opaque,
-                      child: Row(
-                        children: [
+        body: Container(
+          constraints: const BoxConstraints.expand(),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/splash_bg.png"),
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: SingleChildScrollView(
+            child: (appInfoModeld != null)
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      (!isKeyboardOpen)
+                          ? SizedBox(
+                              height: 350,
+                              child: Stack(
+                                // alignment: Alignment.bottomCenter,
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height: 300,
+                                        child: Image.asset(
+                                          'assets/loginImage.png',
+                                          // width: MediaQuery.of(context).size.width,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 10,
+                                        right: 10,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            SharedPreferences.getInstance()
+                                                .then((value) {
+                                              value.setBool('islogin', false);
+                                              value.setBool('skip', true);
+                                              Navigator.of(context)
+                                                  .pushNamedAndRemoveUntil(
+                                                      PageRoutes.homePage,
+                                                      (Route<dynamic> route) =>
+                                                          false);
+                                            });
+                                          },
+                                          behavior: HitTestBehavior.opaque,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(6.0),
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                primary: kMainColor,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                              ),
+                                              child: Text(
+                                                'Skip >',
+                                                style: TextStyle(
+                                                    color: kTextColor),
+                                              ),
+                                              onPressed: () {},
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Positioned(
+                                    top: 200,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Card(
+                                            semanticContainer: true,
+                                            clipBehavior:
+                                                Clip.antiAliasWithSaveLayer,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 4.0),
+                                              child: Image.asset(
+                                                'assets/logo_without_name.png',
+                                                width: 120,
+                                                height: 120,
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            elevation: 0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                      Center(
+                        child: Image.asset(
+                          'assets/app_name.png',
+                          width: 200,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 30, left: 20, right: 20),
+                            child: Center(
+                              child: Text(locale.hellol,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: kNavigationButtonColor,
+                                      fontSize: 20)),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 5, left: 20, right: 20),
+                            child: Center(
+                              child: Text(locale.hellol2,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      color: kMainTextColor, fontSize: 15)),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 15, bottom: 5, right: 20, left: 20),
+                            child: Text(locale.mobilenuml,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: kMainTextColor, fontSize: 15)),
+                          ),
+                          // Container(
+                          //   height: 52,
+                          //   decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(6),
+                          //       border: Border.all(
+                          //           color: kButtonBorderColor, width: 1)),
+                          //   margin:
+                          //       const EdgeInsets.symmetric(horizontal: 20),
+                          //   child:
+                          Row(
+                            children: [
+                              Container(
+                                height: 52,
+                                decoration: BoxDecoration(
+                                    color: kButtonBorderColor.withOpacity(0.6),
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(
+                                      width: 1,
+                                      color: kButtonBorderColor,
+                                    )),
+                                alignment: Alignment.center,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                margin:
+                                    const EdgeInsets.only(right: 5, left: 5),
+                                child: Text(
+                                    appInfoModeld != null
+                                        ? '+${appInfoModeld.countryCode}'
+                                        : '--',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: kMainTextColor, fontSize: 15)),
+                              ),
+                              // const SizedBox(width: 50),
+                              Expanded(
+                                child: Container(
+                                  height: 52,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: kButtonBorderColor,
+                                      )),
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  margin:
+                                      const EdgeInsets.only(right: 5, left: 5),
+                                  child: TextFormField(
+                                    controller: phoneNumberController,
+                                    readOnly: showProgress,
+                                    autofocus: false,
+                                    maxLength: numberLimit,
+                                    textAlign: TextAlign.start,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                          borderSide: BorderSide(
+                                              color: kTransparentColor),
+                                        ),
+                                        counterText: '',
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                          borderSide: BorderSide(
+                                              color: kTransparentColor),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                          borderSide: BorderSide(
+                                              color: kTransparentColor),
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                          borderSide: BorderSide(
+                                              color: kTransparentColor),
+                                        ),
+                                        disabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                          borderSide: BorderSide(
+                                              color: kTransparentColor),
+                                        ),
+                                        hintText: "Enter your mobile number",
+                                        labelStyle: TextStyle(
+                                            color: kLightTextColor,
+                                            fontSize: 15),
+                                        suffixIcon: (isNumberOk)
+                                            ? Icon(Icons.done,
+                                                size: 25.0, color: kMainColor)
+                                            : const SizedBox.shrink(),
+                                        // prefixText: '+91',
+                                        // prefixIcon: Text('+91',style: TextStyle(
+                                        // color: kMainColor,
+                                        // fontSize: 14
+                                        // )
+                                        // ),
+                                        contentPadding:
+                                            const EdgeInsets.all(0)),
+                                    onChanged: (value) {
+                                      if (phoneNumberController.text.length ==
+                                          numberLimit) {
+                                        setState(() {
+                                          isNumberOk = true;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          isNumberOk = false;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          // ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 15),
+                            child: (showProgress)
+                                ? Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    width: 50,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 1,
+                                      color: kMainColor,
+                                    ),
+                                  )
+                                : MaterialButton(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0))),
+                                    onPressed: () {
+                                      if (!showProgress) {
+                                        setState(() {
+                                          showProgress = true;
+                                        });
+                                        if (phoneNumberController.text !=
+                                                null &&
+                                            phoneNumberController.text.length ==
+                                                numberLimit) {
+                                          hitLoginUrl(
+                                              phoneNumberController.text,
+                                              '',
+                                              'otp',
+                                              context);
+                                        } else {
+                                          Toast.show(
+                                              locale.incorectMobileNumber,
+                                              context,
+                                              gravity: Toast.CENTER,
+                                              duration: Toast.LENGTH_SHORT);
+                                          setState(() {
+                                            showProgress = false;
+                                          });
+                                        }
+                                      }
+                                      // else{
+                                      //   setState(() {
+                                      //     showProgress = false;
+                                      //   });
+                                      // }
+                                    },
+                                    color: kNavigationButtonColor,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: Text(
+                                        locale.Continuel1,
+                                        style: TextStyle(
+                                            color: kMainColor,
+                                            fontWeight: FontWeight.w600,
+                                            letterSpacing: 0.6),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(locale.Continuel2,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: kMainColor,
+                                      fontSize: 15)),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text('Skip',style: TextStyle(
-                              color: kMainTextColor,
-                              fontSize: 17
-                            ),),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                MaterialButton(
+                                  onPressed: () {
+                                    if (!showProgress) {
+                                      setState(() {
+                                        showProgress = true;
+                                      });
+                                      _handleSignIn(context);
+                                    }
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/google_icon.png',
+                                        height: 20,
+                                        width: 20,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(locale.googlel,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kMainColor,
+                                              fontSize: 15)),
+                                    ],
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  splashColor: kTransparentColor,
+                                  color: kSocialButtonColor,
+                                  highlightColor: kTransparentColor,
+                                  minWidth: 150,
+                                  height: 40,
+                                ),
+                                MaterialButton(
+                                  onPressed: () {
+                                    if (!showProgress) {
+                                      setState(() {
+                                        showProgress = true;
+                                      });
+                                      _login(context);
+                                    }
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/fb_icon.png',
+                                        height: 20,
+                                        width: 20,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(locale.facebookl,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kMainColor,
+                                              fontSize: 15)),
+                                    ],
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  splashColor: kTransparentColor,
+                                  color: kSocialButtonColor,
+                                  highlightColor: kTransparentColor,
+                                  minWidth: 150,
+                                  height: 40,
+                                )
+                              ],
+                            ),
                           ),
-                          Icon(Icons.arrow_forward_ios_rounded,size:15,color: kMainTextColor,)
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ):SizedBox.shrink(),
-            Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                  child: Text(locale.hellol,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: kMainTextColor,
-                          fontSize: 20)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
-                  child: Text(locale.hellol2,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: kMainTextColor, fontSize: 15)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 15, bottom: 5, right: 20, left: 20),
-                  child: Text(locale.mobilenuml,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: kMainTextColor, fontSize: 15)),
-                ),
-                Container(
-                  height: 52,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: kButtonBorderColor, width: 1)),
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 52,
-                        color: kButtonBorderColor.withOpacity(0.5),
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        margin: const EdgeInsets.only(right: 5),
-                        child: Text(appInfoModeld!=null?'+${appInfoModeld.countryCode}':'--',
-                            textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: kMainTextColor, fontSize: 15)),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          controller: phoneNumberController,
-                          readOnly: showProgress,
-                          autofocus: false,
-                          maxLength: numberLimit,
-                          textAlign: TextAlign.start,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide:
-                                    BorderSide(color: kTransparentColor),
-                              ),
-                              counterText: '',
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide:
-                                    BorderSide(color: kTransparentColor),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide:
-                                    BorderSide(color: kTransparentColor),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide:
-                                    BorderSide(color: kTransparentColor),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide:
-                                    BorderSide(color: kTransparentColor),
-                              ),
-                              hintText: "Enter your mobile number",
-                              labelStyle: TextStyle(
-                                  color: kLightTextColor, fontSize: 15),
-                              suffixIcon: (isNumberOk)?Icon(Icons.done,
-                                  size: 25.0, color: kMainColor):SizedBox.shrink(),
-                              // prefixText: '+91',
-                              // prefixIcon: Text('+91',style: TextStyle(
-                              // color: kMainColor,
-                              // fontSize: 14
-                              // )
-                              // ),
-                              contentPadding: const EdgeInsets.all(0)
+                          Visibility(
+                            visible: Platform.isIOS,
+                            child: SignInWithAppleButton(
+                              onPressed: () {
+                                if (!showProgress) {
+                                  setState(() {
+                                    showProgress = true;
+                                  });
+                                  signInWithApple().then((value) {
+                                    UserCredential uC = value;
+                                    if (uC != null) {
+                                      var uName =
+                                          uC.additionalUserInfo.username;
+                                      var uId =
+                                          uC.additionalUserInfo.profile['sub'];
+                                      var eId = uC
+                                          .additionalUserInfo.profile['email'];
+                                      print(uName);
+                                      print(uId);
+                                      print(eId);
+                                      socialLogin(
+                                          'apple',
+                                          '',
+                                          '',
+                                          context,
+                                          uName ?? '',
+                                          (eId != null &&
+                                                  eId.toString().isNotEmpty)
+                                              ? eId
+                                              : '',
+                                          uId);
+                                    } else {
+                                      setState(() {
+                                        showProgress = false;
+                                      });
+                                    }
+                                  }).catchError((e) {
+                                    print(e);
+                                    setState(() {
+                                      showProgress = false;
+                                    });
+                                  });
+                                }
+                              },
+                              borderRadius: BorderRadius.zero,
+                            ),
                           ),
-                          onChanged: (value){
-                            if(phoneNumberController.text.length==numberLimit){
-                              setState(() {
-                                isNumberOk = true;
-                              });
-                            }else{
-                              setState(() {
-                                isNumberOk = false;
-                              });
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  child: (showProgress)?Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    width: 50,
-                    child: CircularProgressIndicator(strokeWidth: 1,color : kMainColor,),
-                  ):MaterialButton(
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                    onPressed: () {
-                      if (!showProgress) {
-                        setState(() {
-                          showProgress = true;
-                        });
-                        if (phoneNumberController.text != null &&
-                            phoneNumberController.text.length == numberLimit) {
-                          hitLoginUrl('${phoneNumberController.text}', '', 'otp',
-                              context);
-                        } else {
-                          Toast.show(locale.incorectMobileNumber, context,gravity: Toast.CENTER,duration: Toast.LENGTH_SHORT);
-                          setState(() {
-                            showProgress = false;
-                          });
-                        }
-                      }
-                      // else{
-                      //   setState(() {
-                      //     showProgress = false;
-                      //   });
-                      // }
-                    },
-                    color: kMainColor,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        locale.Continuel1,
-                        style: TextStyle(
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (!showProgress) {
+                                    Navigator.pushNamed(
+                                        context, PageRoutes.signUp,
+                                        arguments: {
+                                          'user_phone':
+                                              phoneNumberController.text,
+                                          'numberlimit': numberLimit,
+                                          'appinfo': appInfoModeld,
+                                        });
+                                  }
+                                },
+                                behavior: HitTestBehavior.opaque,
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: locale.login1,
+                                    children: [
+                                      TextSpan(
+                                          text: ' ${locale.login2}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kNavigationButtonColor,
+                                              fontSize: 15))
+                                    ],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: kMainTextColor,
+                                        fontSize: 15),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            thickness: 10,
+                            height: 10,
                             color: kWhiteColor,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.6),
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(locale.Continuel2,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: kLightTextColor,
-                            fontSize: 15)),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      MaterialButton(
-                        onPressed: () {
-                          if (!showProgress) {
-                            setState(() {
-                              showProgress = true;
-                            });
-                            _handleSignIn(context);
-                          }
-                        },
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/google_logo.png',
-                              height: 20,
-                              width: 20,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(locale.googlel,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54,
-                                    fontSize: 15)),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        splashColor: kWhiteColor,
-                        color: kWhiteColor,
-                        highlightColor: kMainColor,
-                        minWidth: 150,
-                        height: 40,
-                      ),
-                      MaterialButton(
-                        onPressed: () {
-                          if (!showProgress) {
-                            setState(() {
-                              showProgress = true;
-                            });
-                            _login(context);
-                          }
-                        },
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/fb.png',
-                              height: 20,
-                              width: 20,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(locale.facebookl,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54,
-                                    fontSize: 15)),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        splashColor: kWhiteColor,
-                        color: kWhiteColor,
-                        highlightColor: kMainColor,
-                        minWidth: 150,
-                        height: 40,
+                          )
+                        ],
                       )
                     ],
-                  ),
-                ),
-                Visibility(
-                  visible: Platform.isIOS,
-                  child: SignInWithAppleButton(
-                    onPressed: () {
-                      if (!showProgress) {
-                        setState(() {
-                          showProgress = true;
-                        });
-                        signInWithApple().then((value){
-                          UserCredential uC = value;
-                          if(uC!=null){
-                            var uName = uC.additionalUserInfo.username;
-                            var uId = uC.additionalUserInfo.profile['sub'];
-                            var eId = uC.additionalUserInfo.profile['email'];
-                            print('$uName');
-                            print(uId);
-                            print(eId);
-                            socialLogin(
-                                'apple',
-                                '',
-                                '',
-                                context,
-                                uName ?? '',
-                                (eId != null && eId.toString().isNotEmpty)
-                                    ? eId
-                                    : '',uId);
-                          }else{
-                            setState(() {
-                              showProgress = false;
-                            });
-                          }
-                        }).catchError((e){
-                          print(e);
-                          setState(() {
-                            showProgress = false;
-                          });
-                        });
-                      }
-                    },
-                    borderRadius: BorderRadius.zero,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: GestureDetector(
-                      onTap: (){
-                        if(!showProgress){
-                          Navigator.pushNamed(context, PageRoutes.signUp, arguments: {
-                            'user_phone': '${phoneNumberController.text}',
-                            'numberlimit': numberLimit,
-                            'appinfo': appInfoModeld,
-                          });
-                        }
-                      },
-                      behavior: HitTestBehavior.opaque,
-                      child: RichText(
-                        text: TextSpan(
-                          text: locale.login1,
-                          children: [
-                            TextSpan(
-                                text: ' ${locale.login2}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: kMainColor,
-                                    fontSize: 15))
-                          ],
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: kMainTextColor,
-                              fontSize: 15),
-                        ),
-                      ),
+                  )
+                : const Align(
+                    widthFactor: 40,
+                    heightFactor: 40,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 1,
                     ),
                   ),
-                ),
-                Divider(
-                  thickness: 10,
-                  height: 10,
-                  color: kWhiteColor,
-                )
-              ],
-            ))
-          ],
-        ):const Align(
-          widthFactor: 40,
-          heightFactor: 40,
-          child: CircularProgressIndicator(strokeWidth: 1,),
+          ),
         ),
       ),
     );
   }
 
   String generateNonce([int length = 32]) {
-    const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
     return List.generate(length, (_) => charset[random.nextInt(charset.length)])
         .join();
@@ -553,22 +706,21 @@ class _SignInState extends State<SignIn> {
 
     // Request credential for the currently signed in Apple account.
     final appleCredential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-      nonce: nonce,
-      webAuthenticationOptions: WebAuthenticationOptions(
-            clientId: 'com.thegroceryguys.usersigin',
-            redirectUri: Uri.parse('https://thegroceryguys-68e6b.firebaseapp.com/__/auth/handler'))
-    );
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+        webAuthenticationOptions: WebAuthenticationOptions(
+            clientId: 'com.staging.thegroceryguys.usersigin',
+            redirectUri: Uri.parse(
+                'https://thegroceryguys-68e6b.firebaseapp.com/__/auth/handler')));
 
     // Create an `OAuthCredential` from the credential returned by Apple.
     final oauthCredential = OAuthProvider("apple.com").credential(
-      idToken: appleCredential.identityToken,
-      rawNonce: rawNonce,
-      accessToken: nonce
-    );
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+        accessToken: nonce);
 
     // Sign in the user with Firebase. If the nonce we generated earlier does
     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
@@ -581,14 +733,14 @@ class _SignInState extends State<SignIn> {
 
       if (value) {
         if (_googleSignIn.currentUser != null) {
-          socialLogin('google', '${_googleSignIn.currentUser.email}', '',
-              contextd, _googleSignIn.currentUser.displayName, '','');
+          socialLogin('google', _googleSignIn.currentUser.email, '', contextd,
+              _googleSignIn.currentUser.displayName, '', '');
         } else {
           _googleSignIn.signOut().then((value) async {
             await _googleSignIn.signIn().then((value) {
               var email = value.email;
               var nameg = value.displayName;
-              socialLogin('google', '$email', '', contextd, nameg, '','');
+              socialLogin('google', email, '', contextd, nameg, '', '');
               // print('${email} - ${value.id}');
             }).catchError((e) {
               setState(() {
@@ -606,7 +758,7 @@ class _SignInState extends State<SignIn> {
           await _googleSignIn.signIn().then((value) {
             var email = value.email;
             var nameg = value.displayName;
-            socialLogin('google', '$email', '', contextd, nameg, '','');
+            socialLogin('google', email, '', contextd, nameg, '', '');
             // print('${email} - ${value.id}');
           });
         } catch (error) {
@@ -623,8 +775,14 @@ class _SignInState extends State<SignIn> {
     });
   }
 
-  void socialLogin(dynamic loginType, dynamic email, dynamic fb_id,
-      BuildContext contextd, dynamic userNameFb, dynamic fbmailid,dynamic appleID) async {
+  void socialLogin(
+      dynamic loginType,
+      dynamic email,
+      dynamic fb_id,
+      BuildContext contextd,
+      dynamic userNameFb,
+      dynamic fbmailid,
+      dynamic appleID) async {
     print('$loginType - $appleID');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (token != null) {
@@ -669,7 +827,8 @@ class _SignInState extends State<SignIn> {
               'numberlimit': numberLimit,
               'appinfo': appInfoModeld,
             });
-          } if (loginType == 'apple') {
+          }
+          if (loginType == 'apple') {
             Navigator.pushNamed(contextd, PageRoutes.signUp, arguments: {
               'user_email': '$fbmailid',
               'u_name': '$userNameFb',
@@ -705,8 +864,8 @@ class _SignInState extends State<SignIn> {
         messaging.getToken().then((value) {
           setState(() {
             token = value;
-            socialLogin(
-                loginType, email, fb_id, contextd, userNameFb, fbmailid,appleID);
+            socialLogin(loginType, email, fb_id, contextd, userNameFb, fbmailid,
+                appleID);
           });
         }).catchError((e) {
           setState(() {
@@ -770,7 +929,8 @@ class _SignInState extends State<SignIn> {
                   profile['email'].toString().length > 0 &&
                   '${profile['email']}'.toUpperCase() != 'NULL')
               ? profile['email']
-              : '','');
+              : '',
+          '');
     }).catchError((e) {
       print(e);
       setState(() {
@@ -794,7 +954,7 @@ class _SignInState extends State<SignIn> {
         if (value.statusCode == 200) {
           var jsData = jsonDecode(value.body);
           SignInModel signInData = SignInModel.fromJson(jsData);
-          print('${signInData.toString()}');
+          print(signInData.toString());
           if ('${signInData.status}' == '0') {
             Toast.show(signInData.message, context,
                 duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);

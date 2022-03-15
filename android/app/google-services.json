@@ -1,73 +1,42 @@
 {
   "project_info": {
-    "project_number": "857676187722",
-    "project_id": "thegroceryguys-68e6b",
-    "storage_bucket": "thegroceryguys-68e6b.appspot.com"
+    "project_number": "432815390697",
+    "project_id": "staging-grocers-guys",
+    "storage_bucket": "staging-grocers-guys.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:857676187722:android:6dfcf4cc0fbb5f47b87eb3",
+        "mobilesdk_app_id": "1:432815390697:android:dba93b342b1c4bf9de9578",
         "android_client_info": {
-          "package_name": "com.thegroceryguys.user"
+          "package_name": "com.staging.thegroceryguys.user"
         }
       },
       "oauth_client": [
         {
-          "client_id": "857676187722-3crqcngo7dvimp0sf51i3dbkdehgafbe.apps.googleusercontent.com",
+          "client_id": "432815390697-1lpa3eokhjqpequh5ab1u2o3qj50g8f0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.thegroceryguys.user",
-            "certificate_hash": "a123f561620d16e8593c16d9f174b53c61b9ad08"
+            "package_name": "com.staging.thegroceryguys.user",
+            "certificate_hash": "f7987a28a516be2f11549b5dd8c4f1a7e3a5d0bc"
           }
         },
         {
-          "client_id": "857676187722-lbhp674af04q6kbe3t6dguellasakvka.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.thegroceryguys.user",
-            "certificate_hash": "c0a5a0efa4f8ad83ec3886beddaad6d5e08665ce"
-          }
-        },
-        {
-          "client_id": "857676187722-r7u4eunlmmvb6j1htj3u5t5q1ec3crhv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.thegroceryguys.user",
-            "certificate_hash": "8beaf5681ed74998425e11d4a4ae3f9e9fa772f3"
-          }
-        },
-        {
-          "client_id": "857676187722-t4pemqqfthmhevqdpbmqmm1cogpavs6r.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.thegroceryguys.user",
-            "certificate_hash": "087fd2a71c7d1ed709e7e43521aa72a915b1142c"
-          }
-        },
-        {
-          "client_id": "857676187722-lb99pl2b4jtfgg05bceja0t5cep77u1l.apps.googleusercontent.com",
+          "client_id": "432815390697-o8rkh4bi9uvgmude9rimj8845n75qe5b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCm79uKNpURe47O6ijVuismolzxTEOZnhM"
+          "current_key": "AIzaSyCWJfXTUx8R7PcIF-menjrlDGnLdAIpFfs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "857676187722-lb99pl2b4jtfgg05bceja0t5cep77u1l.apps.googleusercontent.com",
+              "client_id": "432815390697-o8rkh4bi9uvgmude9rimj8845n75qe5b.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "857676187722-vbdqp5i5vbcpkkp2ugn96fqn7apsanuq.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.thegroceryguys.user"
-              }
             }
           ]
         }

@@ -56,12 +56,12 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     super.initState();
-    try{
+    try {
       messaging = FirebaseMessaging.instance;
       messaging.getToken().then((value) {
         token = value;
       });
-    }finally{
+    } finally {
       hitCityData();
     }
   }
@@ -74,7 +74,7 @@ class _SignUpState extends State<SignUp> {
     http.get(cityUri).then((value) {
       if (value.statusCode == 200) {
         CityBeanModel data1 = CityBeanModel.fromJson(jsonDecode(value.body));
-        print('${data1.data.toString()}');
+        print(data1.data.toString());
         if (data1.status == "1" || data1.status == 1) {
           setState(() {
             cityList.clear();
@@ -123,7 +123,7 @@ class _SignUpState extends State<SignUp> {
     http.post(societyUri, body: {'city_name': '$cityName'}).then((value) {
       if (value.statusCode == 200) {
         StateBeanModel data1 = StateBeanModel.fromJson(jsonDecode(value.body));
-        print('${data1.data.toString()}');
+        print(data1.data.toString());
         if (data1.status == "1" || data1.status == 1) {
           setState(() {
             socityList.clear();
@@ -213,10 +213,10 @@ class _SignUpState extends State<SignUp> {
     var locale = AppLocalizations.of(context);
     final Map<String, Object> rcvdData =
         ModalRoute.of(context).settings.arguments;
-    if(!isEnteredFirst){
+    if (!isEnteredFirst) {
       isEnteredFirst = true;
       mobileNumber =
-      rcvdData.containsKey('user_phone') ? rcvdData['user_phone'] : '';
+          rcvdData.containsKey('user_phone') ? rcvdData['user_phone'] : '';
       if (rcvdData.containsKey('user_phone')) {
         phoneNumberC.text = '$mobileNumber';
       }
@@ -225,10 +225,11 @@ class _SignUpState extends State<SignUp> {
         userFullNameC.text = '$u_name';
       }
       emailId =
-      rcvdData.containsKey('user_email') ? rcvdData['user_email'] : '';
+          rcvdData.containsKey('user_email') ? rcvdData['user_email'] : '';
       fb_id = rcvdData.containsKey('fb_id') ? rcvdData['fb_id'] : '';
       apple_id = rcvdData.containsKey('apple_id') ? rcvdData['apple_id'] : '';
-      logintype = rcvdData.containsKey('logintype') ? rcvdData['logintype'] : '';
+      logintype =
+          rcvdData.containsKey('logintype') ? rcvdData['logintype'] : '';
       if (rcvdData.containsKey('user_email')) {
         emailAddressC.text = '$emailId';
       }
@@ -240,268 +241,385 @@ class _SignUpState extends State<SignUp> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          locale.register,
-          style: TextStyle(color: kMainTextColor),
-        ),
-        centerTitle: true,
-      ),
+      resizeToAvoidBottomInset: true,
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+        constraints: const BoxConstraints.expand(),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/splash_bg.png"),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 350,
+                child: Stack(
+                  // alignment: Alignment.bottomCenter,
                   children: [
-                    Divider(
-                      thickness: 2.5,
-                      color: Colors.transparent,
-                    ),
-                    SizedBox(height: 10.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () {
-                          _showPicker(context,locale);
-                        },
-                        child: Container(
+                    Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        SizedBox(
                           width: MediaQuery.of(context).size.width,
-                          height: 90,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: kMainColor),
-                              borderRadius: BorderRadius.circular(5.0)),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image(
-                                image: (_image != null)
-                                    ? FileImage(_image)
-                                    : AssetImage('assets/icon.png'),
-                                height: 80,
-                                width: 80,
-                              ),
-                              SizedBox(
-                                width: 20.0,
-                              ),
-                              Text(
-                                locale.uploadpictext,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .copyWith(
-                                        color: kMainTextColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                              ),
-                            ],
+                          height: 300,
+                          child: Image.asset(
+                            'assets/loginImage.png',
+                            // width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.fill,
                           ),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      top: 200,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Card(
+                              semanticContainer: true,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Image.asset(
+                                  'assets/logo_without_name.png',
+                                  width: 120,
+                                  height: 120,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              elevation: 0,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    SizedBox(height: 10.0),
-                    EntryField(
+                  ],
+                ),
+              ),
+              Center(
+                child: Image.asset(
+                  'assets/app_name.png',
+                  width: 200,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              Center(
+                child: Text('Register',
+                    style: TextStyle(
+                      color: kMainColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+              const SizedBox(height: 10.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: EntryField(
                       label: locale.fullName,
                       hint: locale.enterFullName,
                       controller: userFullNameC,
                       readOnly: showDialogBox,
                     ),
-                    EntryField(
+                  ),
+                  Expanded(
+                    child: EntryField(
                       label: locale.emailAddress,
                       hint: locale.enterEmailAddress,
                       controller: emailAddressC,
                       readOnly: showDialogBox,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 1),
-                      child: Text(
-                        locale.selectycity1,
-                        style: Theme.of(context).textTheme.headline6.copyWith(
-                            color: kMainTextColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 21.7),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: DropdownButton<CityDataBean>(
-                        hint: Text(
-                          selectCity,
-                          overflow: TextOverflow.clip,
-                          maxLines: 1,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 1),
+                          child: Text(
+                            locale.selectycity1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                .copyWith(
+                                    color: kMainTextColor,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                          ),
                         ),
-                        isExpanded: true,
-                        iconEnabledColor: kMainTextColor,
-                        iconDisabledColor: kMainTextColor,
-                        iconSize: 30,
-                        items: cityList.map((value) {
-                          return DropdownMenuItem<CityDataBean>(
-                            value: value,
-                            child: Text(value.city_name,
-                                overflow: TextOverflow.clip),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            selectCity = value.city_name;
-                            cityData = value;
-                            socityList.clear();
-                            selectSocity = locale.selectsocity2;
-                            socityData = null;
-                            showDialogBox = true;
-                          });
-                          hitSocityList(value.city_name, locale);
-                          print(value);
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 1),
-                      child: Text(
-                        locale.selectsocity1,
-                        style: Theme.of(context).textTheme.headline6.copyWith(
-                            color: kMainTextColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 21.7),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: DropdownButton<StateDataBean>(
-                        hint: Text(
-                          selectSocity,
-                          overflow: TextOverflow.clip,
-                          maxLines: 1,
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: DropdownButtonFormField<CityDataBean>(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[400]),
+                                ),
+                                contentPadding: EdgeInsets.all(8.0)),
+                            hint: Text(
+                              selectCity,
+                              overflow: TextOverflow.clip,
+                              maxLines: 1,
+                            ),
+                            isExpanded: true,
+                            iconEnabledColor: kMainTextColor,
+                            iconDisabledColor: kMainTextColor,
+                            iconSize: 30,
+                            items: cityList.map((value) {
+                              return DropdownMenuItem<CityDataBean>(
+                                value: value,
+                                child: Text(value.city_name,
+                                    overflow: TextOverflow.clip),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectCity = value.city_name;
+                                cityData = value;
+                                socityList.clear();
+                                selectSocity = locale.selectsocity2;
+                                socityData = null;
+                                showDialogBox = true;
+                              });
+                              hitSocityList(value.city_name, locale);
+                              print(value);
+                            },
+                          ),
                         ),
-                        iconEnabledColor: kMainTextColor,
-                        iconDisabledColor: kMainTextColor,
-                        iconSize: 30,
-                        isExpanded: true,
-                        items: socityList.map((value) {
-                          return DropdownMenuItem<StateDataBean>(
-                            value: value,
-                            child: Text(value.society_name,
-                                overflow: TextOverflow.clip),
-                          );
-                        }).toList(),
-                        onChanged: (valued) {
-                          setState(() {
-                            selectSocity = valued.society_name;
-                            socityData = valued;
-                          });
-                        },
-                      ),
+                      ],
                     ),
-                    // EntryField(
-                    //   label: locale.selectycity1,
-                    //   hint: locale.selectycity2,
-                    //   suffixIcon: Icons.arrow_drop_down,
-                    // ),
-                    // EntryField(
-                    //   label: locale.selectsocity1,
-                    //   hint: locale.selectsocity2,
-                    //   suffixIcon: Icons.arrow_drop_down,
-                    // ),
-                    EntryField(
-                      label: locale.phoneNumber,
-                      hint: locale.enterPhoneNumber,
-                      maxLines: 1,
-                      maxLength: numberLimit,
-                      // readOnly:
-                      // (mobileNumber.toString().length == numberLimit) ? true : false,
-                      keyboardType: TextInputType.number,
-                      controller: phoneNumberC,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 1),
+                          child: Text(
+                            locale.selectsocity1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                .copyWith(
+                                    color: kMainTextColor,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: DropdownButtonFormField<StateDataBean>(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[400]),
+                                ),
+                                contentPadding: EdgeInsets.all(8.0)),
+                            hint: Text(
+                              selectSocity,
+                              overflow: TextOverflow.clip,
+                              maxLines: 1,
+                            ),
+                            iconEnabledColor: kMainTextColor,
+                            iconDisabledColor: kMainTextColor,
+                            iconSize: 30,
+                            isExpanded: true,
+                            items: socityList.map((value) {
+                              return DropdownMenuItem<StateDataBean>(
+                                value: value,
+                                child: Text(value.society_name,
+                                    overflow: TextOverflow.clip),
+                              );
+                            }).toList(),
+                            onChanged: (valued) {
+                              setState(() {
+                                selectSocity = valued.society_name;
+                                socityData = valued;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                    // EntryField(
-                    //   label: locale.password1,
-                    //   hint: locale.password2,
-                    //   maxLines: 1,
-                    //   readOnly: showDialogBox,
-                    //   keyboardType: TextInputType.visiblePassword,
-                    //   controller: passwordC,
-                    // ),
-                    EntryField(
-                      label: locale.referalcode1,
-                      hint: locale.referalcode2,
-                      maxLines: 1,
-                      readOnly: showDialogBox,
-                      keyboardType: TextInputType.text,
-                      controller: referralC,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.only(left: 7.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      locale.phoneNumber,
+                      style: Theme.of(context).textTheme.headline6.copyWith(
+                          color: kMainTextColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 7.0),
+                          child: Container(
+                            height: 48,
+                            decoration: BoxDecoration(
+                                color: kButtonBorderColor.withOpacity(0.6),
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(
+                                  width: 1,
+                                  color: kButtonBorderColor,
+                                )),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            margin: const EdgeInsets.only(right: 5),
+                            child: Text('+91',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: kMainTextColor, fontSize: 15)),
+                          ),
+                        ),
+                        Expanded(
+                          child: EntryField(
+                            // label: '',
+                            hint: locale.enterPhoneNumber,
+                            maxLines: 1,
+                            maxLength: numberLimit,
+                            keyboardType: TextInputType.number,
+                            controller: phoneNumberC,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
-            (showDialogBox)?Container(
-              height: 52,
-              child: Align(
-                alignment: Alignment.center,
-                child: CircularProgressIndicator(),
+              EntryField(
+                label: locale.referalcode1,
+                hint: locale.referalcode2,
+                maxLines: 1,
+                readOnly: showDialogBox,
+                keyboardType: TextInputType.text,
+                controller: referralC,
               ),
-            ):CustomButton(onTap: () {
-              if (!showDialogBox) {
-                setState(() {
-                  showDialogBox = true;
-                });
-                // int numLength = (mobileNumber!=null && mobileNumber.toString().length>0)?numberLimit:10;
-                if (userFullNameC.text != null) {
-                  if (emailAddressC.text != null &&
-                      emailValidator(emailAddressC.text)) {
-                    if (phoneNumberC.text != null &&
-                        phoneNumberC.text.length == numberLimit) {
-                      hitSignUpUrl(
-                          userFullNameC.text,
-                          emailAddressC.text,
-                          '${phoneNumberC.text}',
-                          '123456',
-                          cityData.city_id,
-                          socityData.society_id,
-                          fb_id,
-                          referralC.text,
-                          context);
-                    } else {
-                      setState(() {
-                        showDialogBox = false;
-                      });
-                      Toast.show(
-                          '${locale.incorectMobileNumber}$numberLimit',
-                          context,
-                          gravity: Toast.CENTER,
-                          duration: Toast.LENGTH_SHORT);
-                    }
-                    // if (passwordC.text != null && passwordC.text.length > 6) {
-                    //
-                    // } else {
-                    //   setState(() {
-                    //     showDialogBox = false;
-                    //   });
-                    //   Toast.show(locale.incorectPassword, context,
-                    //       gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
-                    // }
-                  } else {
-                    setState(() {
-                      showDialogBox = false;
-                    });
-                    Toast.show(locale.incorectEmail, context,
-                        gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
-                  }
-                } else {
-                  setState(() {
-                    showDialogBox = false;
-                  });
-                  Toast.show(locale.incorectUserName, context,
-                      gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
-                }
-              }
-            })
-          ],
+              (showDialogBox)
+                  ? const SizedBox(
+                      height: 52,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : CustomButton(
+                      color: kNavigationButtonColor,
+                      onTap: () {
+                        if (!showDialogBox) {
+                          setState(() {
+                            showDialogBox = true;
+                          });
+                          // int numLength = (mobileNumber!=null && mobileNumber.toString().length>0)?numberLimit:10;
+                          if (userFullNameC.text != null) {
+                            if (emailAddressC.text != null &&
+                                emailValidator(emailAddressC.text)) {
+                              if (phoneNumberC.text != null &&
+                                  phoneNumberC.text.length == numberLimit) {
+                                hitSignUpUrl(
+                                    userFullNameC.text,
+                                    emailAddressC.text,
+                                    phoneNumberC.text,
+                                    '123456',
+                                    cityData.city_id,
+                                    socityData.society_id,
+                                    fb_id,
+                                    referralC.text,
+                                    context);
+                              } else {
+                                setState(() {
+                                  showDialogBox = false;
+                                });
+                                Toast.show(
+                                    '${locale.incorectMobileNumber}$numberLimit',
+                                    context,
+                                    gravity: Toast.CENTER,
+                                    duration: Toast.LENGTH_SHORT);
+                              }
+                              // if (passwordC.text != null && passwordC.text.length > 6) {
+                              //
+                              // } else {
+                              //   setState(() {
+                              //     showDialogBox = false;
+                              //   });
+                              //   Toast.show(locale.incorectPassword, context,
+                              //       gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                              // }
+                            } else {
+                              setState(() {
+                                showDialogBox = false;
+                              });
+                              Toast.show(locale.incorectEmail, context,
+                                  gravity: Toast.CENTER,
+                                  duration: Toast.LENGTH_SHORT);
+                            }
+                          } else {
+                            setState(() {
+                              showDialogBox = false;
+                            });
+                            Toast.show(locale.incorectUserName, context,
+                                gravity: Toast.CENTER,
+                                duration: Toast.LENGTH_SHORT);
+                          }
+                        }
+                      },
+                    ),
+              const SizedBox(height: 5),
+              GestureDetector(
+                onTap: () => Navigator.of(context)
+                    .pushReplacementNamed(PageRoutes.signInRoot),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Already have an Account?',
+                      style: TextStyle(
+                          color: kMainColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      'Login',
+                      style: TextStyle(
+                          color: kNavigationButtonColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
@@ -536,12 +654,13 @@ class _SignUpState extends State<SignUp> {
     requestMulti.fields["user_city"] = '$user_city';
     requestMulti.fields["user_area"] = '$user_area';
     requestMulti.fields["device_id"] = '$token';
-    requestMulti.fields["fb_id"] = logintype=='apple'?'$apple_id':'$fb_id';
+    requestMulti.fields["fb_id"] =
+        logintype == 'apple' ? '$apple_id' : '$fb_id';
     requestMulti.fields["referral_code"] = '$referral_code';
     if (token != null) {
       if (_image != null) {
         String fid = _image.path.split('/').last;
-        if(fid!=null && fid.length>0){
+        if (fid != null && fid.length > 0) {
           http.MultipartFile.fromPath('user_image', _image.path, filename: fid)
               .then((pic) {
             requestMulti.files.add(pic);
@@ -549,7 +668,7 @@ class _SignUpState extends State<SignUp> {
               values.stream.toBytes().then((value) {
                 var responseString = String.fromCharCodes(value);
                 var jsonData = jsonDecode(responseString);
-                print('${jsonData.toString()}');
+                print(jsonData.toString());
                 SignInModel signInData = SignInModel.fromJson(jsonData);
                 if (signInData.status == "0" || signInData.status == 0) {
                   Toast.show(signInData.message, context,
@@ -596,15 +715,14 @@ class _SignUpState extends State<SignUp> {
             });
             print(e);
           });
-        }
-        else{
+        } else {
           print('not null');
           requestMulti.fields["user_image"] = '';
-          requestMulti.send().then((value1){
+          requestMulti.send().then((value1) {
             value1.stream.toBytes().then((value) {
               var responseString = String.fromCharCodes(value);
               var jsonData = jsonDecode(responseString);
-              print('${jsonData.toString()}');
+              print(jsonData.toString());
               SignInModel signInData = SignInModel.fromJson(jsonData);
               if (signInData.status == "0" || signInData.status == 0) {
                 Toast.show(signInData.message, context,
@@ -639,45 +757,42 @@ class _SignUpState extends State<SignUp> {
                 showDialogBox = false;
               });
             });
-          }).catchError((e){
+          }).catchError((e) {
             setState(() {
               showDialogBox = false;
             });
           });
         }
-      }
-      else{
+      } else {
         print('not null');
         requestMulti.fields["user_image"] = '';
-        requestMulti.send().then((value1){
+        requestMulti.send().then((value1) {
           value1.stream.toBytes().then((value) {
             var responseString = String.fromCharCodes(value);
             var jsonData = jsonDecode(responseString);
-            print('${jsonData.toString()}');
+            print(jsonData.toString());
             SignInModel signInData = SignInModel.fromJson(jsonData);
             if (signInData.status == "0" || signInData.status == 0) {
               Toast.show(signInData.message, context,
                   duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
             } else if (signInData.status == "1" || signInData.status == 1) {
-              Navigator.pushNamed(context, PageRoutes.verification,
-                  arguments: {
-                    'token': '${token}',
-                    'user_phone': '${user_phone}',
-                    'firebase': '${appinfo.firebase}',
-                    'country_code': '${appinfo.countryCode}',
-                    'referralcode': '${referral_code}',
-                    'activity': 'signup',
-                  });
+              Navigator.pushNamed(context, PageRoutes.verification, arguments: {
+                'token': '${token}',
+                'user_phone': '${user_phone}',
+                'firebase': '${appinfo.firebase}',
+                'country_code': '${appinfo.countryCode}',
+                'referralcode': '${referral_code}',
+                'activity': 'signup',
+              });
             } else if (signInData.status == "2" || signInData.status == 2) {
-              Navigator.pushNamed(context, PageRoutes.verification,
-                  arguments: {
-                    'token': '${token}',
-                    'user_phone': '${user_phone}',
-                    'firebase': '${appinfo.firebase}',
-                    'country_code': '${appinfo.countryCode}',
-                    'referralcode': '${referral_code}',
-                    'activity': 'signup',
-                  });
+              Navigator.pushNamed(context, PageRoutes.verification, arguments: {
+                'token': '${token}',
+                'user_phone': '${user_phone}',
+                'firebase': '${appinfo.firebase}',
+                'country_code': '${appinfo.countryCode}',
+                'referralcode': '${referral_code}',
+                'activity': 'signup',
+              });
             }
             setState(() {
               showDialogBox = false;
@@ -688,7 +803,7 @@ class _SignUpState extends State<SignUp> {
               showDialogBox = false;
             });
           });
-        }).catchError((e){
+        }).catchError((e) {
           setState(() {
             showDialogBox = false;
           });
@@ -701,7 +816,7 @@ class _SignUpState extends State<SignUp> {
           count = 1;
           hitSignUpUrl(user_name, user_email, user_phone, user_password,
               user_city, user_area, fb_id, referral_code, context);
-        }).catchError((e){
+        }).catchError((e) {
           setState(() {
             showDialogBox = false;
           });

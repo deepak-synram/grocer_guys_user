@@ -61,11 +61,16 @@ class _EntryFieldState extends State<EntryField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text(widget.label ?? '',
+          if (widget.label != null) ...[
+            Text(
+              widget.label ?? '',
               style: Theme.of(context).textTheme.headline6.copyWith(
                   color: kMainTextColor,
-                  fontWeight: widget.labelFontWeight ?? FontWeight.bold,
-                  fontSize: widget.labelFontSize ?? 21.7)),
+                  fontWeight: widget.labelFontWeight ?? FontWeight.w400,
+                  fontSize: widget.labelFontSize ?? 18),
+            )
+          ],
+          const SizedBox(height: 5),
           TextField(
             textCapitalization:
                 widget.textCapitalization ?? TextCapitalization.sentences,
@@ -92,27 +97,34 @@ class _EntryFieldState extends State<EntryField> {
             maxLength: widget.maxLength,
             maxLines: widget.maxLines ?? 1,
             decoration: InputDecoration(
-                enabledBorder: UnderlineInputBorder(
+                enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: widget.underlineColor ?? Colors.grey[200]),
+                      color: widget.underlineColor ?? Colors.grey[400]),
                 ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    widget.suffixIcon,
-                    size: 40.0,
-                    color: Theme.of(context).backgroundColor,
-                  ),
-                  onPressed: widget.onSuffixPressed ?? null,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: widget.underlineColor ?? Colors.grey[400]),
                 ),
+                contentPadding: const EdgeInsets.all(8.0),
+                suffixIcon: widget.suffixIcon == null
+                    ? null
+                    : IconButton(
+                        icon: Icon(
+                          widget.suffixIcon,
+                          size: 40.0,
+                          color: Theme.of(context).backgroundColor,
+                        ),
+                        onPressed: widget.onSuffixPressed,
+                      ),
                 counterText: "",
                 hintText: widget.hint,
                 hintStyle: widget.hintStyle ??
                     Theme.of(context)
                         .textTheme
                         .subtitle1
-                        .copyWith(color: kHintColor, fontSize: 18.3)),
+                        .copyWith(color: kHintColor, fontSize: 16)),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
         ],
       ),
     );

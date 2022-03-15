@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user/Locale/locales.dart';
+import 'package:user/Pages/Intro/splash.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/style.dart';
 import 'package:user/baseurl/baseurlg.dart';
@@ -29,7 +30,7 @@ import 'package:user/providergrocery/trndlistemitter.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
-  try{
+  try {
     FirebaseApp app;
     List<FirebaseApp> firebase = Firebase.apps;
     for (FirebaseApp appd in firebase) {
@@ -39,37 +40,29 @@ Future<void> main() async {
       }
     }
     if (app == null) {
-      if(Platform.isIOS){
+      if (Platform.isIOS) {
         await Firebase.initializeApp(
           name: 'TheGroceryGuys',
-          options: const FirebaseOptions(apiKey: 'AIzaSyCN5YHSeA-6rB4B4gApnjzAqffibeFD8WY',
+          options: const FirebaseOptions(
+              apiKey: 'AIzaSyCN5YHSeA-6rB4B4gApnjzAqffibeFD8WY',
               appId: '1:857676187722:ios:7735d516dcd902efb87eb3',
               messagingSenderId: '857676187722',
               projectId: 'thegroceryguys-68e6b'),
         );
-      }else{
+      } else {
         await Firebase.initializeApp();
       }
     }
-  }finally {
+  } finally {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool result = prefs.getBool('islogin');
-    bool skip = prefs.getBool('skip');
+    // bool result = prefs.getBool('islogin');
+    // bool skip = prefs.getBool('skip');
 
-    runApp(Phoenix(
-        child: ((skip != null && skip) || (result != null && result))
-            ? GroceryHome()
-            : GroceryLogin()));
-  }
-}
-
-//
-class GroceryLogin extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    runApp(
+      Phoenix(
+          child: MultiBlocProvider(
         providers: [
           BlocProvider<AppNoitceProvider>(
             create: (context) => AppNoitceProvider(),
@@ -99,6 +92,9 @@ class GroceryLogin extends StatelessWidget {
           BlocProvider<SearchProvider>(
             create: (context) => SearchProvider(),
           ),
+          BlocProvider<TopRecentNewDealProvider>(
+            create: (context) => TopRecentNewDealProvider(),
+          ),
           BlocProvider<CategoryProvider>(
             create: (context) => CategoryProvider(),
           ),
@@ -123,9 +119,14 @@ class GroceryLogin extends StatelessWidget {
             return MaterialApp(
               builder: (context, child) {
                 final MediaQueryData data = MediaQuery.of(context);
-                return MediaQuery(
-                  data: data.copyWith(textScaleFactor: 1.0),
-                  child: child,
+                return GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  child: MediaQuery(
+                    data: data.copyWith(textScaleFactor: 1.0),
+                    child: child,
+                  ),
                 );
               },
               debugShowCheckedModeBanner: false,
@@ -146,102 +147,198 @@ class GroceryLogin extends StatelessWidget {
               locale: locale,
               theme: appTheme,
               // home: SignIn(),
-              initialRoute: PageRoutes.signInRoot,
+              // initialRoute: PageRoutes.signInRoot,
               routes: PageRoutes().routes(),
+              title: 'Grocer Guys',
+              home: SplashScreen(),
             );
           },
-        ));
+        ),
+      )),
+    );
+    // child: ((skip != null && skip) || (result != null && result))
+    //     ? GroceryHome()
+    //     : GroceryLogin()));
   }
 }
 
-class GroceryHome extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    getImageBaseUrl();
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider<AppNoitceProvider>(
-            create: (context) => AppNoitceProvider(),
-          ),
-          BlocProvider<ImageSnapReview>(
-            create: (context) => ImageSnapReview(),
-          ),
-          BlocProvider<LocationEmitter>(
-            create: (context) => LocationEmitter(),
-          ),
-          BlocProvider<BottomNavigationEmitter>(
-            create: (context) => BottomNavigationEmitter(),
-          ),
-          BlocProvider<BanerProvider>(
-            create: (context) => BanerProvider(),
-          ),
-          BlocProvider<A2CartSnap>(
-            create: (context) =>
-                A2CartSnap(AddtoCartB(status: false, prodId: -1)),
-          ),
-          BlocProvider<CartListProvider>(
-            create: (context) => CartListProvider(),
-          ),
-          BlocProvider<SingleApiEmitter>(
-            create: (context) => SingleApiEmitter(),
-          ),
-          BlocProvider<SearchProvider>(
-            create: (context) => SearchProvider(),
-          ),
-          BlocProvider<TopRecentNewDealProvider>(
-            create: (context) => TopRecentNewDealProvider(),
-          ),
-          BlocProvider<CategoryProvider>(
-            create: (context) => CategoryProvider(),
-          ),
-          BlocProvider<LanguageCubit>(
-            create: (context) => LanguageCubit(),
-          ),
-          BlocProvider<ProfileProvider>(
-            create: (context) => ProfileProvider(),
-          ),
-          BlocProvider<PageSnapReview>(
-            create: (context) => PageSnapReview(0),
-          ),
-          BlocProvider<CartCountProvider>(
-            create: (context) => CartCountProvider(),
-          ),
-        ],
-        child: BlocBuilder<LanguageCubit, Locale>(
-          builder: (_, locale) {
-            return MaterialApp(
-              builder: (context, child) {
-                final MediaQueryData data = MediaQuery.of(context);
-                return MediaQuery(
-                  data: data.copyWith(textScaleFactor: 1.0),
-                  child: child,
-                );
-              },
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: [
-                const AppLocalizationsDelegate(),
-                GlobalMaterialLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
-              supportedLocales: [
-                const Locale('en'),
-                const Locale('ar'),
-                const Locale('pt'),
-                const Locale('fr'),
-                const Locale('id'),
-                const Locale('es'),
-              ],
-              locale: locale,
-              theme: appTheme,
-              // home: NewHomeView(),
-              initialRoute: PageRoutes.homePage,
-              routes: PageRoutes().routes(),
-            );
-          },
-        ));
-  }
-}
+//
+// class GroceryLogin extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiBlocProvider(
+//         providers: [
+//           BlocProvider<AppNoitceProvider>(
+//             create: (context) => AppNoitceProvider(),
+//           ),
+//           BlocProvider<ImageSnapReview>(
+//             create: (context) => ImageSnapReview(),
+//           ),
+//           BlocProvider<LocationEmitter>(
+//             create: (context) => LocationEmitter(),
+//           ),
+//           BlocProvider<BottomNavigationEmitter>(
+//             create: (context) => BottomNavigationEmitter(),
+//           ),
+//           BlocProvider<BanerProvider>(
+//             create: (context) => BanerProvider(),
+//           ),
+//           BlocProvider<A2CartSnap>(
+//             create: (context) =>
+//                 A2CartSnap(AddtoCartB(status: false, prodId: -1)),
+//           ),
+//           BlocProvider<CartListProvider>(
+//             create: (context) => CartListProvider(),
+//           ),
+//           BlocProvider<SingleApiEmitter>(
+//             create: (context) => SingleApiEmitter(),
+//           ),
+//           BlocProvider<SearchProvider>(
+//             create: (context) => SearchProvider(),
+//           ),
+//           BlocProvider<CategoryProvider>(
+//             create: (context) => CategoryProvider(),
+//           ),
+//           BlocProvider<CartCountProvider>(
+//             create: (context) => CartCountProvider(),
+//           ),
+//           BlocProvider<TopRecentNewDealProvider>(
+//             create: (context) => TopRecentNewDealProvider(),
+//           ),
+//           BlocProvider<ProfileProvider>(
+//             create: (context) => ProfileProvider(),
+//           ),
+//           BlocProvider<PageSnapReview>(
+//             create: (context) => PageSnapReview(0),
+//           ),
+//           BlocProvider<LanguageCubit>(
+//             create: (context) => LanguageCubit(),
+//           ),
+//         ],
+//         child: BlocBuilder<LanguageCubit, Locale>(
+//           builder: (_, locale) {
+//             return MaterialApp(
+//               builder: (context, child) {
+//                 final MediaQueryData data = MediaQuery.of(context);
+//                 return MediaQuery(
+//                   data: data.copyWith(textScaleFactor: 1.0),
+//                   child: child,
+//                 );
+//               },
+//               debugShowCheckedModeBanner: false,
+//               localizationsDelegates: const [
+//                 AppLocalizationsDelegate(),
+//                 GlobalMaterialLocalizations.delegate,
+//                 GlobalCupertinoLocalizations.delegate,
+//                 GlobalWidgetsLocalizations.delegate,
+//               ],
+//               supportedLocales: const [
+//                 Locale('en'),
+//                 Locale('ar'),
+//                 Locale('pt'),
+//                 Locale('fr'),
+//                 Locale('id'),
+//                 Locale('es'),
+//               ],
+//               locale: locale,
+//               theme: appTheme,
+//               // home: SignIn(),
+//               initialRoute: PageRoutes.signInRoot,
+//               routes: PageRoutes().routes(),
+//             );
+//           },
+//         ));
+//   }
+// }
+
+// class GroceryHome extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     getImageBaseUrl();
+//     return MultiBlocProvider(
+//         providers: [
+//           BlocProvider<AppNoitceProvider>(
+//             create: (context) => AppNoitceProvider(),
+//           ),
+//           BlocProvider<ImageSnapReview>(
+//             create: (context) => ImageSnapReview(),
+//           ),
+//           BlocProvider<LocationEmitter>(
+//             create: (context) => LocationEmitter(),
+//           ),
+//           BlocProvider<BottomNavigationEmitter>(
+//             create: (context) => BottomNavigationEmitter(),
+//           ),
+//           BlocProvider<BanerProvider>(
+//             create: (context) => BanerProvider(),
+//           ),
+//           BlocProvider<A2CartSnap>(
+//             create: (context) =>
+//                 A2CartSnap(AddtoCartB(status: false, prodId: -1)),
+//           ),
+//           BlocProvider<CartListProvider>(
+//             create: (context) => CartListProvider(),
+//           ),
+//           BlocProvider<SingleApiEmitter>(
+//             create: (context) => SingleApiEmitter(),
+//           ),
+//           BlocProvider<SearchProvider>(
+//             create: (context) => SearchProvider(),
+//           ),
+//           BlocProvider<TopRecentNewDealProvider>(
+//             create: (context) => TopRecentNewDealProvider(),
+//           ),
+//           BlocProvider<CategoryProvider>(
+//             create: (context) => CategoryProvider(),
+//           ),
+//           BlocProvider<LanguageCubit>(
+//             create: (context) => LanguageCubit(),
+//           ),
+//           BlocProvider<ProfileProvider>(
+//             create: (context) => ProfileProvider(),
+//           ),
+//           BlocProvider<PageSnapReview>(
+//             create: (context) => PageSnapReview(0),
+//           ),
+//           BlocProvider<CartCountProvider>(
+//             create: (context) => CartCountProvider(),
+//           ),
+//         ],
+//         child: BlocBuilder<LanguageCubit, Locale>(
+//           builder: (_, locale) {
+//             return MaterialApp(
+//               builder: (context, child) {
+//                 final MediaQueryData data = MediaQuery.of(context);
+//                 return MediaQuery(
+//                   data: data.copyWith(textScaleFactor: 1.0),
+//                   child: child,
+//                 );
+//               },
+//               debugShowCheckedModeBanner: false,
+//               localizationsDelegates: [
+//                 const AppLocalizationsDelegate(),
+//                 GlobalMaterialLocalizations.delegate,
+//                 GlobalCupertinoLocalizations.delegate,
+//                 GlobalWidgetsLocalizations.delegate,
+//               ],
+//               supportedLocales: [
+//                 const Locale('en'),
+//                 const Locale('ar'),
+//                 const Locale('pt'),
+//                 const Locale('fr'),
+//                 const Locale('id'),
+//                 const Locale('es'),
+//               ],
+//               locale: locale,
+//               theme: appTheme,
+//               // home: NewHomeView(),
+//               initialRoute: PageRoutes.homePage,
+//               routes: PageRoutes().routes(),
+//             );
+//           },
+//         ));
+//   }
+// }
 
 class MyHttpOverrides extends HttpOverrides {
   @override

@@ -1,4 +1,4 @@
-package com.thegroceryguys.user
+package com.staging.thegroceryguys.user
 
 import io.flutter.embedding.android.FlutterActivity
 

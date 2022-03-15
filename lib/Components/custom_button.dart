@@ -36,30 +36,37 @@ class _CustomButtonState extends State<CustomButton> {
       onTap: widget.onTap ??
           () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => widget.onPress)).then((value){
-                widget.action();
+                    MaterialPageRoute(builder: (context) => widget.onPress))
+                .then((value) {
+              widget.action();
             });
           },
-      child: Container(
-        width: widget.width,
-        height: widget.height,
-        color: widget.color ?? Theme.of(context).primaryColor,
-        padding: EdgeInsets.all(18),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            widget.prefixIcon != null ? widget.prefixIcon : SizedBox.shrink(),
-            SizedBox(width: widget.iconGap),
-            Text(
-              widget.label ?? locale.continueText,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  letterSpacing: 1,
-                  fontWeight: FontWeight.w700),
-            ),
-          ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: widget.width,
+          height: widget.height,
+          decoration: BoxDecoration(
+            color: widget.color ?? Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          padding: const EdgeInsets.all(18),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              widget.prefixIcon ?? const SizedBox.shrink(),
+              SizedBox(width: widget.iconGap),
+              Text(
+                widget.label ?? locale.continueText,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    letterSpacing: 1,
+                    fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
         ),
       ),
     );

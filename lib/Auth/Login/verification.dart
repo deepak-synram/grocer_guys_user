@@ -17,7 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class VerificationPage extends StatefulWidget {
-
   @override
   _VerificationPageState createState() => _VerificationPageState();
 }
@@ -47,8 +46,8 @@ class _VerificationPageState extends State<VerificationPage> {
     super.initState();
   }
 
-  void hitAsynInit() async{
-    try{
+  void hitAsynInit() async {
+    try {
       FirebaseApp app;
       List<FirebaseApp> firebase = Firebase.apps;
       for (FirebaseApp appd in firebase) {
@@ -58,36 +57,34 @@ class _VerificationPageState extends State<VerificationPage> {
         }
       }
       if (app == null) {
-        if(Platform.isIOS){
+        if (Platform.isIOS) {
           await Firebase.initializeApp(
             name: 'TheGroceryGuys',
-            options: const FirebaseOptions(apiKey: 'AIzaSyCN5YHSeA-6rB4B4gApnjzAqffibeFD8WY',
+            options: const FirebaseOptions(
+                apiKey: 'AIzaSyCN5YHSeA-6rB4B4gApnjzAqffibeFD8WY',
                 appId: '1:857676187722:ios:7735d516dcd902efb87eb3',
                 messagingSenderId: '857676187722',
                 projectId: 'thegroceryguys-68e6b'),
           );
-        }else{
+        } else {
           await Firebase.initializeApp();
         }
       }
-    }finally{
+    } finally {
       messaging = FirebaseMessaging.instance;
-      if(Platform.isIOS){
-        messaging.requestPermission(
-            alert: true,
-            sound: true
-        );
+      if (Platform.isIOS) {
+        messaging.requestPermission(alert: true, sound: true);
       }
       messaging.getToken().then((value) {
         token = value;
         if (firebaseOtp) {
           initialAuth('+$country_code$user_phone');
-        }else{
+        } else {
           setState(() {
             showDialogBox = false;
           });
         }
-      }).catchError((e){
+      }).catchError((e) {
         setState(() {
           showDialogBox = false;
         });
@@ -96,12 +93,11 @@ class _VerificationPageState extends State<VerificationPage> {
     }
   }
 
-  initialAuth(String phoneNumberd) async{
+  initialAuth(String phoneNumberd) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     await auth.verifyPhoneNumber(
-      phoneNumber:phoneNumberd,
-      verificationCompleted: (PhoneAuthCredential credential) {
-      },
+      phoneNumber: phoneNumberd,
+      verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException e) {
         isVerificationFailed = true;
         print(e.message);
@@ -121,12 +117,11 @@ class _VerificationPageState extends State<VerificationPage> {
     );
   }
 
-  initialAuthResend(String phoneNumberd) async{
+  initialAuthResend(String phoneNumberd) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     await auth.verifyPhoneNumber(
-      phoneNumber:phoneNumberd,
-      verificationCompleted: (PhoneAuthCredential credential) {
-      },
+      phoneNumber: phoneNumberd,
+      verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException e) {
         isVerificationFailed = true;
         print(e.message);
@@ -147,37 +142,36 @@ class _VerificationPageState extends State<VerificationPage> {
     );
   }
 
-  hitSignIn(String smsCode, BuildContext context){
+  hitSignIn(String smsCode, BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId:actualCode, smsCode:smsCode);
-    auth.signInWithCredential(credential).then((value){
-      if(value!=null){
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: actualCode, smsCode: smsCode);
+    auth.signInWithCredential(credential).then((value) {
+      if (value != null) {
         User userd = value.user;
-        if(userd!=null){
+        if (userd != null) {
           if (activity == 'login') {
-            hitFirebaseSuccessLoginStatus('success',context);
+            hitFirebaseSuccessLoginStatus('success', context);
           } else {
-            hitFirebaseSuccessStatus('success',context);
+            hitFirebaseSuccessStatus('success', context);
           }
-        }else{
+        } else {
           setState(() {
             showDialogBox = false;
           });
         }
-      }else{
+      } else {
         setState(() {
           showDialogBox = false;
         });
       }
-    }).catchError((e){
+    }).catchError((e) {
       print('user null + $e');
       setState(() {
         showDialogBox = false;
       });
     });
   }
-
-
 
   @override
   void dispose() {
@@ -188,7 +182,7 @@ class _VerificationPageState extends State<VerificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom!=0;
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     var locale = AppLocalizations.of(context);
     if (firecount == 0) {
       final Map<String, Object> dataRecevid =
@@ -198,9 +192,8 @@ class _VerificationPageState extends State<VerificationPage> {
         showDialogBox = true;
         token = dataRecevid['token'];
         user_phone = dataRecevid['user_phone'];
-        firebaseOtp = ('${dataRecevid['firebase']}'.toUpperCase() == 'ON')
-            ? true
-            : false;
+        firebaseOtp =
+            ('${dataRecevid['firebase']}'.toUpperCase() == 'ON') ? true : false;
         referralcode = dataRecevid['referralcode'];
         country_code = dataRecevid['country_code'];
         activity = dataRecevid['activity'];
@@ -214,65 +207,116 @@ class _VerificationPageState extends State<VerificationPage> {
       left: false,
       right: false,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            locale.verification,
-            style: TextStyle(color: kMainTextColor),
+        resizeToAvoidBottomInset: true,
+        body: Container(
+          constraints: const BoxConstraints.expand(),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/splash_bg.png"),
+              fit: BoxFit.fill,
+            ),
           ),
-          centerTitle: true,
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 48.0, vertical: 48),
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 350,
+                  child: Stack(
+                    // alignment: Alignment.bottomCenter,
+                    children: [
+                      Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 300,
+                            child: Image.asset(
+                              'assets/loginImage.png',
+                              // width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        top: 200,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Card(
+                                semanticContainer: true,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Image.asset(
+                                    'assets/logo_without_name.png',
+                                    width: 120,
+                                    height: 120,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                elevation: 0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Center(
+                  child: Image.asset(
+                    'assets/app_name.png',
+                    width: 200,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 48.0, vertical: 32),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
                         text: '${locale.veri2}\n',
-                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.w800,color: kMainTextColor,letterSpacing: 1.2),
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            color: kMainTextColor,
+                            letterSpacing: 1.2),
                         children: [
                           TextSpan(
-                              text: '${locale.veri3} +$country_code$user_phone',
-                              style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: kLightTextColor,letterSpacing: 1.1),
+                            text: '${locale.veri3} +$country_code-$user_phone',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: kLightTextColor,
+                                letterSpacing: 1.1),
                           )
-                        ]
-                      ),
-                    ),
+                        ]),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(
-                  //       top: 28.0, left: 18, right: 18, bottom: 4),
-                  //   child: Text(
-                  //     locale.enterVerificationCode,
-                  //     style: Theme.of(context).textTheme.headline3.copyWith(
-                  //         fontSize: 22,
-                  //         color: Theme.of(context).backgroundColor,
-                  //         fontWeight: FontWeight.w500),
-                  //   ),
-                  // ),
-                  // EntryField(
-                  //   controller: _controller,
-                  //   hint: locale.enterVerificationCode,
-                  //   maxLines: 1,
-                  //   maxLength: firebaseOtp ? 6 : 4,
-                  //   keyboardType: TextInputType.number,
-                  // ),
-                  Padding(
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: PinCodeTextField(
                       autofocus: true,
                       controller: _controller,
                       hideCharacter: false,
                       highlight: false,
-                      highlightColor: kButtonBorderColor.withOpacity(0.5),
+                      highlightColor: kNavigationButtonColor.withOpacity(0.5),
                       defaultBorderColor: kButtonBorderColor.withOpacity(0.5),
                       hasTextBorderColor: kButtonBorderColor.withOpacity(0.5),
                       // highlightPinBoxColor: Colors.orange,
-                      maxLength: firebaseOtp?6:4,
+                      maxLength: firebaseOtp ? 6 : 4,
                       onDone: (text) {
                         verificaitonPin = text;
                       },
@@ -280,25 +324,31 @@ class _VerificationPageState extends State<VerificationPage> {
                       pinBoxHeight: 50,
                       hasUnderline: false,
                       wrapAlignment: WrapAlignment.spaceAround,
-                      pinBoxDecoration: ProvidedPinBoxDecoration.defaultPinBoxDecoration,
+                      pinBoxDecoration:
+                          ProvidedPinBoxDecoration.defaultPinBoxDecoration,
                       pinTextStyle: const TextStyle(fontSize: 22.0),
                       pinBoxRadius: 5,
                       pinTextAnimatedSwitcherTransition:
-                      ProvidedPinBoxTextAnimation.scalingTransition,
+                          ProvidedPinBoxTextAnimation.scalingTransition,
                       maskCharacter: '',
-//                    pinBoxColor: Colors.green[100],
+                      //                    pinBoxColor: Colors.green[100],
                       pinTextAnimatedSwitcherDuration:
-                      const Duration(milliseconds: 300),
-//                    highlightAnimation: true,
-                      highlightAnimationBeginColor: kButtonBorderColor.withOpacity(0.5),
-                      highlightAnimationEndColor: kButtonBorderColor.withOpacity(0.5),
+                          const Duration(milliseconds: 300),
+                      //                    highlightAnimation: true,
+                      highlightAnimationBeginColor:
+                          kNavigationButtonColor.withOpacity(0.5),
+                      highlightAnimationEndColor:
+                          kButtonBorderColor.withOpacity(0.5),
                       keyboardType: TextInputType.number,
                     ),
                   ),
-                  const SizedBox(height: 10.0),
-                  Align(alignment: Alignment.center,child: GestureDetector(
-                    onTap: (){
-                      if(!showDialogBox){
+                ),
+                const SizedBox(height: 10.0),
+                Align(
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap: () {
+                      if (!showDialogBox) {
                         setState(() {
                           showDialogBox = true;
                         });
@@ -307,8 +357,10 @@ class _VerificationPageState extends State<VerificationPage> {
                         } else {
                           resendOtpM();
                         }
-                      }else{
-                        Toast.show('Currently In Process', context,gravity: Toast.CENTER,duration: Toast.LENGTH_SHORT);
+                      } else {
+                        Toast.show('Currently In Process', context,
+                            gravity: Toast.CENTER,
+                            duration: Toast.LENGTH_SHORT);
                       }
                     },
                     behavior: HitTestBehavior.opaque,
@@ -316,102 +368,129 @@ class _VerificationPageState extends State<VerificationPage> {
                       textAlign: TextAlign.center,
                       text: TextSpan(
                           text: '${locale.veri4} ',
-                          style: TextStyle(fontSize: 13,fontWeight: FontWeight.w400,color: kLightTextColor),
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              color: kLightTextColor),
                           children: [
                             TextSpan(
-                              text: locale.resend+'!',
-                              style: TextStyle(fontSize: 13,fontWeight: FontWeight.w600,color: kMainColor,letterSpacing: 1.1),
+                              text: locale.resend + '!',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: kNavigationButtonColor,
+                                  letterSpacing: 1.1),
                             )
-                          ]
-                      ),
-                    ),),
-                  ),
-                  // SizedBox(height: 10.0),
-                  // Visibility(
-                  //     visible: showDialogBox,
-                  //     child: Align(
-                  //       alignment: Alignment.center,
-                  //       child: CircularProgressIndicator(),
-                  //     )),
-                ],
-              ),
-            )),
-            Visibility(
-              visible: !isKeyboardOpen,
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  child: showDialogBox?Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator(strokeWidth: 2,color: kMainColor,),
-                  ):MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                    onPressed: () {
-                      if (!showDialogBox) {
-                        setState(() {
-                          showDialogBox = true;
-                        });
-                        verificaitonPin = _controller.text;
-                        if (firebaseOtp) {
-                          if(!isVerificationFailed){
-                            hitSignIn(verificaitonPin, context);
-                          }else{
-                            Toast.show('Service is downnow please try after some time', context,gravity: Toast.CENTER,duration: Toast.LENGTH_SHORT);
-                          }
-                        } else {
-                          if (activity == 'login') {
-                            hitLoginService(verificaitonPin, context);
-                          } else {
-                            hitService(verificaitonPin, context);
-                          }
-                        }
-                      }
-                    },
-                    color: kMainColor,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        locale.veri1,
-                        style: TextStyle(
-                            color: kWhiteColor,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.6),
-                      ),
+                          ]),
                     ),
                   ),
                 ),
-                SizedBox(height: 10.0),
-                Align(alignment: Alignment.center,child: GestureDetector(
-                  onTap: (){
-                    Navigator.of(context).pushNamedAndRemoveUntil(PageRoutes.signInRoot, (Route<dynamic> route) => false);
-                  },
-                  behavior: HitTestBehavior.opaque,
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                        text: '${locale.veri5} ',
-                        style: TextStyle(fontSize: 13,fontWeight: FontWeight.w400,color: kLightTextColor),
-                        children: [
-                          TextSpan(
-                            text: locale.veri6,
-                            style: TextStyle(fontSize: 13,fontWeight: FontWeight.w600,color: kMainColor,letterSpacing: 1.1),
-                          )
-                        ]
-                    ),
-                  ),),),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 50),
+                Visibility(
+                  visible: !isKeyboardOpen,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        child: showDialogBox
+                            ? Align(
+                                alignment: Alignment.center,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: kMainColor,
+                                ),
+                              )
+                            : MaterialButton(
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                onPressed: () {
+                                  if (!showDialogBox) {
+                                    setState(() {
+                                      showDialogBox = true;
+                                    });
+                                    verificaitonPin = _controller.text;
+                                    if (firebaseOtp) {
+                                      if (!isVerificationFailed) {
+                                        hitSignIn(verificaitonPin, context);
+                                      } else {
+                                        Toast.show(
+                                            'Service is downnow please try after some time',
+                                            context,
+                                            gravity: Toast.CENTER,
+                                            duration: Toast.LENGTH_SHORT);
+                                      }
+                                    } else {
+                                      if (activity == 'login') {
+                                        hitLoginService(
+                                            verificaitonPin, context);
+                                      } else {
+                                        hitService(verificaitonPin, context);
+                                      }
+                                    }
+                                  }
+                                },
+                                color: kNavigationButtonColor,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    locale.veri1,
+                                    style: TextStyle(
+                                        color: kMainColor,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.6),
+                                  ),
+                                ),
+                              ),
+                      ),
+                      const SizedBox(height: 10.0),
+                      Align(
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                PageRoutes.signInRoot,
+                                (Route<dynamic> route) => false);
+                          },
+                          behavior: HitTestBehavior.opaque,
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                                text: '${locale.veri5} ',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400,
+                                    color: kLightTextColor),
+                                children: [
+                                  TextSpan(
+                                    text: locale.veri6,
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                        color: kMainColor,
+                                        letterSpacing: 1.1),
+                                  )
+                                ]),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                    ],
+                  ),
+                ),
               ],
-            ))
-          ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  void resendOtpM() async{
+  void resendOtpM() async {
     var url = resendOtpUri;
     await http.post(url, body: {
       'user_phone': '${user_phone}',
@@ -432,7 +511,6 @@ class _VerificationPageState extends State<VerificationPage> {
         showDialogBox = false;
       });
     });
-
   }
 
   void hitService(String verificaitonPin, BuildContext context) async {
@@ -442,15 +520,17 @@ class _VerificationPageState extends State<VerificationPage> {
       await http.post(url, body: {
         'user_phone': '${user_phone}',
         'otp': verificaitonPin,
-        'device_id':'$token',
-        'referral_code': (referralcode!=null && referralcode.length>0)?'${referralcode}':''
+        'device_id': '$token',
+        'referral_code': (referralcode != null && referralcode.length > 0)
+            ? '${referralcode}'
+            : ''
       }).then((response) {
         print('Response Body: - ${response.body}');
         if (response.statusCode == 200) {
           print('Response Body: - ${response.body}');
           var jsonData = jsonDecode(response.body);
           SignInModel signInData = SignInModel.fromJson(jsonData);
-          if(signInData.status == "1" || signInData.status==1){
+          if (signInData.status == "1" || signInData.status == 1) {
             var userId = int.parse('${signInData.data.id}');
             prefs.setInt("user_id", userId);
             prefs.setString("user_name", '${signInData.data.name}');
@@ -469,7 +549,8 @@ class _VerificationPageState extends State<VerificationPage> {
             prefs.setString("refferal_code", '${signInData.data.referralCode}');
             prefs.setString("reward", '${signInData.data.rewards}');
             prefs.setString("accesstoken", '${signInData.token}');
-            Navigator.of(context).pushNamedAndRemoveUntil(PageRoutes.homePage, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                PageRoutes.homePage, (Route<dynamic> route) => false);
           }
           setState(() {
             showDialogBox = false;
@@ -485,8 +566,7 @@ class _VerificationPageState extends State<VerificationPage> {
           showDialogBox = false;
         });
       });
-    }
-    else {
+    } else {
       if (count == 0) {
         setState(() {
           count = 1;
@@ -494,9 +574,9 @@ class _VerificationPageState extends State<VerificationPage> {
         messaging.getToken().then((value) {
           setState(() {
             token = value;
-            hitService(verificaitonPin,context);
+            hitService(verificaitonPin, context);
           });
-        }).catchError((e){
+        }).catchError((e) {
           setState(() {
             showDialogBox = false;
           });
@@ -515,7 +595,7 @@ class _VerificationPageState extends State<VerificationPage> {
       var url = loginVerifyPhoneUri;
       await http.post(url, body: {
         'user_phone': '${user_phone}',
-        'device_id':'$token',
+        'device_id': '$token',
         'otp': verificaitonPin,
       }).then((response) {
         print('Response Body: - ${response.body}');
@@ -523,7 +603,7 @@ class _VerificationPageState extends State<VerificationPage> {
           print('Response Body: - ${response.body}');
           var jsonData = jsonDecode(response.body);
           SignInModel signInData = SignInModel.fromJson(jsonData);
-          if(signInData.status == "1" || signInData.status==1){
+          if (signInData.status == "1" || signInData.status == 1) {
             var userId = int.parse('${signInData.data.id}');
             prefs.setInt("user_id", userId);
             prefs.setString("user_name", '${signInData.data.name}');
@@ -542,7 +622,8 @@ class _VerificationPageState extends State<VerificationPage> {
             prefs.setString("refferal_code", '${signInData.data.referralCode}');
             prefs.setString("reward", '${signInData.data.rewards}');
             prefs.setString("accesstoken", '${signInData.token}');
-            Navigator.of(context).pushNamedAndRemoveUntil(PageRoutes.homePage, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                PageRoutes.homePage, (Route<dynamic> route) => false);
           }
           setState(() {
             showDialogBox = false;
@@ -558,8 +639,7 @@ class _VerificationPageState extends State<VerificationPage> {
           showDialogBox = false;
         });
       });
-    }
-    else {
+    } else {
       if (count == 0) {
         setState(() {
           count = 1;
@@ -567,9 +647,9 @@ class _VerificationPageState extends State<VerificationPage> {
         messaging.getToken().then((value) {
           setState(() {
             token = value;
-            hitLoginService(verificaitonPin,context);
+            hitLoginService(verificaitonPin, context);
           });
-        }).catchError((e){
+        }).catchError((e) {
           setState(() {
             showDialogBox = false;
           });
@@ -580,7 +660,6 @@ class _VerificationPageState extends State<VerificationPage> {
         });
       }
     }
-
   }
 
   void hitFirebaseSuccessStatus(String status, BuildContext context) async {
@@ -590,15 +669,17 @@ class _VerificationPageState extends State<VerificationPage> {
       await http.post(url, body: {
         'user_phone': '${user_phone}',
         'status': status,
-        'device_id':'$token',
-        'referral_code': (referralcode!=null && referralcode.length>0)?'${referralcode}':''
+        'device_id': '$token',
+        'referral_code': (referralcode != null && referralcode.length > 0)
+            ? '${referralcode}'
+            : ''
       }).then((response) {
         print('Response Body: - ${response.body}');
         if (response.statusCode == 200) {
           print('Response Body: - ${response.body}');
           var jsonData = jsonDecode(response.body);
           SignInModel signInData = SignInModel.fromJson(jsonData);
-          if(signInData.status == "1" || signInData.status==1){
+          if (signInData.status == "1" || signInData.status == 1) {
             var userId = int.parse('${signInData.data.id}');
             prefs.setInt("user_id", userId);
             prefs.setString("user_name", '${signInData.data.name}');
@@ -619,7 +700,8 @@ class _VerificationPageState extends State<VerificationPage> {
             prefs.setString("refferal_code", '${signInData.data.referralCode}');
             prefs.setString("reward", '${signInData.data.rewards}');
             prefs.setString("accesstoken", '${signInData.token}');
-            Navigator.of(context).pushNamedAndRemoveUntil(PageRoutes.homePage, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                PageRoutes.homePage, (Route<dynamic> route) => false);
           }
           setState(() {
             showDialogBox = false;
@@ -635,8 +717,7 @@ class _VerificationPageState extends State<VerificationPage> {
           showDialogBox = false;
         });
       });
-    }
-    else {
+    } else {
       if (count == 0) {
         setState(() {
           count = 1;
@@ -644,9 +725,9 @@ class _VerificationPageState extends State<VerificationPage> {
         messaging.getToken().then((value) {
           setState(() {
             token = value;
-            hitFirebaseSuccessStatus(status,context);
+            hitFirebaseSuccessStatus(status, context);
           });
-        }).catchError((e){
+        }).catchError((e) {
           setState(() {
             showDialogBox = false;
           });
@@ -657,7 +738,6 @@ class _VerificationPageState extends State<VerificationPage> {
         });
       }
     }
-
   }
 
   void hitFirebaseSuccessLoginStatus(
@@ -667,7 +747,7 @@ class _VerificationPageState extends State<VerificationPage> {
       var url = loginVerifyViaFirebaseUri;
       await http.post(url, body: {
         'user_phone': '${user_phone}',
-        'device_id':'$token',
+        'device_id': '$token',
         'status': status,
       }).then((response) {
         print('Response Body: - ${response.body}');
@@ -675,7 +755,7 @@ class _VerificationPageState extends State<VerificationPage> {
           print('Response Body: - ${response.body}');
           var jsonData = jsonDecode(response.body);
           SignInModel signInData = SignInModel.fromJson(jsonData);
-          if('${signInData.status}' == '1'){
+          if ('${signInData.status}' == '1') {
             var userId = int.parse('${signInData.data.id}');
             prefs.setInt("user_id", userId);
             prefs.setString("user_name", '${signInData.data.name}');
@@ -696,7 +776,8 @@ class _VerificationPageState extends State<VerificationPage> {
             prefs.setString("refferal_code", '${signInData.data.referralCode}');
             prefs.setString("reward", '${signInData.data.rewards}');
             prefs.setString("accesstoken", '${signInData.token}');
-            Navigator.of(context).pushNamedAndRemoveUntil(PageRoutes.homePage, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                PageRoutes.homePage, (Route<dynamic> route) => false);
           }
           setState(() {
             showDialogBox = false;
@@ -711,8 +792,7 @@ class _VerificationPageState extends State<VerificationPage> {
           showDialogBox = false;
         });
       });
-    }
-    else {
+    } else {
       if (count == 0) {
         setState(() {
           count = 1;
@@ -720,9 +800,9 @@ class _VerificationPageState extends State<VerificationPage> {
         messaging.getToken().then((value) {
           setState(() {
             token = value;
-            hitFirebaseSuccessLoginStatus(status,context);
+            hitFirebaseSuccessLoginStatus(status, context);
           });
-        }).catchError((e){
+        }).catchError((e) {
           setState(() {
             showDialogBox = false;
           });
@@ -733,6 +813,5 @@ class _VerificationPageState extends State<VerificationPage> {
         });
       }
     }
-
   }
 }

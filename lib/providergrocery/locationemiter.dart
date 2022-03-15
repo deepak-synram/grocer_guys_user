@@ -209,8 +209,10 @@ class LocationEmitter extends Cubit<LocEmitterModel>{
     // print('${prefs.getString('accesstoken')}');
 var http = Client();
     http.post(getNearestStoreUri, body: {
-      'lat': '${latlngemitter.lat}',
-      'lng': '${latlngemitter.lng}',
+      'lat': '22.995165',
+      'lng': '72.604097',
+      // 'lat': '${latlngemitter.lat}',
+      // 'lng': '${latlngemitter.lng}',
     }, headers: {
       'Authorization': 'Bearer ${prefs.getString('accesstoken')}'
     }).then((value) {
