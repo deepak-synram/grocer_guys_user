@@ -10,7 +10,7 @@ class TopCategoryModel{
   factory TopCategoryModel.fromJson(dynamic json) {
     var subc = json['data'] as List;
     List<TopCategoryDataModel> subchildRe = [];
-    if (subc.length > 0) {
+    if (subc.isNotEmpty) {
       subchildRe = subc.map((e) => TopCategoryDataModel.fromJson(e)).toList();
     }
     return TopCategoryModel(json['status'], json['message'], subchildRe);
@@ -39,7 +39,7 @@ class TopCategoryDataModel{
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['del_range'] = this.del_range;
     data['store_id'] = this.store_id;
     data['title'] = this.title;

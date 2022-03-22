@@ -12,18 +12,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_drawer/slide_drawer.dart';
 import 'package:toast/toast.dart';
 import 'package:user/Components/constantfile.dart';
 import 'package:user/Components/drawer.dart';
 import 'package:user/Locale/locales.dart';
+import 'package:user/Pages/Checkout/my_orders.dart';
 import 'package:user/Pages/locpage/locationpage.dart';
 import 'package:user/Pages/newaccountscreen.dart';
 import 'package:user/Pages/newcategoryscreen.dart';
-import 'package:user/Pages/newhomep1.dart';
+import 'package:user/Pages/HomePage/newhomep1.dart';
 import 'package:user/Pages/newsearchscreen.dart';
+import 'package:user/Pages/order_details.dart';
+import 'package:user/Pages/wallet/walletui.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
+import 'package:user/beanmodel/appinfo.dart';
 import 'package:user/beanmodel/appnotice/appnotice.dart';
 import 'package:user/beanmodel/appnotice/notiproductbean.dart';
 import 'package:user/beanmodel/banner/bannerdeatil.dart';
@@ -182,7 +187,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
         // p = 'Publish Event I';
         // setState(() {});
         if (message != null) {
-          if(message.data.containsKey('product_id')){
+          if (message.data.containsKey('product_id')) {
             NotiProductBean beanNoti = NotiProductBean.fromJson(message.data);
             print(beanNoti.productId);
             if (beanNoti.productId != null) {
@@ -199,7 +204,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
         RemoteNotification notification = message.notification;
         if (notification != null) {
           if (Platform.isAndroid) {
-            if(message.data.containsKey('product_id')){
+            if (message.data.containsKey('product_id')) {
               NotiProductBean beanNoti = NotiProductBean.fromJson(message.data);
               _showNotification(
                   flutterLocalNotificationsPlugin,
@@ -207,12 +212,9 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                   notification.body,
                   notification.hashCode,
                   beanNoti.toString());
-            }else{
-              _showNotification2(
-                  flutterLocalNotificationsPlugin,
-                  notification.title,
-                  notification.body,
-                  notification.hashCode);
+            } else {
+              _showNotification2(flutterLocalNotificationsPlugin,
+                  notification.title, notification.body, notification.hashCode);
             }
           }
         }
@@ -238,7 +240,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
       int id, String title, String body, String payload) async {
     // p = 'Publish Event L';
     // setState(() {});
-    if(payload!=null){
+    if (payload != null) {
       var message = jsonDecode(payload);
       if (message['productId'] != null) {
         Navigator.of(context).pushNamed(PageRoutes.notiProduct,
@@ -350,7 +352,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
             appbarTitle = bottonNavigator.apptitle;
             hintText = bottonNavigator.searchTitle;
             return Scaffold(
-              backgroundColor: Color(0xfff8f8f8),
+              backgroundColor: const Color(0xfff8f8f8),
               drawerScrimColor: kTransparentColor,
               drawer: (selectedInd == 0)
                   ? buildDrawer(context, userName, islogin, onHit: () {
@@ -375,6 +377,12 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                       Visibility(
                         visible: (selectedInd == 0),
                         child: AppBar(
+                          // leading: IconButton(
+                          //   icon: Icon(Icons.menu),
+                          //   // call toggle from SlideDrawer to alternate between open and close
+                          //   // when pressed menu button
+                          //   onPressed: () => SlideDrawer.of(context)?.toggle(),
+                          // ),
                           title: BlocBuilder<LocationEmitter, LocEmitterModel>(
                               builder: (context, locModel) {
                             return Column(
@@ -488,7 +496,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                   '${locale.searchOnGoGrocer}$appname');
                             },
                             behavior: HitTestBehavior.opaque,
-                            child: Icon(Icons.arrow_back_ios_sharp),
+                            child: const Icon(Icons.arrow_back_ios_sharp),
                           ),
                           actions: [
                             Visibility(
@@ -496,7 +504,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               //     storeFinderData.store_id != null),
                               visible: true,
                               child: IconButton(
-                                icon: ImageIcon(AssetImage(
+                                icon: const ImageIcon(AssetImage(
                                   'assets/scanner_logo.png',
                                 )),
                                 onPressed: () async {
@@ -519,8 +527,8 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                   color: kWhiteColor,
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                      color: Color(0xfff8f8f8), width: 1),
-                                  boxShadow: [
+                                      color: const Color(0xfff8f8f8), width: 1),
+                                  boxShadow: const [
                                     BoxShadow(
                                         color: Color(0xfff8f8f8),
                                         offset: Offset(-1, -1),
@@ -623,7 +631,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
                                     color: Color(0xfff8f8f8), width: 1),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                       color: Color(0xfff8f8f8),
                                       offset: Offset(-1, -1),
@@ -668,7 +676,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
                                       color: Color(0xfff8f8f8), width: 1),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                         color: Color(0xfff8f8f8),
                                         offset: Offset(-1, -1),
@@ -784,103 +792,150 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                   ),
                 ),
               ),
+              extendBody: true,
               body: BlocBuilder<CartListProvider, List<CartItemData>>(
                   builder: (context, cartList) {
-                    cartItemd = List.from(cartList);
-                    // print('indi d - $selectedInd ${bottonNavigator.navigation}');
-                    return IndexedStack(
-                      index: bottonNavigator.navigation,
-                      children: [
-                        BlocBuilder<LocationEmitter, LocEmitterModel>(
-                            builder: (context, locModel) {
-                              storeFinderData = locModel.storeFinderData;
-                              if (locModel != null) {
-                                if (locModel.isSearching) {
-                                  // return Container(
-                                  //   child: Align(
-                                  //     alignment: Alignment.center,
-                                  //     child: Padding(
-                                  //       padding: const EdgeInsets.all(8.0),
-                                  //       child: Wrap(
-                                  //         runAlignment: WrapAlignment.center,
-                                  //         alignment: WrapAlignment.center,
-                                  //         crossAxisAlignment: WrapCrossAlignment.center,
-                                  //         children: [
-                                  //           Padding(
-                                  //             padding: const EdgeInsets.all(8.0),
-                                  //             child: CircularProgressIndicator(strokeWidth: 2,color: kMainColor,),
-                                  //           ),
-                                  //           Text(
-                                  //             'searching your nearby store please wait..',
-                                  //             maxLines: 1,
-                                  //             overflow: TextOverflow.ellipsis,
-                                  //             textAlign: TextAlign.center,
-                                  //             style: TextStyle(
-                                  //                 letterSpacing: 1.5
-                                  //             ),),
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // );
-                                  return buildSingleScreenView(context);
-                                } else {
-                                  if (locModel.lat > 0.0 &&
-                                      locModel.lng > 0.0 &&
-                                      locModel.storeFinderData != null &&
-                                      locModel.storeFinderData.store_id != null) {
-                                    currentAddress = locModel.address;
-                                    return NewHomeView1(locModel, cartItemd);
-                                  } else {
-                                    return Container(
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            'No Product Found at your location or we are fetching your product by your nearest store.',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(letterSpacing: 1.5),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                }
-                              } else {
-                                return Container(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'null value',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(letterSpacing: 1.5),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }
-                            }),
-                        NewCategoryScreen(),
-                        NewSearchScreen(),
-                        AccountData(),
-                      ],
-                    );
-                  }),
-              bottomNavigationBar: Material(
-                elevation: 1,
-                child: Container(
-                  color: kWhiteColor,
-                  alignment: Alignment.center,
+                cartItemd = List.from(cartList);
+                // print('indi d - $selectedInd ${bottonNavigator.navigation}');
+                return IndexedStack(
+                  index: bottonNavigator.navigation,
+                  children: [
+                    BlocBuilder<LocationEmitter, LocEmitterModel>(
+                        builder: (context, locModel) {
+                      storeFinderData = locModel.storeFinderData;
+                      if (locModel != null) {
+                        if (locModel.isSearching) {
+                          return buildSingleScreenView(context);
+                        } else {
+                          if (locModel.lat > 0.0 &&
+                              locModel.lng > 0.0 &&
+                              locModel.storeFinderData != null &&
+                              locModel.storeFinderData.store_id != null) {
+                            currentAddress = locModel.address;
+                            return NewHomeView1(locModel, cartItemd);
+                          } else {
+                            return const Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'No Product Found at your location or we are fetching your product by your nearest store.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(letterSpacing: 1.5),
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      } else {
+                        return const Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'null value',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(letterSpacing: 1.5),
+                            ),
+                          ),
+                        );
+                      }
+                    }),
+                    // NewCategoryScreen(),
+                    // NewSearchScreen(),
+                    MyOrders(
+                      fromHomePage: true,
+                    ),
+                    Wallet(),
+                    AccountData(),
+                  ],
+                );
+              }),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: BlocBuilder<ProfileProvider, AppInfoModel>(
+                  builder: (context, signModel) {
+                if (signModel != null) {
+                  return FloatingActionButton(
+                    onPressed: () {},
+                    backgroundColor: kWhiteColor,
+                    // backgroundColor: const Color.fromRGBO(246, 196, 88, 1.0),
+                    child: Image.asset('assets/ic_floating.png'),
+                  );
+                  // return SpeedDial(
+                  //     childMargin: EdgeInsets.only(bottom: 30, right: 10),
+                  //     animatedIcon: AnimatedIcons.menu_close,
+                  //     // animatedIconColor:Colors.white,
+                  //     animatedIconTheme: IconThemeData(size: 22.0),
+                  //     closeManually: false,
+                  //     curve: Curves.bounceIn,
+                  //     overlayColor: Colors.white,
+                  //     overlayOpacity: 0.5,
+                  //     onOpen: () => print('OPENING DIAL'),
+                  //     onClose: () => print('DIAL CLOSED'),
+                  //     tooltip: 'Speed Dial',
+                  //     heroTag: 'speed-dial-hero-tag',
+                  //     backgroundColor: kMainColor,
+                  //     foregroundColor: Colors.white,
+                  //     elevation: 8.0,
+                  //     shape: CircleBorder(),
+                  //     children: [
+                  //       SpeedDialChild(
+                  //           child: Icon(Icons.share, color: Colors.white),
+                  //           backgroundColor: kMainColor,
+                  //           labelStyle: TextStyle(fontSize: 18.0),
+                  //           onTap: () {
+                  //             share(locale.shareheading, locale.sharetext, signModel);
+                  //           }),
+                  //       SpeedDialChild(
+                  //         child: Icon(Icons.rate_review, color: Colors.white),
+                  //         backgroundColor: kMainColor,
+                  //         onTap: () {
+                  //           launchUrl(signModel);
+                  //         },
+                  //       ),
+                  //       SpeedDialChild(
+                  //         child: Icon(Icons.call, color: Colors.white),
+                  //         backgroundColor: kMainColor,
+                  //         onTap: () {
+                  //           callNumberStore(
+                  //               widget.locModel.storeFinderData.store_number);
+                  //         },
+                  //       ),
+                  //       SpeedDialChild(
+                  //         child: ImageIcon(
+                  //             AssetImage(
+                  //               'assets/whatsapp.png',
+                  //             ),
+                  //             size: 20,
+                  //             color: kWhiteColor),
+                  //         backgroundColor: kMainColor,
+                  //         onTap: () {
+                  //           openWhatsApp(widget.locModel.storeFinderData.store_number,
+                  //               locale.nowhatsappinstalled, context);
+                  //         },
+                  //       ),
+                  //     ]);
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }),
+              bottomNavigationBar: BottomAppBar(
+                notchMargin: 12.0,
+                color: kMainColor,
+                clipBehavior: Clip.antiAlias,
+                shape: const CircularNotchedRectangle(),
+                child: SizedBox(
                   height: 52,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
                           onTap: () {
                             navBottomProvider.hitBottomNavigation(
                                 0,
@@ -896,72 +951,78 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.home,
+                              // Icon(
+                              //   Icons.home,
+                              //   color: (selectedInd == 0)
+                              //       ? kMainColor
+                              //       : kMainTextColor,
+                              // ),
+                              Image.asset(
+                                'assets/ic_home.png',
+                                width: 20,
+                                height: 20,
                                 color: (selectedInd == 0)
-                                    ? kMainColor
-                                    : kMainTextColor,
+                                    ? kWhiteColor
+                                    : kNavigationButtonColor,
                               ),
                               Text(
                                 "Home",
                                 style: TextStyle(
                                     color: (selectedInd == 0)
-                                        ? kMainColor
-                                        : kMainTextColor),
+                                        ? kWhiteColor
+                                        : kNavigationButtonColor),
                               )
                             ],
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            if (selectedInd != 1) {
-                              navBottomProvider.hitBottomNavigation(
-                                  1,
-                                  'Category',
-                                  'what are you looking for (e.g. mango, onion)');
-                              if (storeFinderData != null) {
-                                if (!cateP.state.isSearching) {
-                                  cateP.hitBannerDetails(
-                                      '${storeFinderData.store_id}',
-                                      storeFinderData);
-                                } else {
-                                  Toast.show('currently in progress', context,
-                                      duration: Toast.LENGTH_SHORT,
-                                      gravity: Toast.CENTER);
-                                }
-                              }
-                            }
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.category,
-                                color: (selectedInd == 1)
-                                    ? kMainColor
-                                    : kMainTextColor,
-                              ),
-                              Text(
-                                "Categories",
-                                style: TextStyle(
-                                    color: (selectedInd == 1)
-                                        ? kMainColor
-                                        : kMainTextColor),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
+                        // Expanded(
+                        //   child: GestureDetector(
+                        //     onTap: () {
+                        //       if (selectedInd != 1) {
+                        //         navBottomProvider.hitBottomNavigation(
+                        //             1,
+                        //             'Category',
+                        //             'what are you looking for (e.g. mango, onion)');
+                        //         if (storeFinderData != null) {
+                        //           if (!cateP.state.isSearching) {
+                        //             cateP.hitBannerDetails(
+                        //                 '${storeFinderData.store_id}',
+                        //                 storeFinderData);
+                        //           } else {
+                        //             Toast.show('currently in progress', context,
+                        //                 duration: Toast.LENGTH_SHORT,
+                        //                 gravity: Toast.CENTER);
+                        //           }
+                        //         }
+                        //       }
+                        //     },
+                        //     behavior: HitTestBehavior.opaque,
+                        //     child: Column(
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       children: [
+                        //         Icon(
+                        //           Icons.category,
+                        //           color: (selectedInd == 1)
+                        //               ? kMainColor
+                        //               : kMainTextColor,
+                        //         ),
+                        //         Text(
+                        //           "Categories",
+                        //           style: TextStyle(
+                        //               color: (selectedInd == 1)
+                        //                   ? kMainColor
+                        //                   : kMainTextColor),
+                        //         )
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        GestureDetector(
                           onTap: () {
                             // searchP.emitSearchNull();
                             navBottomProvider.hitBottomNavigation(
-                                2,
-                                appbarTitle,
+                                1,
+                                "My Orders",
                                 '${locale.searchOnGoGrocer}$appname');
                             // hintText = ;
                             // setState(() {
@@ -972,35 +1033,45 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.search,
-                                color: (selectedInd == 2)
-                                    ? kMainColor
-                                    : kMainTextColor,
+                              // Icon(
+                              //   Icons.search,
+                              //   color: (selectedInd == 2)
+                              //       ? kMainColor
+                              //       : kMainTextColor,
+                              // ),
+                              Image.asset(
+                                'assets/ic_order.png',
+                                width: 20,
+                                height: 20,
+                                color: (selectedInd == 1)
+                                    ? kWhiteColor
+                                    : kNavigationButtonColor,
                               ),
+
                               Text(
-                                "Search",
+                                "Order",
                                 style: TextStyle(
-                                    color: (selectedInd == 2)
-                                        ? kMainColor
-                                        : kMainTextColor),
+                                    color: (selectedInd == 1)
+                                        ? kWhiteColor
+                                        : kNavigationButtonColor),
                               )
                             ],
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
+                        GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(PageRoutes.yourbasket)
-                                .then((value) {
-                              navBottomProvider.hitBottomNavigation(
-                                  0,
-                                  appbarTitle,
-                                  '${locale.searchOnGoGrocer}$appname');
-                              // hintText = ;
-                            });
+                            // Navigator.of(context)
+                            //     .pushNamed(PageRoutes.yourbasket)
+                            //     .then((value) {
+                            //   navBottomProvider.hitBottomNavigation(
+                            //       0,
+                            //       appbarTitle,
+                            //       '${locale.searchOnGoGrocer}$appname');
+                            //   // hintText = ;
+                            // });
+                            navBottomProvider.hitBottomNavigation(
+                                2, 'My Wallets', hintText);
+
                             // setState(() {
                             //   // selectedInd = 0;
                             // });
@@ -1011,61 +1082,84 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                             children: [
                               BlocBuilder<CartCountProvider, int>(
                                   builder: (context, cartCount) {
-                                return Badge(
-                                  padding: EdgeInsets.all(5),
-                                  animationDuration:
-                                      Duration(milliseconds: 300),
-                                  animationType: BadgeAnimationType.slide,
-                                  badgeContent: Text(
-                                    cartCount.toString(),
-                                    style: TextStyle(
-                                        color: kWhiteColor, fontSize: 10),
-                                  ),
-                                  child: Icon(
-                                    Icons.shopping_basket,
-                                    color: kMainTextColor,
-                                  ),
+                                // return Badge(
+                                //   padding: const EdgeInsets.all(5),
+                                //   animationDuration:
+                                //       const Duration(milliseconds: 300),
+                                //   animationType: BadgeAnimationType.slide,
+                                //   badgeContent: Text(
+                                //     cartCount.toString(),
+                                //     style: TextStyle(
+                                //         color: kWhiteColor, fontSize: 10),
+                                //   ),
+                                //   child:
+                                return Image.asset(
+                                  'assets/ic_wallet.png',
+                                  width: 20,
+                                  height: 20,
+                                  color: (selectedInd == 2)
+                                      ? kWhiteColor
+                                      : kNavigationButtonColor,
+
+                                  // Icon(
+                                  //   Icons.shopping_basket,
+                                  //   color: kMainTextColor,
+                                  // ),
                                 );
                               }),
                               Text(
-                                "Basket",
-                                style: TextStyle(color: kMainTextColor),
+                                "Wallet",
+                                style: TextStyle(
+                                  color: (selectedInd == 2)
+                                      ? kWhiteColor
+                                      : kNavigationButtonColor,
+                                ),
                               )
                             ],
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
+                        GestureDetector(
                           onTap: () {
-                            if (selectedInd != 3) {
-                              navBottomProvider.hitBottomNavigation(
-                                  3, 'Account', hintText);
-                              cartCountP.hitCounter();
-                            }
+                            // if (selectedInd != 0 &&
+                            //     selectedInd != 1 &&
+                            //     selectedInd != 2 &&
+                            //     selectedInd != 3) {
+                            //   cartCountP.hitCounter();
+                            // }
+                            navBottomProvider.hitBottomNavigation(
+                                3, 'Account', hintText);
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.account_box_outlined,
+                              // Icon(
+                              //   Icons.account_box_outlined,
+                              //   color: (selectedInd == 3)
+                              //       ? kMainColor
+                              //       : kMainTextColor,
+                              // ),
+                              Image.asset(
+                                'assets/ic_account.png',
+                                width: 20,
+                                height: 20,
                                 color: (selectedInd == 3)
-                                    ? kMainColor
-                                    : kMainTextColor,
+                                    ? kWhiteColor
+                                    : kNavigationButtonColor,
                               ),
+
                               Text(
                                 "Account",
                                 style: TextStyle(
                                     color: (selectedInd == 3)
-                                        ? kMainColor
-                                        : kMainTextColor),
+                                        ? kWhiteColor
+                                        : kNavigationButtonColor),
                               )
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -1132,21 +1226,21 @@ Future<void> _showNotification2(
   vibrationPattern[2] = 5000;
   vibrationPattern[3] = 2000;
   final AndroidNotificationDetails androidPlatformChannelSpecifics =
-  AndroidNotificationDetails('1234', 'Notify', 'Notify On Shopping',
-      vibrationPattern: vibrationPattern,
-      importance: Importance.max,
-      priority: Priority.high,
-      enableLights: true,
-      enableVibration: true,
-      icon: 'icon',
-      playSound: true,
-      ticker: 'message');
+      AndroidNotificationDetails('1234', 'Notify', 'Notify On Shopping',
+          vibrationPattern: vibrationPattern,
+          importance: Importance.max,
+          priority: Priority.high,
+          enableLights: true,
+          enableVibration: true,
+          icon: 'icon',
+          playSound: true,
+          ticker: 'message');
   const IOSNotificationDetails iOSPlatformChannelSpecifics =
-  IOSNotificationDetails(presentSound: true);
+      IOSNotificationDetails(presentSound: true);
   final NotificationDetails platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
     iOS: iOSPlatformChannelSpecifics,
   );
-  await flutterLocalNotificationsPlugin
-      .show(idCode, '$title', '$body', platformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.show(
+      idCode, '$title', '$body', platformChannelSpecifics);
 }

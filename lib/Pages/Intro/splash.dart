@@ -6,7 +6,7 @@ import 'package:user/Auth/Login/sign_up.dart';
 import 'package:user/Auth/Login/verification.dart';
 import 'package:user/Pages/Intro/onboarding.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:user/Pages/newhomeview.dart';
+import 'package:user/Pages/HomePage/newhomeview.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _renderNextScreen() {
     if (_isChecked) {
-      ((_isSkipped != null && _isSkipped) ||
+      return ((_isSkipped != null && _isSkipped) ||
               (_isLoggedIn != null && _isLoggedIn))
           ? NewHomeView()
           : SignIn();

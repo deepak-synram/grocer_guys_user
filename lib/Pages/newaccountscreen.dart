@@ -71,7 +71,7 @@ class AccountDataState extends State<AccountData> {
   }
 
   void hitAsyncInit() async {
-    try{
+    try {
       FirebaseApp app;
       List<FirebaseApp> firebase = Firebase.apps;
       for (FirebaseApp appd in firebase) {
@@ -81,19 +81,20 @@ class AccountDataState extends State<AccountData> {
         }
       }
       if (app == null) {
-        if(Platform.isIOS){
+        if (Platform.isIOS) {
           await Firebase.initializeApp(
             name: 'TheGroceryGuys',
-            options: const FirebaseOptions(apiKey: 'AIzaSyCN5YHSeA-6rB4B4gApnjzAqffibeFD8WY',
+            options: const FirebaseOptions(
+                apiKey: 'AIzaSyCN5YHSeA-6rB4B4gApnjzAqffibeFD8WY',
                 appId: '1:857676187722:ios:7735d516dcd902efb87eb3',
                 messagingSenderId: '857676187722',
                 projectId: 'thegroceryguys-68e6b'),
           );
-        }else{
+        } else {
           await Firebase.initializeApp();
         }
       }
-    }finally{
+    } finally {
       messaging = FirebaseMessaging.instance;
       messaging.getToken().then((value) {
         token = value;
@@ -141,7 +142,7 @@ class AccountDataState extends State<AccountData> {
       } else {
         getSharedValue();
       }
-      if(signModel!=null){
+      if (signModel != null) {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 10),
           color: kWhiteColor,
@@ -149,1206 +150,1223 @@ class AccountDataState extends State<AccountData> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Divider(
-                      thickness: 10,
-                      height: 10,
-                      color: Color(0xfff8f8f8),
-                    ),
-                    isLogin
-                        ? Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text('$userName',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                color: kMainColor,
-                                                fontSize: 20)),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text('$useremail',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w300,
-                                                color: kMainColor,
-                                                fontSize: 18)),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text('$userMobileNumber',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                color: Colors.black54,
-                                                fontSize: 17)),
-                                      ],
-                                    )),
-                                Image.asset(
-                                  'assets/icon.png',
-                                  height: 80,
-                                  width: 80,
-                                )
-                              ],
+                Divider(
+                  thickness: 10,
+                  height: 10,
+                  color: Color(0xfff8f8f8),
+                ),
+                isLogin
+                    ? Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(
+                              height: 5,
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Divider(
-                            thickness: 1.5,
-                            height: 1.5,
-                            color: kButtonBorderColor.withOpacity(0.5),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, right: 20, top: 10, bottom: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(PageRoutes.myaccount);
-                              },
-                              behavior: HitTestBehavior.opaque,
-                              child: Text(locale.ac1,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: kMainColor,
-                                      fontSize: 15)),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(userName,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: kMainColor,
+                                              fontSize: 20)),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(useremail,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w300,
+                                              color: kMainColor,
+                                              fontSize: 18)),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(userMobileNumber,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.black54,
+                                              fontSize: 17)),
+                                    ],
+                                  )),
+                                  Image.asset(
+                                    'assets/icon.png',
+                                    height: 80,
+                                    width: 80,
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                        : Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Center(
-                            child: Image.asset(
-                              'assets/icon.png',
-                              height: 150,
-                              width: 200,
+                            SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(appname,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: kMainColor,
-                                  fontSize: 25)),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(locale.ac2,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: kMainColor,
-                                  fontSize: 18)),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(locale.ac3,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black54,
-                                  fontSize: 17)),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
-                            child: MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0))),
-                              onPressed: () {
-                                showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    builder: (context) {
-                                      return Container(
-                                          height: 370.0,
-                                          // padding: EdgeInsets.symmetric(horizontal: 20),
-                                          decoration: BoxDecoration(
-                                            color: kWhiteColor,
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20.0),
-                                                topRight:
-                                                Radius.circular(20.0)),
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                            children: <Widget>[
-                                              Center(
-                                                child: Container(
-                                                  height: 3,
-                                                  width: 120,
-                                                  margin: const EdgeInsets.only(
-                                                      bottom: 10, top: 5),
-                                                  color: kButtonBorderColor,
+                            Divider(
+                              thickness: 1.5,
+                              height: 1.5,
+                              color: kButtonBorderColor.withOpacity(0.5),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 20, top: 10, bottom: 10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed(PageRoutes.myaccount);
+                                },
+                                behavior: HitTestBehavior.opaque,
+                                child: Text(locale.ac1,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        color: kMainColor,
+                                        fontSize: 15)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                'assets/icon.png',
+                                height: 150,
+                                width: 200,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(appname,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: kMainColor,
+                                    fontSize: 25)),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(locale.ac2,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: kMainColor,
+                                    fontSize: 18)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(locale.ac3,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black54,
+                                    fontSize: 17)),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 15),
+                              child: MaterialButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30.0))),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (context) {
+                                        return Container(
+                                            height: 370.0,
+                                            // padding: EdgeInsets.symmetric(horizontal: 20),
+                                            decoration: BoxDecoration(
+                                              color: kWhiteColor,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft:
+                                                      Radius.circular(20.0),
+                                                  topRight:
+                                                      Radius.circular(20.0)),
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: <Widget>[
+                                                Center(
+                                                  child: Container(
+                                                    height: 3,
+                                                    width: 120,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            bottom: 10, top: 5),
+                                                    color: kButtonBorderColor,
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10,
-                                                    left: 20,
-                                                    right: 20),
-                                                child: Text(locale.ac4,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.w700,
-                                                        color: kMainTextColor,
-                                                        fontSize: 20)),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5,
-                                                    left: 20,
-                                                    right: 20),
-                                                child: Text(locale.ac5,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                        color: kMainTextColor,
-                                                        fontSize: 15)),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15,
-                                                    bottom: 5,
-                                                    right: 20,
-                                                    left: 20),
-                                                child: Text(locale.mobilenuml,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                        color: kMainTextColor,
-                                                        fontSize: 15)),
-                                              ),
-                                              Container(
-                                                height: 52,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        6),
-                                                    border: Border.all(
-                                                        color:
-                                                        kButtonBorderColor,
-                                                        width: 1)),
-                                                margin:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 20),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      height: 52,
-                                                      color: kButtonBorderColor
-                                                          .withOpacity(0.5),
-                                                      alignment:
-                                                      Alignment.center,
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 15),
-                                                      margin:
+                                                Padding(
+                                                  padding:
                                                       const EdgeInsets.only(
-                                                          right: 5),
-                                                      child: Text(
-                                                          appInfoModeld != null
-                                                              ? '+${appInfoModeld.countryCode}'
-                                                              : '--',
-                                                          textAlign:
-                                                          TextAlign.center,
-                                                          style: TextStyle(
-                                                              color:
-                                                              kMainTextColor,
-                                                              fontSize: 15)),
-                                                    ),
-                                                    Expanded(
-                                                      child: TextFormField(
-                                                        controller:
-                                                        phoneNumberController,
-                                                        readOnly: showProgress,
-                                                        autofocus: false,
-                                                        maxLength: numberLimit,
-                                                        textAlign:
-                                                        TextAlign.start,
-                                                        keyboardType:
-                                                        TextInputType
-                                                            .number,
-                                                        decoration:
-                                                        InputDecoration(
-                                                            border:
-                                                            OutlineInputBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  0),
-                                                              borderSide:
-                                                              BorderSide(
-                                                                  color:
-                                                                  kTransparentColor),
-                                                            ),
-                                                            counterText: '',
-                                                            enabledBorder:
-                                                            OutlineInputBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  0),
-                                                              borderSide:
-                                                              BorderSide(
-                                                                  color:
-                                                                  kTransparentColor),
-                                                            ),
-                                                            focusedBorder:
-                                                            OutlineInputBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  0),
-                                                              borderSide:
-                                                              BorderSide(
-                                                                  color:
-                                                                  kTransparentColor),
-                                                            ),
-                                                            errorBorder:
-                                                            OutlineInputBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  0),
-                                                              borderSide:
-                                                              BorderSide(
-                                                                  color:
-                                                                  kTransparentColor),
-                                                            ),
-                                                            disabledBorder:
-                                                            OutlineInputBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  0),
-                                                              borderSide:
-                                                              BorderSide(
-                                                                  color:
-                                                                  kTransparentColor),
-                                                            ),
-                                                            hintText:
-                                                            "Enter your mobile number",
-                                                            labelStyle:
-                                                            TextStyle(
-                                                                color:
-                                                                kLightTextColor,
-                                                                fontSize:
-                                                                15),
-                                                            suffixIcon: (isNumberOk)
-                                                                ? Icon(
-                                                                Icons
-                                                                    .done,
-                                                                size:
-                                                                25.0,
-                                                                color:
-                                                                kMainColor)
-                                                                : SizedBox
-                                                                .shrink(),
-                                                            // prefixText: '+91',
-                                                            // prefixIcon: Text('+91',style: TextStyle(
-                                                            // color: kMainColor,
-                                                            // fontSize: 14
-                                                            // )
-                                                            // ),
-                                                            contentPadding:
-                                                            const EdgeInsets
-                                                                .all(0)),
-                                                        onChanged: (value) {
-                                                          if (phoneNumberController
-                                                              .text
-                                                              .length ==
-                                                              numberLimit) {
-                                                            setState(() {
-                                                              isNumberOk = true;
-                                                            });
-                                                          } else {
-                                                            setState(() {
-                                                              isNumberOk =
-                                                              false;
-                                                            });
-                                                          }
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 20,
-                                                    vertical: 15),
-                                                child: (showProgress)
-                                                    ? Container(
-                                                  alignment:
-                                                  Alignment.center,
-                                                  height: 50,
-                                                  width: 50,
-                                                  child:
-                                                  CircularProgressIndicator(
-                                                    strokeWidth: 1,
-                                                    color: kMainColor,
-                                                  ),
-                                                )
-                                                    : MaterialButton(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              30.0))),
-                                                  onPressed: () {
-                                                    if (!showProgress) {
-                                                      setState(() {
-                                                        showProgress =
-                                                        true;
-                                                      });
-                                                      if (phoneNumberController
-                                                          .text !=
-                                                          null &&
-                                                          phoneNumberController
-                                                              .text
-                                                              .length ==
-                                                              10) {
-                                                        hitLoginUrl(
-                                                            '${phoneNumberController.text}',
-                                                            '',
-                                                            'otp',
-                                                            context);
-                                                      } else {
-                                                        Toast.show(
-                                                            locale
-                                                                .incorectMobileNumber,
-                                                            context,
-                                                            gravity: Toast
-                                                                .CENTER,
-                                                            duration: Toast
-                                                                .LENGTH_SHORT);
-                                                        setState(() {
-                                                          showProgress =
-                                                          false;
-                                                        });
-                                                      }
-                                                    }
-                                                    // else{
-                                                    //   setState(() {
-                                                    //     showProgress = false;
-                                                    //   });
-                                                    // }
-                                                  },
-                                                  color: kMainColor,
-                                                  child: Padding(
-                                                    padding:
-                                                    const EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 10),
-                                                    child: Text(
-                                                      locale.Continuel1,
+                                                          top: 10,
+                                                          left: 20,
+                                                          right: 20),
+                                                  child: Text(locale.ac4,
+                                                      textAlign:
+                                                          TextAlign.start,
                                                       style: TextStyle(
-                                                          color:
-                                                          kWhiteColor,
                                                           fontWeight:
-                                                          FontWeight
-                                                              .w600,
-                                                          letterSpacing:
-                                                          0.6),
-                                                    ),
-                                                  ),
+                                                              FontWeight.w700,
+                                                          color: kMainTextColor,
+                                                          fontSize: 20)),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                child: Container(
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 5,
+                                                          left: 20,
+                                                          right: 20),
+                                                  child: Text(locale.ac5,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: TextStyle(
+                                                          color: kMainTextColor,
+                                                          fontSize: 15)),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 15,
+                                                          bottom: 5,
+                                                          right: 20,
+                                                          left: 20),
+                                                  child: Text(locale.mobilenuml,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: TextStyle(
+                                                          color: kMainTextColor,
+                                                          fontSize: 15)),
+                                                ),
+                                                Container(
+                                                  height: 52,
                                                   decoration: BoxDecoration(
-                                                    color: kButtonBorderColor
-                                                        .withOpacity(0.5),
-                                                    borderRadius: BorderRadius
-                                                        .only(
-                                                        topLeft:
-                                                        Radius.circular(
-                                                            30.0),
-                                                        topRight:
-                                                        Radius.circular(
-                                                            30.0)),
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .stretch,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                      border: Border.all(
+                                                          color:
+                                                              kButtonBorderColor,
+                                                          width: 1)),
+                                                  margin: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 20),
+                                                  child: Row(
                                                     children: [
-                                                      Align(
+                                                      Container(
+                                                        height: 52,
+                                                        color:
+                                                            kButtonBorderColor
+                                                                .withOpacity(
+                                                                    0.5),
                                                         alignment:
-                                                        Alignment.center,
+                                                            Alignment.center,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 15),
+                                                        margin: const EdgeInsets
+                                                            .only(right: 5),
                                                         child: Text(
-                                                            locale.Continuel2,
+                                                            appInfoModeld !=
+                                                                    null
+                                                                ? '+${appInfoModeld.countryCode}'
+                                                                : '--',
+                                                            textAlign: TextAlign
+                                                                .center,
                                                             style: TextStyle(
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .w500,
                                                                 color:
-                                                                kLightTextColor,
+                                                                    kMainTextColor,
                                                                 fontSize: 15)),
                                                       ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                        children: [
-                                                          MaterialButton(
-                                                            onPressed: () {
-                                                              if (!showProgress) {
-                                                                setState(() {
-                                                                  showProgress =
-                                                                  true;
-                                                                });
-                                                                _handleSignIn(
-                                                                    context);
-                                                              }
-                                                            },
-                                                            child: Row(
-                                                              children: [
-                                                                Image.asset(
-                                                                  'assets/google_logo.png',
-                                                                  height: 20,
-                                                                  width: 20,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Text(
-                                                                    locale
-                                                                        .googlel,
-                                                                    style: TextStyle(
-                                                                        fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                        color: Colors
-                                                                            .black54,
-                                                                        fontSize:
-                                                                        15)),
-                                                              ],
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                            ),
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    30)),
-                                                            splashColor:
-                                                            kWhiteColor,
-                                                            color: kWhiteColor,
-                                                            highlightColor:
-                                                            kMainColor,
-                                                            minWidth: 150,
-                                                            height: 40,
-                                                          ),
-                                                          MaterialButton(
-                                                            onPressed: () {
-                                                              if (!showProgress) {
-                                                                setState(() {
-                                                                  showProgress =
-                                                                  true;
-                                                                });
-                                                                _login(context);
-                                                              }
-                                                            },
-                                                            child: Row(
-                                                              children: [
-                                                                Image.asset(
-                                                                  'assets/fb.png',
-                                                                  height: 20,
-                                                                  width: 20,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Text(
-                                                                    locale
-                                                                        .facebookl,
-                                                                    style: TextStyle(
-                                                                        fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                        color: Colors
-                                                                            .black54,
-                                                                        fontSize:
-                                                                        15)),
-                                                              ],
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                            ),
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    30)),
-                                                            splashColor:
-                                                            kWhiteColor,
-                                                            color: kWhiteColor,
-                                                            highlightColor:
-                                                            kMainColor,
-                                                            minWidth: 150,
-                                                            height: 40,
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                        Alignment.center,
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            if (!showProgress) {
-                                                              Navigator.pushNamed(
-                                                                  context,
-                                                                  PageRoutes
-                                                                      .signUp,
-                                                                  arguments: {
-                                                                    'user_phone':
-                                                                    '${phoneNumberController.text}',
-                                                                    'numberlimit':
-                                                                    numberLimit,
-                                                                    'appinfo':
-                                                                    appInfoModeld,
-                                                                  });
+                                                      Expanded(
+                                                        child: TextFormField(
+                                                          controller:
+                                                              phoneNumberController,
+                                                          readOnly:
+                                                              showProgress,
+                                                          autofocus: false,
+                                                          maxLength:
+                                                              numberLimit,
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          decoration:
+                                                              InputDecoration(
+                                                                  border:
+                                                                      OutlineInputBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(0),
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                            color:
+                                                                                kTransparentColor),
+                                                                  ),
+                                                                  counterText:
+                                                                      '',
+                                                                  enabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(0),
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                            color:
+                                                                                kTransparentColor),
+                                                                  ),
+                                                                  focusedBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(0),
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                            color:
+                                                                                kTransparentColor),
+                                                                  ),
+                                                                  errorBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(0),
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                            color:
+                                                                                kTransparentColor),
+                                                                  ),
+                                                                  disabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(0),
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                            color:
+                                                                                kTransparentColor),
+                                                                  ),
+                                                                  hintText:
+                                                                      "Enter your mobile number",
+                                                                  labelStyle: TextStyle(
+                                                                      color:
+                                                                          kLightTextColor,
+                                                                      fontSize:
+                                                                          15),
+                                                                  suffixIcon: (isNumberOk)
+                                                                      ? Icon(
+                                                                          Icons
+                                                                              .done,
+                                                                          size:
+                                                                              25.0,
+                                                                          color:
+                                                                              kMainColor)
+                                                                      : SizedBox
+                                                                          .shrink(),
+                                                                  // prefixText: '+91',
+                                                                  // prefixIcon: Text('+91',style: TextStyle(
+                                                                  // color: kMainColor,
+                                                                  // fontSize: 14
+                                                                  // )
+                                                                  // ),
+                                                                  contentPadding:
+                                                                      const EdgeInsets
+                                                                          .all(0)),
+                                                          onChanged: (value) {
+                                                            if (phoneNumberController
+                                                                    .text
+                                                                    .length ==
+                                                                numberLimit) {
+                                                              setState(() {
+                                                                isNumberOk =
+                                                                    true;
+                                                              });
+                                                            } else {
+                                                              setState(() {
+                                                                isNumberOk =
+                                                                    false;
+                                                              });
                                                             }
                                                           },
-                                                          behavior:
-                                                          HitTestBehavior
-                                                              .opaque,
-                                                          child: RichText(
-                                                            text: TextSpan(
-                                                              text:
-                                                              locale.login1,
-                                                              children: [
-                                                                TextSpan(
-                                                                    text:
-                                                                    ' ${locale.login2}',
-                                                                    style: TextStyle(
-                                                                        fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                        color:
-                                                                        kMainColor,
-                                                                        fontSize:
-                                                                        15))
-                                                              ],
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                                  color:
-                                                                  kMainTextColor,
-                                                                  fontSize: 15),
-                                                            ),
-                                                          ),
                                                         ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ));
-                                    });
-                              },
-                              color: kMainColor,
-                              child: Padding(
-                                padding:
-                                const EdgeInsets.symmetric(vertical: 10),
-                                child: Text(
-                                  locale.signin,
-                                  style: TextStyle(
-                                      color: kWhiteColor,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.6),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 15),
+                                                  child: (showProgress)
+                                                      ? Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          height: 50,
+                                                          width: 50,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            strokeWidth: 1,
+                                                            color: kMainColor,
+                                                          ),
+                                                        )
+                                                      : MaterialButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          30.0))),
+                                                          onPressed: () {
+                                                            if (!showProgress) {
+                                                              setState(() {
+                                                                showProgress =
+                                                                    true;
+                                                              });
+                                                              if (phoneNumberController
+                                                                          .text !=
+                                                                      null &&
+                                                                  phoneNumberController
+                                                                          .text
+                                                                          .length ==
+                                                                      10) {
+                                                                hitLoginUrl(
+                                                                    phoneNumberController
+                                                                        .text,
+                                                                    '',
+                                                                    'otp',
+                                                                    context);
+                                                              } else {
+                                                                Toast.show(
+                                                                    locale
+                                                                        .incorectMobileNumber,
+                                                                    context,
+                                                                    gravity: Toast
+                                                                        .CENTER,
+                                                                    duration: Toast
+                                                                        .LENGTH_SHORT);
+                                                                setState(() {
+                                                                  showProgress =
+                                                                      false;
+                                                                });
+                                                              }
+                                                            }
+                                                            // else{
+                                                            //   setState(() {
+                                                            //     showProgress = false;
+                                                            //   });
+                                                            // }
+                                                          },
+                                                          color: kMainColor,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        10),
+                                                            child: Text(
+                                                              locale.Continuel1,
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      kWhiteColor,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  letterSpacing:
+                                                                      0.6),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: kButtonBorderColor
+                                                          .withOpacity(0.5),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(
+                                                                      30.0),
+                                                              topRight: Radius
+                                                                  .circular(
+                                                                      30.0)),
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .stretch,
+                                                      children: [
+                                                        Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                              locale.Continuel2,
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color:
+                                                                      kLightTextColor,
+                                                                  fontSize:
+                                                                      15)),
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            MaterialButton(
+                                                              onPressed: () {
+                                                                if (!showProgress) {
+                                                                  setState(() {
+                                                                    showProgress =
+                                                                        true;
+                                                                  });
+                                                                  _handleSignIn(
+                                                                      context);
+                                                                }
+                                                              },
+                                                              child: Row(
+                                                                children: [
+                                                                  Image.asset(
+                                                                    'assets/google_logo.png',
+                                                                    height: 20,
+                                                                    width: 20,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  Text(
+                                                                      locale
+                                                                          .googlel,
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color: Colors
+                                                                              .black54,
+                                                                          fontSize:
+                                                                              15)),
+                                                                ],
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                              ),
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              30)),
+                                                              splashColor:
+                                                                  kWhiteColor,
+                                                              color:
+                                                                  kWhiteColor,
+                                                              highlightColor:
+                                                                  kMainColor,
+                                                              minWidth: 150,
+                                                              height: 40,
+                                                            ),
+                                                            MaterialButton(
+                                                              onPressed: () {
+                                                                if (!showProgress) {
+                                                                  setState(() {
+                                                                    showProgress =
+                                                                        true;
+                                                                  });
+                                                                  _login(
+                                                                      context);
+                                                                }
+                                                              },
+                                                              child: Row(
+                                                                children: [
+                                                                  Image.asset(
+                                                                    'assets/fb.png',
+                                                                    height: 20,
+                                                                    width: 20,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  Text(
+                                                                      locale
+                                                                          .facebookl,
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color: Colors
+                                                                              .black54,
+                                                                          fontSize:
+                                                                              15)),
+                                                                ],
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                              ),
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              30)),
+                                                              splashColor:
+                                                                  kWhiteColor,
+                                                              color:
+                                                                  kWhiteColor,
+                                                              highlightColor:
+                                                                  kMainColor,
+                                                              minWidth: 150,
+                                                              height: 40,
+                                                            )
+                                                          ],
+                                                        ),
+                                                        Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              if (!showProgress) {
+                                                                Navigator.pushNamed(
+                                                                    context,
+                                                                    PageRoutes
+                                                                        .signUp,
+                                                                    arguments: {
+                                                                      'user_phone':
+                                                                          phoneNumberController
+                                                                              .text,
+                                                                      'numberlimit':
+                                                                          numberLimit,
+                                                                      'appinfo':
+                                                                          appInfoModeld,
+                                                                    });
+                                                              }
+                                                            },
+                                                            behavior:
+                                                                HitTestBehavior
+                                                                    .opaque,
+                                                            child: RichText(
+                                                              text: TextSpan(
+                                                                text: locale
+                                                                    .login1,
+                                                                children: [
+                                                                  TextSpan(
+                                                                      text:
+                                                                          ' ${locale.login2}',
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              kMainColor,
+                                                                          fontSize:
+                                                                              15))
+                                                                ],
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color:
+                                                                        kMainTextColor,
+                                                                    fontSize:
+                                                                        15),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ));
+                                      });
+                                },
+                                color: kMainColor,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    locale.signin,
+                                    style: TextStyle(
+                                        color: kWhiteColor,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.6),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      ),
+                Divider(
+                  thickness: 10,
+                  height: 10,
+                  color: Color(0xfff8f8f8),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: Text(locale.ac6,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          color: kMainTextColor,
+                          letterSpacing: 1.5,
+                          fontSize: 13)),
+                ),
+                Divider(
+                  thickness: 1.5,
+                  height: 1.5,
+                  color: kButtonBorderColor.withOpacity(0.5),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Column(children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 0, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(PageRoutes.myaddress);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.account_balance_rounded,
+                                size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(locale.ac7,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
+                        ),
                       ),
                     ),
-                    Divider(
-                      thickness: 10,
-                      height: 10,
-                      color: Color(0xfff8f8f8),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(PageRoutes.orderscreen);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.bookmark_border,
+                                size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(locale.ac8,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
+                        ),
+                      ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Text(locale.ac6,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              color: kMainTextColor,
-                              letterSpacing: 1.5,
-                              fontSize: 13)),
-                    ),
-                    Divider(
-                      thickness: 1.5,
-                      height: 1.5,
-                      color: kButtonBorderColor.withOpacity(0.5),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(PageRoutes.favouriteitem);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.favorite, size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(locale.ac9,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
+                            ),
+                            // Text('',
+                            //     style: TextStyle(
+                            //         fontWeight: FontWeight.normal,
+                            //         color: kMainTextColor,
+                            //         fontSize: 15)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
+                        ),
+                      ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Column(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 0, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(PageRoutes.myaddress);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.account_balance_rounded,
-                                    size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac7,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(PageRoutes.walletscreen);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.account_balance_wallet_sharp,
+                                size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(PageRoutes.orderscreen);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.bookmark_border,
-                                    size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac8,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
+                            Expanded(
+                              child: Text(locale.ac10,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(PageRoutes.favouriteitem);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.favorite, size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac9,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                // Text('',
-                                //     style: TextStyle(
-                                //         fontWeight: FontWeight.normal,
-                                //         color: kMainTextColor,
-                                //         fontSize: 15)),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
+                            Text("$apCurrecny $walletAmount",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    color: kMainTextColor,
+                                    fontSize: 15)),
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(PageRoutes.walletscreen);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.account_balance_wallet_sharp,
-                                    size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac10,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                Text("$apCurrecny $walletAmount",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        color: kMainTextColor,
-                                        fontSize: 15)),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (locEmitterP != null &&
-                                  locEmitterP.state != null &&
-                                  locEmitterP.state.storeFinderData != null) {
-                                Navigator.pushNamed(context, PageRoutes.offerpage,
-                                    arguments: {
-                                      'store_id':
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (locEmitterP != null &&
+                              locEmitterP.state != null &&
+                              locEmitterP.state.storeFinderData != null) {
+                            Navigator.pushNamed(context, PageRoutes.offerpage,
+                                arguments: {
+                                  'store_id':
                                       '${locEmitterP.state.storeFinderData.store_id}',
-                                      'cart_id': '--'
-                                    });
-                              }
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.local_offer,
-                                    size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac11,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
+                                  'cart_id': '--'
+                                });
+                          }
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.local_offer,
+                                size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, PageRoutes.langnewf);
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 10, bottom: 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.text_fields, size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac12,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                // Text("English",
-                                //     style: TextStyle(
-                                //         fontWeight: FontWeight.normal,
-                                //         color: kMainTextColor,
-                                //         fontSize: 15)),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
+                            Expanded(
+                              child: Text(locale.ac11,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 10),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, PageRoutes.notification);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.notifications,
-                                    size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac13,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                                // Switch(
-                                //   onChanged: (value) {
-                                //     setState(() {
-                                //       valueNoti = value;
-                                //     });
-                                //   },
-                                //   value: valueNoti,
-                                //   activeColor: kMainColor,
-                                //   inactiveThumbColor: kButtonBorderColor,
-                                //   inactiveTrackColor: kMainColor.withOpacity(0.5),
-                                // )
-                              ],
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
                         ),
-                      ]),
+                      ),
                     ),
-                    Divider(
-                      thickness: 1.5,
-                      height: 1.5,
-                      color: kButtonBorderColor.withOpacity(0.5),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(
-                      thickness: 10,
-                      height: 10,
-                      color: Color(0xfff8f8f8),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Text(locale.ac14,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              color: kMainTextColor,
-                              letterSpacing: 1.5,
-                              fontSize: 13)),
-                    ),
-                    Divider(
-                      thickness: 1.5,
-                      height: 1.5,
-                      color: kButtonBorderColor.withOpacity(0.5),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Column(children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 0, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(PageRoutes.support);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.help_center_sharp,
-                                    size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac15,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, PageRoutes.langnewf);
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.text_fields,
+                                size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(PageRoutes.sharescreen);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.share, size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac16,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
+                            Expanded(
+                              child: Text(locale.ac12,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(PageRoutes.tncPage);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.code_outlined,
-                                    size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac17,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
+                            // Text("English",
+                            //     style: TextStyle(
+                            //         fontWeight: FontWeight.normal,
+                            //         color: kMainTextColor,
+                            //         fontSize: 15)),
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(PageRoutes.aboutusscreen);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.account_box_outlined,
-                                    size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac18,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(PageRoutes.settingsAccount);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.settings, size: 17.0, color: kIconColor),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(locale.ac19,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: kMainTextColor,
-                                          fontSize: 15)),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    size: 17.0, color: kIconColor)
-                              ],
-                            ),
-                          ),
-                        ),
-                      ]),
-                    ),
-                    Divider(
-                      thickness: 1.5,
-                      height: 1.5,
-                      color: kButtonBorderColor.withOpacity(0.5),
-                    ),
-                    Divider(
-                      thickness: 10,
-                      height: 10,
-                      color: Color(0xfff8f8f8),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20, right: 20, top: 10, bottom: 10),
                       child: GestureDetector(
                         onTap: () {
-                          SharedPreferences.getInstance().then((pref) {
-                            pref.clear().then((value) {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  PageRoutes.signInRoot,
-                                      (Route<dynamic> route) => false);
-                            });
-                          });
+                          Navigator.pushNamed(context, PageRoutes.notification);
                         },
                         behavior: HitTestBehavior.opaque,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Icon(Icons.logout, size: 17.0, color: kIconColor),
+                            Icon(Icons.notifications,
+                                size: 17.0, color: kIconColor),
                             SizedBox(
                               width: 10,
                             ),
                             Expanded(
-                              child: Text(isLogin ? locale.logout : locale.login,
+                              child: Text(locale.ac13,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: kMainTextColor,
                                       fontSize: 15)),
                             ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                            // Switch(
+                            //   onChanged: (value) {
+                            //     setState(() {
+                            //       valueNoti = value;
+                            //     });
+                            //   },
+                            //   value: valueNoti,
+                            //   activeColor: kMainColor,
+                            //   inactiveThumbColor: kButtonBorderColor,
+                            //   inactiveTrackColor: kMainColor.withOpacity(0.5),
+                            // )
                           ],
                         ),
                       ),
                     ),
-                    Divider(
-                      thickness: 10,
-                      height: 10,
-                      color: Color(0xfff8f8f8),
+                  ]),
+                ),
+                Divider(
+                  thickness: 1.5,
+                  height: 1.5,
+                  color: kButtonBorderColor.withOpacity(0.5),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Divider(
+                  thickness: 10,
+                  height: 10,
+                  color: Color(0xfff8f8f8),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: Text(locale.ac14,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          color: kMainTextColor,
+                          letterSpacing: 1.5,
+                          fontSize: 13)),
+                ),
+                Divider(
+                  thickness: 1.5,
+                  height: 1.5,
+                  color: kButtonBorderColor.withOpacity(0.5),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: Column(children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 0, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(PageRoutes.support);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.help_center_sharp,
+                                size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(locale.ac15,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
+                        ),
+                      ),
                     ),
-                    Container(
-                      height: 52,
-                    )
-                  ])),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(PageRoutes.sharescreen);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.share, size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(locale.ac16,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(PageRoutes.tncPage);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.code_outlined,
+                                size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(locale.ac17,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(PageRoutes.aboutusscreen);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.account_box_outlined,
+                                size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(locale.ac18,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(PageRoutes.settingsAccount);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.settings, size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(locale.ac19,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+                Divider(
+                  thickness: 1.5,
+                  height: 1.5,
+                  color: kButtonBorderColor.withOpacity(0.5),
+                ),
+                Divider(
+                  thickness: 10,
+                  height: 10,
+                  color: Color(0xfff8f8f8),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 10, bottom: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      SharedPreferences.getInstance().then((pref) {
+                        pref.clear().then((value) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              PageRoutes.signInRoot,
+                              (Route<dynamic> route) => false);
+                        });
+                      });
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(Icons.logout, size: 17.0, color: kIconColor),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Text(isLogin ? locale.logout : locale.login,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: kMainTextColor,
+                                  fontSize: 15)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Divider(
+                  thickness: 10,
+                  height: 10,
+                  color: Color(0xfff8f8f8),
+                ),
+                Container(
+                  height: 52,
+                )
+              ])),
         );
-      }
-      else{
+      } else {
         return Container();
       }
-
     });
   }
 
   void _handleSignIn(BuildContext contextd) async {
     _googleSignIn.isSignedIn().then((value) async {
-      print('${value}');
+      print('$value');
 
       if (value) {
         if (_googleSignIn.currentUser != null) {
-          socialLogin('google', '${_googleSignIn.currentUser.email}', '',
-              contextd, _googleSignIn.currentUser.displayName, '');
+          socialLogin('google', _googleSignIn.currentUser.email, '', contextd,
+              _googleSignIn.currentUser.displayName, '');
         } else {
           _googleSignIn.signOut().then((value) async {
             await _googleSignIn.signIn().then((value) {
               var email = value.email;
               var nameg = value.displayName;
-              socialLogin('google', '$email', '', contextd, nameg, '');
+              socialLogin('google', email, '', contextd, nameg, '');
               // print('${email} - ${value.id}');
             }).catchError((e) {
               setState(() {
@@ -1366,7 +1384,7 @@ class AccountDataState extends State<AccountData> {
           await _googleSignIn.signIn().then((value) {
             var email = value.email;
             var nameg = value.displayName;
-            socialLogin('google', '$email', '', contextd, nameg, '');
+            socialLogin('google', email, '', contextd, nameg, '');
             // print('${email} - ${value.id}');
           });
         } catch (error) {
@@ -1422,16 +1440,16 @@ class AccountDataState extends State<AccountData> {
         } else {
           if (loginType == 'google') {
             Navigator.pushNamed(contextd, PageRoutes.signUp, arguments: {
-              'user_email': '${email}',
-              'u_name': '${userNameFb}',
+              'user_email': '$email',
+              'u_name': '$userNameFb',
               'numberlimit': numberLimit,
               'appinfo': appInfoModeld,
             });
           } else {
             Navigator.pushNamed(contextd, PageRoutes.signUp, arguments: {
-              'fb_id': '${fb_id}',
-              'user_email': '${fbmailid}',
-              'u_name': '${userNameFb}',
+              'fb_id': '$fb_id',
+              'user_email': '$fbmailid',
+              'u_name': '$userNameFb',
               'numberlimit': numberLimit,
               'appinfo': appInfoModeld,
             });
@@ -1543,12 +1561,12 @@ class AccountDataState extends State<AccountData> {
         if (value.statusCode == 200) {
           var jsData = jsonDecode(value.body);
           SignInModel signInData = SignInModel.fromJson(jsData);
-          print('${signInData.toString()}');
+          print(signInData.toString());
           if ('${signInData.status}' == '0') {
             Toast.show(signInData.message, context,
                 duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
             Navigator.pushNamed(context, PageRoutes.signUp, arguments: {
-              'user_phone': '${user_phone}',
+              'user_phone': '$user_phone',
               'numberlimit': numberLimit,
               'appinfo': appInfoModeld,
             });
@@ -1576,16 +1594,16 @@ class AccountDataState extends State<AccountData> {
             // Navigator.popAndPushNamed(context, PageRoutes.home);
           } else if ('${signInData.status}' == '2') {
             Navigator.pushNamed(context, PageRoutes.verification, arguments: {
-              'token': '${token}',
-              'user_phone': '${user_phone}',
+              'token': '$token',
+              'user_phone': '$user_phone',
               'firebase': '${appInfoModeld.firebase}',
               'country_code': '${appInfoModeld.countryCode}',
               'activity': 'login',
             });
           } else if ('${signInData.status}' == '3') {
             Navigator.pushNamed(context, PageRoutes.verification, arguments: {
-              'token': '${token}',
-              'user_phone': '${user_phone}',
+              'token': '$token',
+              'user_phone': '$user_phone',
               'firebase': '${appInfoModeld.firebase}',
               'country_code': '${appInfoModeld.countryCode}',
               'activity': 'login',

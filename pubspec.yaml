@@ -42,6 +42,7 @@ dependencies:
   flutter_full_pdf_viewer: ^1.0.6
   flutter_google_places: ^0.3.0
   flutter_html: ^2.0.0-nullsafety.0
+  flutter_image_slideshow: ^0.1.2
   flutter_local_notifications: ^8.2.0
   flutter_localizations:
     sdk: flutter
@@ -78,6 +79,7 @@ dependencies:
   shared_preferences: ^2.0.8
   shimmer_animation: ^2.0.0
   sign_in_with_apple: ^3.1.0
+  slide_drawer: ^1.0.3
   sliding_up_panel: ^2.0.0+1
   timelines: ^0.1.0
   toast: ^0.1.5

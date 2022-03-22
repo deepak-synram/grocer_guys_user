@@ -11,7 +11,7 @@ import 'package:user/Pages/Other/select_language.dart';
 import 'package:user/Pages/User/my_account.dart';
 import 'package:user/Pages/User/rewardcollection.dart';
 import 'package:user/Pages/User/wishlist.dart';
-import 'package:user/Pages/newhomeview.dart';
+import 'package:user/Pages/HomePage/newhomeview.dart';
 import 'package:user/Pages/reffernearn.dart';
 import 'package:user/Pages/tncpage/tnc_page.dart';
 import 'package:user/Pages/wallet/walletui.dart';

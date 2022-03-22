@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_drawer/slide_drawer.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/Intro/splash.dart';
 import 'package:user/Routes/routes.dart';
@@ -56,9 +57,6 @@ Future<void> main() async {
   } finally {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // bool result = prefs.getBool('islogin');
-    // bool skip = prefs.getBool('skip');
 
     runApp(
       Phoenix(
@@ -117,41 +115,50 @@ Future<void> main() async {
         child: BlocBuilder<LanguageCubit, Locale>(
           builder: (_, locale) {
             return MaterialApp(
-              builder: (context, child) {
-                final MediaQueryData data = MediaQuery.of(context);
-                return GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                  child: MediaQuery(
-                    data: data.copyWith(textScaleFactor: 1.0),
-                    child: child,
-                  ),
+                key: UniqueKey(),
+                builder: (context, child) {
+                  return child ?? const SizedBox.shrink();
+                  // final MediaQueryData data = MediaQuery.of(context);
+                  // return GestureDetector(
+                  //   onTap: () {
+                  //     FocusScope.of(context).requestFocus(FocusNode());
+                  //   },
+                  //   child: child,
+                  // );
+                },
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: const [
+                  AppLocalizationsDelegate(),
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('ar'),
+                  Locale('pt'),
+                  Locale('fr'),
+                  Locale('id'),
+                  Locale('es'),
+                ],
+                locale: locale,
+                theme: appTheme,
+                // home: SignIn(),
+                // initialRoute: PageRoutes.signInRoot,
+                routes: PageRoutes().routes(),
+                title: 'Grocer Guys',
+                home: SplashScreen()
+                // SlideDrawer(
+                //   items: [
+                //     MenuItem('Home', onTap: () {}),
+                //     MenuItem('Project', onTap: () {}),
+                //     MenuItem('Favourite', onTap: () {}),
+                //     MenuItem('Profile', onTap: () {}),
+                //     MenuItem('Setting', onTap: () {}),
+                //   ],
+                //   child: SplashScreen(),
+                // ),
                 );
-              },
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: const [
-                AppLocalizationsDelegate(),
-                GlobalMaterialLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale('en'),
-                Locale('ar'),
-                Locale('pt'),
-                Locale('fr'),
-                Locale('id'),
-                Locale('es'),
-              ],
-              locale: locale,
-              theme: appTheme,
-              // home: SignIn(),
-              // initialRoute: PageRoutes.signInRoot,
-              routes: PageRoutes().routes(),
-              title: 'Grocer Guys',
-              home: SplashScreen(),
-            );
           },
         ),
       )),
@@ -343,7 +350,7 @@ Future<void> main() async {
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext context) {
-    return new MyHttpClient(super.createHttpClient(context)
+    return MyHttpClient(super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true);
   }

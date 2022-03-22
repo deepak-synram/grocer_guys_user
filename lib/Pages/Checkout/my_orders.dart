@@ -13,9 +13,12 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:toast/toast.dart';
 
 class MyOrders extends StatefulWidget {
+  final bool fromHomePage;
   // final VoidCallback onOrderCompleted;
   //
-  // MyOrders(this.onOrderCompleted);
+  MyOrders({
+    this.fromHomePage = false,
+  });
 
   @override
   _MyOrdersState createState() => _MyOrdersState();
@@ -58,18 +61,20 @@ class _MyOrdersState extends State<MyOrders> {
     int uId = preferences.getInt('user_id');
     print('ee  $uId');
     var http = Client();
-    http.post(myOrdersUri, body: {'user_id': '${uId}'}, headers: {
+    http.post(myOrdersUri, body: {
+      'user_id': '$uId'
+    }, headers: {
       'Authorization': 'Bearer ${preferences.getString('accesstoken')}'
     }).then((value) {
       print('ww ${value.body}');
       if (value.statusCode == 200) {
         var jd = jsonDecode(value.body) as List;
         // var jd = js['data'] as List;
-        if (jd != null && jd.length > 0) {
-          print('${jd.toString()}');
+        if (jd != null && jd.isNotEmpty) {
+          print(jd.toString());
           myOrders.clear();
           myOrders = jd.map((e) => MyOrderBeanMain.fromJson(e)).toList();
-          print('${myOrders.toString()}');
+          print(myOrders.toString());
         }
       }
       setState(() {
@@ -99,7 +104,7 @@ class _MyOrdersState extends State<MyOrders> {
       },
       child: Scaffold(
         backgroundColor: Colors.grey[200],
-        appBar: PreferredSize(
+        appBar: widget.fromHomePage ? null : PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: AppBar(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -485,5 +490,4 @@ class _MyOrdersState extends State<MyOrders> {
       ],
     );
   }
-
 }
