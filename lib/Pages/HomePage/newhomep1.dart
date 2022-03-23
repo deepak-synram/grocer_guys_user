@@ -415,9 +415,7 @@ class NewHomeView1State extends State<NewHomeView1> {
                                                   ),
                                                 )
                                                 .toList(),
-                                            onPageChanged: (value) {
-                                              print('Page changed: $value');
-                                            },
+                                            onPageChanged: (value) {},
                                             autoPlayInterval: 3000,
                                             isLoop: true,
                                           ),
@@ -1470,9 +1468,7 @@ class NewHomeView1State extends State<NewHomeView1> {
                                             ),
                                           )
                                           .toList(),
-                                      onPageChanged: (value) {
-                                        print('Page changed: $value');
-                                      },
+                                      onPageChanged: (value) {},
                                       autoPlayInterval: 3000,
                                       isLoop: true,
                                     ),
@@ -1735,6 +1731,7 @@ class NewHomeView1State extends State<NewHomeView1> {
             builder: (context, signModel) {
           if (signModel != null) {
             return FloatingActionButton(
+              heroTag: "btn1",
               onPressed: () {},
               backgroundColor: kWhiteColor,
               // backgroundColor: const Color.fromRGBO(246, 196, 88, 1.0),

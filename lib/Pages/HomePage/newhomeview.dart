@@ -12,18 +12,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:slide_drawer/slide_drawer.dart';
-import 'package:toast/toast.dart';
 import 'package:user/Components/constantfile.dart';
 import 'package:user/Components/drawer.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/Checkout/my_orders.dart';
+import 'package:user/Pages/HomePage/newhomep1.dart';
 import 'package:user/Pages/locpage/locationpage.dart';
 import 'package:user/Pages/newaccountscreen.dart';
-import 'package:user/Pages/newcategoryscreen.dart';
-import 'package:user/Pages/HomePage/newhomep1.dart';
-import 'package:user/Pages/newsearchscreen.dart';
-import 'package:user/Pages/order_details.dart';
 import 'package:user/Pages/wallet/walletui.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
@@ -82,6 +77,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
   dynamic lng;
   dynamic currentAddress = 'Tap/Set to change your location.';
   StoreFinderData storeFinderData;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   List<CartItemData> cartItemd = [];
 
@@ -103,7 +99,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
     await FlutterBarcodeScanner.scanBarcode(
             "#ff6666", "Cancel", true, ScanMode.DEFAULT)
         .then((value) {
-      if (value != null && value.length > 0 && '$value' != '-1') {
+      if (value != null && value.length > 0 && value != '-1') {
         if (storeFinderData != null) {
           Navigator.pushNamed(context, PageRoutes.search, arguments: {
             'ean_code': value,
@@ -352,6 +348,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
             appbarTitle = bottonNavigator.apptitle;
             hintText = bottonNavigator.searchTitle;
             return Scaffold(
+              key: _scaffoldKey,
               backgroundColor: const Color(0xfff8f8f8),
               drawerScrimColor: kTransparentColor,
               drawer: (selectedInd == 0)
@@ -369,7 +366,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                 preferredSize: Size(MediaQuery.of(context).size.width,
                     (selectedInd == 0 || selectedInd == 1) ? 120 : 60),
                 child: Container(
-                  color: kWhiteColor,
+                  color: const Color(0xff022e2b),
                   alignment: Alignment.center,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -377,84 +374,143 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                       Visibility(
                         visible: (selectedInd == 0),
                         child: AppBar(
-                          // leading: IconButton(
-                          //   icon: Icon(Icons.menu),
-                          //   // call toggle from SlideDrawer to alternate between open and close
-                          //   // when pressed menu button
-                          //   onPressed: () => SlideDrawer.of(context)?.toggle(),
+                          backgroundColor: const Color(0xff022e2b),
+                          automaticallyImplyLeading: false,
+                          centerTitle: false,
+                          // bottom: PreferredSize(
+                          //   preferredSize: Size(
+                          //       MediaQuery.of(context).size.width,
+                          //       (selectedInd == 0 || selectedInd == 1)
+                          //           ? 60
+                          //           : 30),
+                          //   child: Row(children: [
+                          //     IconButton(
+                          //         onPressed: () {
+                          //           _scaffoldKey.currentState.openDrawer();
+                          //         },
+                          //         icon: Image.asset('menu-icon.png')),
+                          //     TextFormField(
+                          //       readOnly: false,
+                          //       autofocus: false,
+                          //       controller: searchController,
+                          //       style: Theme.of(context)
+                          //           .textTheme
+                          //           .headline6
+                          //           .copyWith(
+                          //               color: kMainTextColor, fontSize: 18),
+                          //       decoration: InputDecoration(
+                          //           hintText: hintText,
+                          //           hintStyle:
+                          //               Theme.of(context).textTheme.subtitle2,
+                          //           contentPadding:
+                          //               EdgeInsets.symmetric(vertical: 10),
+                          //           prefixIcon: Icon(
+                          //             Icons.search,
+                          //             color: kIconColor,
+                          //           ),
+                          //           focusColor: kMainTextColor,
+                          //           border: OutlineInputBorder(
+                          //               borderRadius: BorderRadius.circular(10),
+                          //               borderSide: BorderSide.none),
+                          //           enabledBorder: OutlineInputBorder(
+                          //               borderRadius: BorderRadius.circular(10),
+                          //               borderSide: BorderSide.none),
+                          //           errorBorder: OutlineInputBorder(
+                          //               borderRadius: BorderRadius.circular(10),
+                          //               borderSide: BorderSide.none),
+                          //           focusedBorder: OutlineInputBorder(
+                          //               borderRadius: BorderRadius.circular(10),
+                          //               borderSide: BorderSide.none)),
+                          //     ),
+                          //   ]),
                           // ),
                           title: BlocBuilder<LocationEmitter, LocEmitterModel>(
                               builder: (context, locModel) {
                             return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                MaterialButton(
-                                  onPressed: () {
-                                    // locEmitterP.hitLocEmitter(LocEmitterModel(0.0,0.0,'Searching your location',true,null));
-                                    var latdi = 0.0;
-                                    var lngdi = 0.0;
-                                    if (lat != null && lng != null) {
-                                      latdi = lat;
-                                      lngdi = lng;
-                                    }
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return LocationPage(latdi, lngdi);
-                                    }));
-                                  },
-                                  splashColor: kWhiteColor,
-                                  color: kWhiteColor,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
+                                Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    // runSpacing: 0.0,
-                                    // spacing: 0.0,
-                                    // runAlignment: WrapAlignment.center,
-                                    // alignment: WrapAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                        child: Text(
-                                          '${locModel.address}',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.clip,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: kMainTextColor,
-                                              fontSize: 14),
+                                      const Text(
+                                        'Dhavil Shah',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white),
+                                      ),
+                                      MaterialButton(
+                                        onPressed: () {
+                                          // locEmitterP.hitLocEmitter(LocEmitterModel(0.0,0.0,'Searching your location',true,null));
+                                          var latdi = 0.0;
+                                          var lngdi = 0.0;
+                                          if (lat != null && lng != null) {
+                                            latdi = lat;
+                                            lngdi = lng;
+                                          }
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return LocationPage(latdi, lngdi);
+                                          }));
+                                        },
+                                        splashColor: kWhiteColor,
+                                        color: Colors.transparent,
+                                        child: Row(
+                                          // mainAxisAlignment:
+                                          //     MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          // crossAxisAlignment:
+                                          //     CrossAxisAlignment.center,
+                                          // runSpacing: 0.0,
+                                          // spacing: 0.0,
+                                          // runAlignment: WrapAlignment.center,
+                                          // alignment: WrapAlignment.center,
+                                          children: [
+                                            const Icon(
+                                              Icons.location_on,
+                                              color: Colors.yellow,
+                                              size: 20,
+                                            ),
+                                            const SizedBox(
+                                              width: 1,
+                                            ),
+                                            SizedBox(
+                                              width: 250,
+                                              child: Text(
+                                                locModel.address,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                // textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                        elevation: 0,
+                                        padding: const EdgeInsets.all(0),
+                                        minWidth: 0,
+                                        height: 20,
+                                        materialTapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        focusColor:
+                                            kButtonBorderColor.withOpacity(0.8),
                                       ),
-                                      SizedBox(
-                                        width: 2,
-                                      ),
-                                      Icon(
-                                        Icons.keyboard_arrow_down,
-                                        color: kMainTextColor,
-                                        size: 20,
-                                      )
-                                    ],
-                                  ),
-                                  elevation: 0,
-                                  padding: const EdgeInsets.all(0),
-                                  minWidth: 0,
-                                  height: 20,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  focusColor:
-                                      kButtonBorderColor.withOpacity(0.8),
-                                ),
-                                Text(
-                                  (locModel.storeFinderData != null &&
-                                          locModel.storeFinderData
-                                                  .store_opening_time !=
-                                              null)
-                                      ? '${locModel.storeFinderData.store_opening_time} AM - ${locModel.storeFinderData.store_closing_time} PM'
-                                      : '00:00 AM - 00:00 PM',
-                                  style: TextStyle(
-                                      color: kMainTextColor, fontSize: 12),
-                                )
+                                    ]),
+                                // Text(
+                                //   (locModel.storeFinderData != null &&
+                                //           locModel.storeFinderData
+                                //                   .store_opening_time !=
+                                //               null)
+                                //       ? '${locModel.storeFinderData.store_opening_time} AM - ${locModel.storeFinderData.store_closing_time} PM'
+                                //       : '00:00 AM - 00:00 PM',
+                                //   style: TextStyle(
+                                //       color: kMainTextColor, fontSize: 12),
+                                // )
                               ],
                             );
                           }),
@@ -464,10 +520,9 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               //     storeFinderData.store_id != null),
                               visible: true,
                               child: IconButton(
-                                icon: ImageIcon(AssetImage(
-                                  'assets/scanner_logo.png',
-                                )),
+                                icon: Image.asset('assets/bell-icon.png'),
                                 onPressed: () async {
+                                  // TODO: Need to change this to notifications instead of scanner
                                   scanProductCode(context);
                                 },
                               ),
@@ -612,55 +667,58 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                       ),
                       Visibility(
                         visible: (selectedInd == 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print('dd');
-                            // searchP.emitSearchNull();
-                            navBottomProvider.hitBottomNavigation(
-                                2, appbarTitle, hintText);
-                            // setState(() {
-                            //   selectedInd = 2;
-                            // });
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Container(
-                            height: 52,
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                                color: kWhiteColor,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    color: Color(0xfff8f8f8), width: 1),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Color(0xfff8f8f8),
-                                      offset: Offset(-1, -1),
-                                      blurRadius: 5),
-                                  BoxShadow(
-                                      color: Color(0xfff8f8f8),
-                                      offset: Offset(1, 1),
-                                      blurRadius: 5)
-                                ]),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Icon(
-                                    Icons.search,
-                                    color: kIconColor,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 2.0),
-                                  child: Text('$hintText',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle2),
-                                ),
-                              ],
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: Row(children: [
+                            IconButton(
+                              icon: Image.asset(
+                                'assets/menu-icon.png',
+                              ),
+                              iconSize: 40,
+                              onPressed: () {
+                                _scaffoldKey.currentState.openDrawer();
+                              },
                             ),
-                          ),
+                            Expanded(
+                              child: Container(
+                                height: 40,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: Color(0xfff8f8f8), width: 1),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0xfff8f8f8),
+                                      ),
+                                      BoxShadow(
+                                        color: Color(0xfff8f8f8),
+                                      )
+                                    ]),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Icon(
+                                        Icons.search,
+                                        color: kIconColor,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 2.0),
+                                      child: Text('$hintText',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ]),
                         ),
                       ),
                       Visibility(

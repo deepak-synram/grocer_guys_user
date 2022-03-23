@@ -88,6 +88,9 @@ class ProductsCardWithTitle extends StatelessWidget {
                   symbol: '\u{20B9}',
                   previousPrice: '35',
                   newPrice: '36.55',
+                  locModel: locModel,
+                  catP: catP,
+                  locale: locale,
                 );
               },
             ),
