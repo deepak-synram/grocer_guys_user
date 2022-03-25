@@ -11,6 +11,8 @@ import 'package:user/Pages/Checkout/my_orders.dart';
 import 'package:user/Pages/DrawerPages/invoicepage.dart';
 import 'package:user/Pages/DrawerPages/my_orders_drawer.dart';
 import 'package:user/Pages/HomePage/newhomeview.dart';
+import 'package:user/Pages/Subscription/my_subscription_page.dart';
+import 'package:user/Pages/categorypage/view_all_categories.dart';
 import 'package:user/Pages/Other/add_address.dart';
 import 'package:user/Pages/Other/category_products.dart';
 import 'package:user/Pages/Other/edit_address.dart';
@@ -97,6 +99,8 @@ class PageRoutes {
   static const String paymentdoned = '/paymentdoned';
   static const String settingsAccount = '/settingaccount';
   static const String notiProduct = '/notiprodcut';
+  static const String viewAllCategories = '/view-all-categories';
+  static const String mySubscription = '/my-subscription';
 
   Map<String, WidgetBuilder> routes() {
     return {
@@ -149,6 +153,8 @@ class PageRoutes {
       settingsAccount: (context) => SettingPage(),
       cat_sub_product: (context) => NewCategorySubScreen(),
       notiProduct: (context) => ProductSearchInfo(),
+      viewAllCategories: (context) => ViewAllCategory(),
+      mySubscription: (context) => MySubscriptionPage(),
     };
   }
 }

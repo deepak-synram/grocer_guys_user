@@ -1099,6 +1099,49 @@ class AccountDataState extends State<AccountData> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 10),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, PageRoutes.mySubscription);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.notifications,
+                                size: 17.0, color: kIconColor),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text('My Subscriptions',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: kMainTextColor,
+                                      fontSize: 15)),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                size: 17.0, color: kIconColor)
+                            // Switch(
+                            //   onChanged: (value) {
+                            //     setState(() {
+                            //       valueNoti = value;
+                            //     });
+                            //   },
+                            //   value: valueNoti,
+                            //   activeColor: kMainColor,
+                            //   inactiveThumbColor: kButtonBorderColor,
+                            //   inactiveTrackColor: kMainColor.withOpacity(0.5),
+                            // )
+                          ],
+                        ),
+                      ),
+                    ),
                   ]),
                 ),
                 Divider(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/HomePage/product_details.dart';
+import 'package:user/Pages/Subscription/subscribe.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/providergrocery/categoryprovider.dart';
 import 'package:user/providergrocery/locemittermodel.dart';
@@ -13,6 +14,7 @@ class ProductCard extends StatefulWidget {
   final LocEmitterModel locModel;
   final CategoryProvider catP;
   final AppLocalizations locale;
+  final double width, height;
 
   const ProductCard({
     Key key,
@@ -26,6 +28,8 @@ class ProductCard extends StatefulWidget {
     @required this.previousPrice,
     @required this.newPrice,
     @required this.symbol,
+    this.width = 150,
+    this.height = 160,
   }) : super(key: key);
 
   @override
@@ -75,8 +79,8 @@ class _ProductCardState extends State<ProductCard> {
                       padding: const EdgeInsets.only(top: 15.0),
                       child: Image.asset(
                         widget.image,
-                        width: 150,
-                        height: 160,
+                        width: widget.width,
+                        height: widget.height,
                       ),
                     ),
                     Row(
@@ -178,7 +182,17 @@ class _ProductCardState extends State<ProductCard> {
                 const SizedBox(height: 5),
                 Center(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Subscribe(
+                          image: widget.image,
+                          price: widget.symbol + widget.newPrice,
+                          title: widget.title,
+                          id: widget.index.toString(),
+                          subTitle: widget.subTitle,
+                        ),
+                      ),
+                    ),
                     child: Text(
                       'SUBSCRIBE @ ${widget.symbol + widget.newPrice}',
                       style: TextStyle(

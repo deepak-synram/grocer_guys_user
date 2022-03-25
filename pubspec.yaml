@@ -113,6 +113,7 @@ flutter:
     - assets/ProductImages/
     - assets/PaymentIcons/
     - assets/CategoryImages/
+    - assets/Subscribe/
     - assets/HomeBanner/
     - assets/IntroScreen/
     - assets/fonts/OpenSans-Regular.ttf

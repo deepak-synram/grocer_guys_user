@@ -1,30 +1,26 @@
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 import 'package:user/Components/constantfile.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
-import 'package:user/beanmodel/appinfo.dart';
 import 'package:user/beanmodel/cart/addtocartbean.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
 import 'package:user/beanmodel/category/categorymodel.dart';
-import 'package:user/beanmodel/category/topcategory.dart';
 import 'package:user/beanmodel/productbean/productwithvarient.dart';
 import 'package:user/beanmodel/storefinder/storefinderbean.dart';
 import 'package:user/beanmodel/wishlist/wishdata.dart';
 import 'package:user/providergrocery/cartcountprovider.dart';
 import 'package:user/providergrocery/cartlistprovider.dart';
-import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
-import 'package:toast/toast.dart';
 
 class CategorySubProduct extends StatefulWidget {
   CategorySubProduct();
@@ -88,51 +84,50 @@ class _CategorySubProductState extends State<CategorySubProduct> {
   //   });
   // }
 
-  void getSharedValue() async{
+  void getSharedValue() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       apCurrency = pref.getString('app_currency');
     });
   }
 
-  void getWislist(dynamic storeid) async{
+  void getWislist(dynamic storeid) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     dynamic userId = prefs.getInt('user_id');
     var url = showWishlistUri;
     var http = Client();
     http.post(url, body: {
       'user_id': '${userId}',
-      'store_id':'${storeid}'
+      'store_id': '${storeid}'
     }, headers: {
       'Authorization': 'Bearer ${prefs.getString('accesstoken')}'
-    }).then((value){
+    }).then((value) {
       print('resp - ${value.body}');
-      if(value.statusCode == 200){
+      if (value.statusCode == 200) {
         WishListModel data1 = WishListModel.fromJson(jsonDecode(value.body));
-        if(data1.status=="1" || data1.status==1){
+        if (data1.status == "1" || data1.status == 1) {
           setState(() {
             wishModel.clear();
             wishModel = List.from(data1.data);
           });
         }
       }
-    }).catchError((e){
-    });
+    }).catchError((e) {});
   }
 
-  void getCategory(dynamic catid, dynamic storeid) async{
+  void getCategory(dynamic catid, dynamic storeid) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var http = Client();
-    http.post(catProductUri,body: {
-      'cat_id':'${catid}',
-      'store_id':'${storeid}'
+    http.post(catProductUri, body: {
+      'cat_id': '${catid}',
+      'store_id': '${storeid}'
     }, headers: {
       'Authorization': 'Bearer ${pref.getString('accesstoken')}'
-    }).then((value){
+    }).then((value) {
       print('${value.body}');
-      if(value.statusCode == 200){
+      if (value.statusCode == 200) {
         ProductModel data1 = ProductModel.fromJson(jsonDecode(value.body));
-        if(data1.status=="1" || data1.status==1){
+        if (data1.status == "1" || data1.status == 1) {
           setState(() {
             products.clear();
             products = List.from(data1.data);
@@ -142,7 +137,7 @@ class _CategorySubProductState extends State<CategorySubProduct> {
       setState(() {
         isLoading = false;
       });
-    }).catchError((e){
+    }).catchError((e) {
       print(e);
       setState(() {
         isLoading = false;
@@ -181,10 +176,11 @@ class _CategorySubProductState extends State<CategorySubProduct> {
   @override
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
-    Map<String,dynamic> receivedData = ModalRoute.of(context).settings.arguments;
+    Map<String, dynamic> receivedData =
+        ModalRoute.of(context).settings.arguments;
     setState(() {
       title = receivedData['title'];
-      if(!enterFirst){
+      if (!enterFirst) {
         enterFirst = true;
         isLoading = true;
         storedetail = receivedData['storedetail'];
@@ -202,60 +198,55 @@ class _CategorySubProductState extends State<CategorySubProduct> {
         ),
         centerTitle: true,
         actions: [
-          BlocBuilder<CartCountProvider, int>(
-              builder: (context,cartCount){
-                return Badge(
-                  position: BadgePosition.topEnd(top: 5, end: 5),
-                  padding: EdgeInsets.all(5),
-                  animationDuration: Duration(milliseconds: 300),
-                  animationType: BadgeAnimationType.slide,
-                  badgeContent: Text(
-                    cartCount.toString(),
-                    style: TextStyle(color: Colors.white,fontSize: 10),
-                  ),
-                  child: IconButton(
-                      onPressed: () async {
-                        SharedPreferences prefs =
+          BlocBuilder<CartCountProvider, int>(builder: (context, cartCount) {
+            return Badge(
+              position: BadgePosition.topEnd(top: 5, end: 5),
+              padding: EdgeInsets.all(5),
+              animationDuration: Duration(milliseconds: 300),
+              animationType: BadgeAnimationType.slide,
+              badgeContent: Text(
+                cartCount.toString(),
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+              child: IconButton(
+                  onPressed: () async {
+                    SharedPreferences prefs =
                         await SharedPreferences.getInstance();
-                        if (prefs.containsKey('islogin') &&
-                            prefs.getBool('islogin')) {
+                    if (prefs.containsKey('islogin') &&
+                        prefs.getBool('islogin')) {
+                      Navigator.pushNamed(context, PageRoutes.cartPage)
+                          .then((value) {
+                        print('value d');
+                        // getCartList();
+                      }).catchError((e) {
+                        print('dd');
+                        // getCartList();
+                      });
+                      // Navigator.pushNamed(context, PageRoutes.cart)
 
-                          Navigator.pushNamed(context, PageRoutes.cartPage).then((value) {
-                            print('value d');
-                            // getCartList();
-                          }).catchError((e) {
-                            print('dd');
-                            // getCartList();
-                          });
-                          // Navigator.pushNamed(context, PageRoutes.cart)
-
-                        } else {
-                          Toast.show(locale.loginfirst, context,
-                              gravity: Toast.CENTER,
-                              duration: Toast.LENGTH_SHORT);
-                        }
-                      },
-                      icon: ImageIcon(AssetImage('assets/ic_cart.png'))),
-                );
-              }),
+                    } else {
+                      Toast.show(locale.loginfirst, context,
+                          gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                    }
+                  },
+                  icon: ImageIcon(AssetImage('assets/ic_cart.png'))),
+            );
+          }),
         ],
       ),
-      body: BlocBuilder<CartListProvider,List<CartItemData>>(
-        builder: (context,cartList){
+      body: BlocBuilder<CartListProvider, List<CartItemData>>(
+        builder: (context, cartList) {
           cartItemd = List.from(cartList);
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12),
                 child: Text(
                   locale.chooseCategory,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline6
-                      .copyWith(
+                  style: Theme.of(context).textTheme.headline6.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
                       fontSize: 18),
@@ -271,22 +262,26 @@ class _CategorySubProductState extends State<CategorySubProduct> {
                     itemCount: dataModel.subcategory.length,
                     itemBuilder: (context, index) {
                       return buildCategoryRow(
-                          context, dataModel.subcategory[index], storedetail,(id){
+                          context, dataModel.subcategory[index], storedetail,
+                          (id) {
                         setState(() {
                           isLoading = true;
                           selectedIndi = index;
                         });
                         getCategory(id, storedetail.store_id);
-                      },index);
+                      }, index);
                     }),
               ),
               Expanded(
                 child: SingleChildScrollView(
                   primary: true,
                   physics: ScrollPhysics(),
-                  child: (isLoading)?buildGridShView():buildGridView(products,wishModel,'$apCurrency',storedetail, locale,callback: (){
-                    getWislist(storedetail.store_id);
-                  }),
+                  child: (isLoading)
+                      ? buildGridShView()
+                      : buildGridView(products, wishModel, '$apCurrency',
+                          storedetail, locale, callback: () {
+                          getWislist(storedetail.store_id);
+                        }),
                 ),
               )
             ],
@@ -296,8 +291,12 @@ class _CategorySubProductState extends State<CategorySubProduct> {
     );
   }
 
-  GestureDetector buildCategoryRow(BuildContext context,
-      SuBCategoryModel categories, StoreFinderData storeFinderData, void callback(value), int indd) {
+  GestureDetector buildCategoryRow(
+      BuildContext context,
+      SuBCategoryModel categories,
+      StoreFinderData storeFinderData,
+      void callback(value),
+      int indd) {
     return GestureDetector(
       onTap: () {
         callback(categories.cat_id);
@@ -307,7 +306,7 @@ class _CategorySubProductState extends State<CategorySubProduct> {
         padding: const EdgeInsets.all(8.0),
         child: Material(
           elevation: 0.4,
-          color: (selectedIndi==indd)?kMainColor:kWhiteColor,
+          color: (selectedIndi == indd) ? kMainColor : kWhiteColor,
           borderRadius: BorderRadius.circular(12),
           clipBehavior: Clip.antiAlias,
           child: Container(
@@ -315,14 +314,16 @@ class _CategorySubProductState extends State<CategorySubProduct> {
             height: 52,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: (selectedIndi==indd)?kMainColor:kWhiteColor,
-                // image: DecorationImage(
-                //     image: NetworkImage(categories.image), fit: BoxFit.fill)
+              borderRadius: BorderRadius.circular(12),
+              color: (selectedIndi == indd) ? kMainColor : kWhiteColor,
+              // image: DecorationImage(
+              //     image: NetworkImage(categories.image), fit: BoxFit.fill)
             ),
             child: Text(
               categories.title,
-              style: TextStyle(color: (selectedIndi==indd)?kWhiteColor:kMainTextColor, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  color: (selectedIndi == indd) ? kWhiteColor : kMainTextColor,
+                  fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -330,47 +331,70 @@ class _CategorySubProductState extends State<CategorySubProduct> {
     );
   }
 
-  GridView buildGridView(List<ProductDataModel> listName, List<WishListDataModel> wishModel,String apCurrency,StoreFinderData storedetail, AppLocalizations locale,{bool favourites = false, Function callback}) {
+  GridView buildGridView(
+      List<ProductDataModel> listName,
+      List<WishListDataModel> wishModel,
+      String apCurrency,
+      StoreFinderData storedetail,
+      AppLocalizations locale,
+      {bool favourites = false,
+      Function callback}) {
     return GridView.builder(
-        padding: EdgeInsets.only(top: 5,bottom: 10, right: 10, left: 10),
-        physics: NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(top: 5, bottom: 10, right: 10, left: 10),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         primary: false,
         itemCount: listName.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 0.72,
             crossAxisSpacing: 16,
-            mainAxisSpacing: 5
-        ),
+            mainAxisSpacing: 5),
         itemBuilder: (context, index) {
-          return buildProductCard(
-              context,
-              listName[index],
-              wishModel,
-              '$apCurrency',
-              storedetail,
-              locale,
-              favourites: favourites,
-              callback: callback);
+          return buildProductCard(context, listName[index], wishModel,
+              apCurrency, storedetail, locale,
+              favourites: favourites, callback: callback);
         });
   }
 
   Widget buildProductCard(
-      BuildContext context,ProductDataModel product,
-      List<WishListDataModel> wishModel,String apCurrency,StoreFinderData storedetail, AppLocalizations locale,
-      {bool favourites = false, Function callback}) {
+      BuildContext context,
+      ProductDataModel product,
+      List<WishListDataModel> wishModel,
+      String apCurrency,
+      StoreFinderData storedetail,
+      AppLocalizations locale,
+      {bool favourites = false,
+      Function callback}) {
     int qty = 0;
     if (cartItemd != null && cartItemd.length > 0) {
-      int ind1 = cartItemd.indexOf(CartItemData(varient_id:'${product.varientId}'));
+      int ind1 =
+          cartItemd.indexOf(CartItemData(varient_id: '${product.varientId}'));
       if (ind1 >= 0) {
         qty = cartItemd[ind1].qty;
       }
     }
     return GestureDetector(
       onTap: () {
-        int idd = wishModel.indexOf(WishListDataModel('', '',
-            '${product.varientId}', '', '', '', '', '', '', '', '', '', '','','','','',''));
+        int idd = wishModel.indexOf(WishListDataModel(
+            '',
+            '',
+            '${product.varientId}',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            ''));
         product.qty = qty;
         Navigator.pushNamed(context, PageRoutes.product, arguments: {
           'pdetails': product,
@@ -389,9 +413,7 @@ class _CategorySubProductState extends State<CategorySubProduct> {
             width: MediaQuery.of(context).size.width / 2.5,
             padding: const EdgeInsets.symmetric(horizontal: 5),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10)
-            ),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: Stack(
               children: [
                 Column(
@@ -403,7 +425,7 @@ class _CategorySubProductState extends State<CategorySubProduct> {
                     //   ],
                     // ),
                     Container(
-                      width: MediaQuery.of(context).size.width/2.5,
+                      width: MediaQuery.of(context).size.width / 2.5,
                       height: 100,
                       alignment: Alignment.center,
                       child: SizedBox(
@@ -437,124 +459,149 @@ class _CategorySubProductState extends State<CategorySubProduct> {
                     ),
                     Expanded(
                         child: Column(
-                          children: [
-                            Align(alignment: Alignment.centerLeft,
-                              child: Text(product.productName,
-                                  maxLines: 1, style: TextStyle(fontWeight: FontWeight.w500)),),
-                            SizedBox(height: 4),
-                            Container(
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text('$apCurrency ${product.price}',
-                                      style:
-                                      TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
-                                  Visibility(
-                                    visible:
-                                    ('${product.price}' == '${product.mrp}') ? false : true,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: Text('$apCurrency ${product.mrp}',
-                                          style: TextStyle(
-                                              color: Colors.grey[600],
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 13,
-                                              decoration: TextDecoration.lineThrough)),
-                                    ),
-                                  ),
-                                  // buildRating(context),
-                                ],
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(product.productName,
+                              maxLines: 1,
+                              style: TextStyle(fontWeight: FontWeight.w500)),
+                        ),
+                        SizedBox(height: 4),
+                        Container(
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('$apCurrency ${product.price}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16)),
+                              Visibility(
+                                visible:
+                                    ('${product.price}' == '${product.mrp}')
+                                        ? false
+                                        : true,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text('$apCurrency ${product.mrp}',
+                                      style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 13,
+                                          decoration:
+                                              TextDecoration.lineThrough)),
+                                ),
                               ),
-                            ),
-                          ],
-                        )),
+                              // buildRating(context),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )),
                     Align(
                       alignment: Alignment.centerRight,
                       child: Text('${product.quantity} ${product.unit}',
-                          style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                          style:
+                              TextStyle(color: Colors.grey[600], fontSize: 13)),
                     ),
                     SizedBox(height: 5),
                     (int.parse('${product.stock}') > 0)
                         ? Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          buildIconButton(Icons.remove, context,
-                              onpressed: () {
-                                if (qty > 0 && !progressadd) {
-                                  int idd = products.indexOf(product);
-                                  addtocart2(
-                                      '${product.storeId}',
-                                      '${product.varientId}',
-                                      (qty - 1),
-                                      '0',
-                                      context,
-                                      idd);
-                                }
-                              }),
-                          SizedBox(
-                            width: 8,
+                            width: MediaQuery.of(context).size.width / 2,
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                buildIconButton(Icons.remove, context,
+                                    onpressed: () {
+                                  if (qty > 0 && !progressadd) {
+                                    int idd = products.indexOf(product);
+                                    addtocart2(
+                                        '${product.storeId}',
+                                        '${product.varientId}',
+                                        (qty - 1),
+                                        '0',
+                                        context,
+                                        idd);
+                                  }
+                                }),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text('$qty',
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                buildIconButton(Icons.add, context, type: 1,
+                                    onpressed: () {
+                                  if ((qty + 1) <=
+                                          int.parse('${product.stock}') &&
+                                      !progressadd) {
+                                    int idd = products.indexOf(product);
+                                    addtocart2(
+                                        '${product.storeId}',
+                                        '${product.varientId}',
+                                        (qty + 1),
+                                        '0',
+                                        context,
+                                        idd);
+                                  } else {
+                                    Toast.show(locale.outstock2, context,
+                                        duration: Toast.LENGTH_SHORT,
+                                        gravity: Toast.CENTER);
+                                  }
+                                }),
+                              ],
+                            ),
+                          )
+                        : Container(
+                            height: 15,
+                            width: MediaQuery.of(context).size.width / 2,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: kCardBackgroundColor,
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)),
+                            ),
+                            child: Text(
+                              locale.outstock,
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              style: TextStyle(fontSize: 13, color: kRedColor),
+                            ),
                           ),
-                          Text('$qty',
-                              style: Theme.of(context).textTheme.subtitle1),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          buildIconButton(Icons.add, context,
-                              type: 1,
-                              onpressed: () {
-                                if ((qty + 1) <=
-                                    int.parse('${product.stock}') && !progressadd) {
-                                  int idd = products.indexOf(product);
-                                  addtocart2(
-                                      '${product.storeId}',
-                                      '${product.varientId}',
-                                      (qty + 1),
-                                      '0',
-                                      context,
-                                      idd);
-                                } else {
-                                  Toast.show(locale.outstock2, context,
-                                      duration: Toast.LENGTH_SHORT,
-                                      gravity: Toast.CENTER);
-                                }
-                              }),
-                        ],
-                      ),
-                    )
-                        :
-                    Container(
-                      height: 15,
-                      width: MediaQuery.of(context).size.width / 2,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: kCardBackgroundColor,
-                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)),
-                      ),
-                      child: Text(
-                        locale.outstock,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        style: TextStyle(fontSize: 13,color: kRedColor),
-                      ),
-                    ),
                     SizedBox(height: 5),
                   ],
                 ),
-                ((((double.parse('${product.mrp}') - double.parse('${product.price}'))/double.parse('${product.mrp}'))*100)>0)?Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    padding: const EdgeInsets.all(3.0),
-                    margin: const EdgeInsets.only(top: 8),
-                    decoration: BoxDecoration(
-                      color: kPercentageBackC,
-                      borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
-                    ),
-                    child: Text('${(((double.parse('${product.mrp}') - double.parse('${product.price}'))/double.parse('${product.mrp}'))*100).toStringAsFixed(2)} %',style: TextStyle(color:kWhiteColor,fontWeight: FontWeight.w500,fontSize: 12),),),
-                ):SizedBox.shrink(),
+                ((((double.parse('${product.mrp}') -
+                                    double.parse('${product.price}')) /
+                                double.parse('${product.mrp}')) *
+                            100) >
+                        0)
+                    ? Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          padding: const EdgeInsets.all(3.0),
+                          margin: const EdgeInsets.only(top: 8),
+                          decoration: BoxDecoration(
+                            color: kPercentageBackC,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
+                          ),
+                          child: Text(
+                            '${(((double.parse('${product.mrp}') - double.parse('${product.price}')) / double.parse('${product.mrp}')) * 100).toStringAsFixed(2)} %',
+                            style: TextStyle(
+                                color: kWhiteColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12),
+                          ),
+                        ),
+                      )
+                    : SizedBox.shrink(),
               ],
             ),
           ),
@@ -563,22 +610,21 @@ class _CategorySubProductState extends State<CategorySubProduct> {
     );
   }
 
-  void addtocart2(String storeid, String varientid, dynamic qnty, String special,
-      BuildContext context, int index) async {
+  void addtocart2(String storeid, String varientid, dynamic qnty,
+      String special, BuildContext context, int index) async {
     var locale = AppLocalizations.of(context);
     setState(() {
       progressadd = true;
     });
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if (preferences.containsKey('islogin') && preferences.getBool('islogin')) {
-      if(preferences.getString('block')=='1'){
+      if (preferences.getString('block') == '1') {
         setState(() {
           progressadd = false;
         });
         Toast.show(locale.blockmsg, context,
-            gravity: Toast.CENTER,
-            duration: Toast.LENGTH_SHORT);
-      }else{
+            gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+      } else {
         var http = Client();
         http.post(addToCartUri, body: {
           'user_id': '${preferences.getInt('user_id')}',
@@ -592,13 +638,13 @@ class _CategorySubProductState extends State<CategorySubProduct> {
           print('cart add${value.body}');
           if (value.statusCode == 200) {
             AddToCartMainModel data1 =
-            AddToCartMainModel.fromJson(jsonDecode(value.body));
+                AddToCartMainModel.fromJson(jsonDecode(value.body));
             if ('${data1.status}' == '1') {
-              cartListPro.emitCartList(data1.cart_items,data1.total_price);
+              cartListPro.emitCartList(data1.cart_items, data1.total_price);
               _counter = data1.cart_items.length;
               cartCounterProvider.hitCartCounter(_counter);
             } else {
-              cartListPro.emitCartList([],0.0);
+              cartListPro.emitCartList([], 0.0);
               _counter = 0;
               cartCounterProvider.hitCartCounter(_counter);
             }
@@ -622,9 +668,7 @@ class _CategorySubProductState extends State<CategorySubProduct> {
       Toast.show(locale.loginfirst, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
     }
-
   }
-
 
   void addtocart(String storeid, String varientid, dynamic qnty, String special,
       BuildContext context, int index) async {
@@ -634,14 +678,13 @@ class _CategorySubProductState extends State<CategorySubProduct> {
     });
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if (preferences.containsKey('islogin') && preferences.getBool('islogin')) {
-      if(preferences.getString('block')=='1'){
+      if (preferences.getString('block') == '1') {
         setState(() {
           progressadd = false;
         });
         Toast.show(locale.blockmsg, context,
-            gravity: Toast.CENTER,
-            duration: Toast.LENGTH_SHORT);
-      }else{
+            gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+      } else {
         var http = Client();
         http.post(addToCartUri, body: {
           'user_id': '${preferences.getInt('user_id')}',
@@ -655,9 +698,10 @@ class _CategorySubProductState extends State<CategorySubProduct> {
           print('cart add${value.body}');
           if (value.statusCode == 200) {
             AddToCartMainModel data1 =
-            AddToCartMainModel.fromJson(jsonDecode(value.body));
+                AddToCartMainModel.fromJson(jsonDecode(value.body));
             if ('${data1.status}' == '1') {
-              int dii = data1.cart_items.indexOf(CartItemData(varient_id: '$varientid'));
+              int dii = data1.cart_items
+                  .indexOf(CartItemData(varient_id: '$varientid'));
               print('cart add${dii} \n $storeid \n $varientid');
               setState(() {
                 if (dii >= 0) {
@@ -696,5 +740,3 @@ class _CategorySubProductState extends State<CategorySubProduct> {
     }
   }
 }
-
-
