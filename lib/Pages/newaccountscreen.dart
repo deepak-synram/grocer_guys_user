@@ -916,9 +916,7 @@ class AccountDataState extends State<AccountData> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Icon(Icons.favorite, size: 17.0, color: kIconColor),
-                            SizedBox(
-                              width: 10,
-                            ),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: Text(locale.ac9,
                                   style: TextStyle(
@@ -954,7 +952,7 @@ class AccountDataState extends State<AccountData> {
                           children: [
                             Icon(Icons.account_balance_wallet_sharp,
                                 size: 17.0, color: kIconColor),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Expanded(
@@ -1104,7 +1102,8 @@ class AccountDataState extends State<AccountData> {
                           left: 20, right: 20, top: 10, bottom: 10),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, PageRoutes.mySubscription);
+                          Navigator.pushNamed(
+                              context, PageRoutes.mySubscription);
                         },
                         behavior: HitTestBehavior.opaque,
                         child: Row(

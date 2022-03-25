@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:user/Components/drawer.dart';
 import 'package:user/Locale/locales.dart';
+import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
@@ -38,14 +39,16 @@ class NotificationShowState extends State<NotificationShow> {
       islogin = preferences.getBool('islogin');
       userName = preferences.getString('user_name');
     });
-    getNotificaitonList(userId,preferences);
+    getNotificaitonList(userId, preferences);
   }
 
   void getNotificaitonList(dynamic userid, SharedPreferences pref) async {
     setState(() {
       isLoading = true;
     });
-    http.post(notificationListUri, body: {'user_id': '$userid'}, headers: {
+    http.post(notificationListUri, body: {
+      'user_id': '$userid'
+    }, headers: {
       'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     }).then((value) {
       if (value.statusCode == 200) {
@@ -73,56 +76,68 @@ class NotificationShowState extends State<NotificationShow> {
     var locale = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: Color(0xfff8f8f8),
-      appBar: AppBar(
-        backgroundColor: kWhiteColor,
-        title: Text(
-          locale.notificaitonh,
-          style: TextStyle(color: kMainTextColor),
-        ),
-        centerTitle: true,
+      appBar: CustomAppBar(
+        title: locale.notificaitonh,
+        widget: SizedBox.shrink(),
       ),
-      body: (!isLoading && listdata!=null && listdata.length>0)
-          ?ListView.builder(
-        itemCount: listdata.length,
-          shrinkWrap: true,
-          itemBuilder: (context,index){
-        return Card(
-          elevation: 1,
-          margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-          clipBehavior: Clip.hardEdge,
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
-            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10)
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('${listdata[index].notiTitle}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: kMainTextColor),),
-                SizedBox(height: 5,),
-                Visibility(
-                  visible: ('${listdata[index].image}'!=null && '${listdata[index].image}'!='N/A' && '${listdata[index].image}'.toUpperCase()!='NULL'),
+      body: (!isLoading && listdata != null && listdata.length > 0)
+          ? ListView.builder(
+              itemCount: listdata.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 1,
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  clipBehavior: Clip.hardEdge,
                   child: Container(
-                    height: 120,
-                    margin: const EdgeInsets.only(bottom: 5),
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.network('${listdata[index].image}'),
+                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${listdata[index].notiTitle}',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: kMainTextColor),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Visibility(
+                          visible: ('${listdata[index].image}' != null &&
+                              '${listdata[index].image}' != 'N/A' &&
+                              '${listdata[index].image}'.toUpperCase() !=
+                                  'NULL'),
+                          child: Container(
+                            height: 120,
+                            margin: const EdgeInsets.only(bottom: 5),
+                            width: MediaQuery.of(context).size.width,
+                            child: Image.network('${listdata[index].image}'),
+                          ),
+                        ),
+                        Text(
+                          '${listdata[index].notiMessage}',
+                          style: TextStyle(fontSize: 13, color: kMainTextColor),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Text('${listdata[index].notiMessage}',style: TextStyle(fontSize: 13,color: kMainTextColor),),
-              ],
+                );
+              })
+          : Align(
+              child: isLoading
+                  ? SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(),
+                    )
+                  : Text(locale.nonotificaiton),
             ),
-          ),
-        );
-      }):Align(
-        child: isLoading?SizedBox(
-          width: 50,
-          height: 50,
-          child: CircularProgressIndicator(),
-        ):Text(locale.nonotificaiton),
-      ),
     );
   }
 }

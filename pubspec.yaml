@@ -111,6 +111,7 @@ flutter:
   assets:
     - assets/
     - assets/ProductImages/
+    - assets/MyAccount/
     - assets/PaymentIcons/
     - assets/CategoryImages/
     - assets/Subscribe/

@@ -34,10 +34,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: title.isEmpty ? const SizedBox.shrink() : Text(title),
       actions: [
         widget ??
-            Image.asset(
-              'assets/bell-icon.png',
-              width: 50,
-              height: 50,
+            InkWell(
+              highlightColor: kTransparentColor,
+              splashColor: kTransparentColor,
+              onTap: () =>
+                  Navigator.pushNamed(context, PageRoutes.notification),
+              child: Image.asset(
+                'assets/bell-icon.png',
+                width: 50,
+                height: 50,
+              ),
             )
       ],
     );

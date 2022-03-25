@@ -16,6 +16,7 @@ import 'package:user/Components/constantfile.dart';
 import 'package:user/Components/drawer.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/Checkout/my_orders.dart';
+import 'package:user/Pages/HomePage/account_page.dart';
 import 'package:user/Pages/HomePage/newhomep1.dart';
 import 'package:user/Pages/locpage/locationpage.dart';
 import 'package:user/Pages/newaccountscreen.dart';
@@ -362,494 +363,527 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                       });
                     })
                   : null,
-              appBar: PreferredSize(
-                preferredSize: Size(MediaQuery.of(context).size.width,
-                    (selectedInd == 0 || selectedInd == 1) ? 120 : 60),
-                child: Container(
-                  color: const Color(0xff022e2b),
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Visibility(
-                        visible: (selectedInd == 0),
-                        child: AppBar(
-                          backgroundColor: const Color(0xff022e2b),
-                          automaticallyImplyLeading: false,
-                          centerTitle: false,
-                          // bottom: PreferredSize(
-                          //   preferredSize: Size(
-                          //       MediaQuery.of(context).size.width,
-                          //       (selectedInd == 0 || selectedInd == 1)
-                          //           ? 60
-                          //           : 30),
-                          //   child: Row(children: [
-                          //     IconButton(
-                          //         onPressed: () {
-                          //           _scaffoldKey.currentState.openDrawer();
-                          //         },
-                          //         icon: Image.asset('menu-icon.png')),
-                          //     TextFormField(
-                          //       readOnly: false,
-                          //       autofocus: false,
-                          //       controller: searchController,
-                          //       style: Theme.of(context)
-                          //           .textTheme
-                          //           .headline6
-                          //           .copyWith(
-                          //               color: kMainTextColor, fontSize: 18),
-                          //       decoration: InputDecoration(
-                          //           hintText: hintText,
-                          //           hintStyle:
-                          //               Theme.of(context).textTheme.subtitle2,
-                          //           contentPadding:
-                          //               EdgeInsets.symmetric(vertical: 10),
-                          //           prefixIcon: Icon(
-                          //             Icons.search,
-                          //             color: kIconColor,
-                          //           ),
-                          //           focusColor: kMainTextColor,
-                          //           border: OutlineInputBorder(
-                          //               borderRadius: BorderRadius.circular(10),
-                          //               borderSide: BorderSide.none),
-                          //           enabledBorder: OutlineInputBorder(
-                          //               borderRadius: BorderRadius.circular(10),
-                          //               borderSide: BorderSide.none),
-                          //           errorBorder: OutlineInputBorder(
-                          //               borderRadius: BorderRadius.circular(10),
-                          //               borderSide: BorderSide.none),
-                          //           focusedBorder: OutlineInputBorder(
-                          //               borderRadius: BorderRadius.circular(10),
-                          //               borderSide: BorderSide.none)),
-                          //     ),
-                          //   ]),
-                          // ),
-                          title: BlocBuilder<LocationEmitter, LocEmitterModel>(
-                              builder: (context, locModel) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Column(
+              appBar: selectedInd == 3
+                  ? const PreferredSize(
+                      preferredSize: Size(0, 0),
+                      child: SizedBox.shrink(),
+                    )
+                  : PreferredSize(
+                      preferredSize: Size(MediaQuery.of(context).size.width,
+                          (selectedInd == 0 || selectedInd == 1) ? 120 : 60),
+                      child: Container(
+                        color: const Color(0xff022e2b),
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Visibility(
+                              visible: (selectedInd == 0),
+                              child: AppBar(
+                                backgroundColor: const Color(0xff022e2b),
+                                automaticallyImplyLeading: false,
+                                centerTitle: false,
+                                // bottom: PreferredSize(
+                                //   preferredSize: Size(
+                                //       MediaQuery.of(context).size.width,
+                                //       (selectedInd == 0 || selectedInd == 1)
+                                //           ? 60
+                                //           : 30),
+                                //   child: Row(children: [
+                                //     IconButton(
+                                //         onPressed: () {
+                                //           _scaffoldKey.currentState.openDrawer();
+                                //         },
+                                //         icon: Image.asset('menu-icon.png')),
+                                //     TextFormField(
+                                //       readOnly: false,
+                                //       autofocus: false,
+                                //       controller: searchController,
+                                //       style: Theme.of(context)
+                                //           .textTheme
+                                //           .headline6
+                                //           .copyWith(
+                                //               color: kMainTextColor, fontSize: 18),
+                                //       decoration: InputDecoration(
+                                //           hintText: hintText,
+                                //           hintStyle:
+                                //               Theme.of(context).textTheme.subtitle2,
+                                //           contentPadding:
+                                //               EdgeInsets.symmetric(vertical: 10),
+                                //           prefixIcon: Icon(
+                                //             Icons.search,
+                                //             color: kIconColor,
+                                //           ),
+                                //           focusColor: kMainTextColor,
+                                //           border: OutlineInputBorder(
+                                //               borderRadius: BorderRadius.circular(10),
+                                //               borderSide: BorderSide.none),
+                                //           enabledBorder: OutlineInputBorder(
+                                //               borderRadius: BorderRadius.circular(10),
+                                //               borderSide: BorderSide.none),
+                                //           errorBorder: OutlineInputBorder(
+                                //               borderRadius: BorderRadius.circular(10),
+                                //               borderSide: BorderSide.none),
+                                //           focusedBorder: OutlineInputBorder(
+                                //               borderRadius: BorderRadius.circular(10),
+                                //               borderSide: BorderSide.none)),
+                                //     ),
+                                //   ]),
+                                // ),
+                                title: BlocBuilder<LocationEmitter,
+                                        LocEmitterModel>(
+                                    builder: (context, locModel) {
+                                  return Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const Text(
-                                        'Dhavil Shah',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white),
-                                      ),
-                                      MaterialButton(
-                                        onPressed: () {
-                                          // locEmitterP.hitLocEmitter(LocEmitterModel(0.0,0.0,'Searching your location',true,null));
-                                          var latdi = 0.0;
-                                          var lngdi = 0.0;
-                                          if (lat != null && lng != null) {
-                                            latdi = lat;
-                                            lngdi = lng;
-                                          }
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return LocationPage(latdi, lngdi);
-                                          }));
-                                        },
-                                        splashColor: kWhiteColor,
-                                        color: Colors.transparent,
-                                        child: Row(
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          // crossAxisAlignment:
-                                          //     CrossAxisAlignment.center,
-                                          // runSpacing: 0.0,
-                                          // spacing: 0.0,
-                                          // runAlignment: WrapAlignment.center,
-                                          // alignment: WrapAlignment.center,
+                                      Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            const Icon(
-                                              Icons.location_on,
-                                              color: Colors.yellow,
-                                              size: 20,
+                                            const Text(
+                                              'Dhavil Shah',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white),
                                             ),
-                                            const SizedBox(
-                                              width: 1,
-                                            ),
-                                            SizedBox(
-                                              width: 250,
-                                              child: Text(
-                                                locModel.address,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                // textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14),
+                                            MaterialButton(
+                                              onPressed: () {
+                                                // locEmitterP.hitLocEmitter(LocEmitterModel(0.0,0.0,'Searching your location',true,null));
+                                                var latdi = 0.0;
+                                                var lngdi = 0.0;
+                                                if (lat != null &&
+                                                    lng != null) {
+                                                  latdi = lat;
+                                                  lngdi = lng;
+                                                }
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                  return LocationPage(
+                                                      latdi, lngdi);
+                                                }));
+                                              },
+                                              splashColor: kWhiteColor,
+                                              color: Colors.transparent,
+                                              child: Row(
+                                                // mainAxisAlignment:
+                                                //     MainAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                // crossAxisAlignment:
+                                                //     CrossAxisAlignment.center,
+                                                // runSpacing: 0.0,
+                                                // spacing: 0.0,
+                                                // runAlignment: WrapAlignment.center,
+                                                // alignment: WrapAlignment.center,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.location_on,
+                                                    color: Colors.yellow,
+                                                    size: 20,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 1,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 250,
+                                                    child: Text(
+                                                      locModel.address,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      // textAlign: TextAlign.center,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
+                                              elevation: 0,
+                                              padding: const EdgeInsets.all(0),
+                                              minWidth: 0,
+                                              height: 20,
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              focusColor: kButtonBorderColor
+                                                  .withOpacity(0.8),
                                             ),
-                                          ],
-                                        ),
-                                        elevation: 0,
-                                        padding: const EdgeInsets.all(0),
-                                        minWidth: 0,
-                                        height: 20,
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                        focusColor:
-                                            kButtonBorderColor.withOpacity(0.8),
-                                      ),
-                                    ]),
-                                // Text(
-                                //   (locModel.storeFinderData != null &&
-                                //           locModel.storeFinderData
-                                //                   .store_opening_time !=
-                                //               null)
-                                //       ? '${locModel.storeFinderData.store_opening_time} AM - ${locModel.storeFinderData.store_closing_time} PM'
-                                //       : '00:00 AM - 00:00 PM',
-                                //   style: TextStyle(
-                                //       color: kMainTextColor, fontSize: 12),
-                                // )
-                              ],
-                            );
-                          }),
-                          actions: [
-                            Visibility(
-                              // visible: (storeFinderData != null &&
-                              //     storeFinderData.store_id != null),
-                              visible: true,
-                              child: IconButton(
-                                icon: Image.asset('assets/bell-icon.png'),
-                                onPressed: () async {
-                                  // TODO: Need to change this to notifications instead of scanner
-                                  scanProductCode(context);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                        visible: (selectedInd == 1 || selectedInd == 3),
-                        child: AppBar(
-                          backgroundColor: kWhiteColor,
-                          title: Text(
-                            appbarTitle,
-                            style: TextStyle(
-                                color: kMainTextColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          automaticallyImplyLeading: true,
-                          centerTitle: true,
-                          leading: GestureDetector(
-                            onTap: () {
-                              navBottomProvider.hitBottomNavigation(
-                                  0,
-                                  appbarTitle,
-                                  '${locale.searchOnGoGrocer}$appname');
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: const Icon(Icons.arrow_back_ios_sharp),
-                          ),
-                          actions: [
-                            Visibility(
-                              // visible: (storeFinderData != null &&
-                              //     storeFinderData.store_id != null),
-                              visible: true,
-                              child: IconButton(
-                                icon: const ImageIcon(AssetImage(
-                                  'assets/scanner_logo.png',
-                                )),
-                                onPressed: () async {
-                                  scanProductCode(context);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                        visible: (selectedInd == 1),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                  color: kWhiteColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: const Color(0xfff8f8f8), width: 1),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Color(0xfff8f8f8),
-                                        offset: Offset(-1, -1),
-                                        blurRadius: 5),
-                                    BoxShadow(
-                                        color: Color(0xfff8f8f8),
-                                        offset: Offset(1, 1),
-                                        blurRadius: 5)
-                                  ]),
-                              child: TextFormField(
-                                readOnly: (selectedInd != 1),
-                                onTap: () {
-                                  categoryList = cateP.getCategoryList();
-                                },
-                                onChanged: (value) {
-                                  List<CategoryDataModel> chList = categoryList
-                                      .where((element) => element.title
-                                          .toString()
-                                          .toLowerCase()
-                                          .contains(value.toLowerCase()))
-                                      .toList();
-                                  cateP.emitCategoryList(
-                                      chList, storeFinderData);
-                                },
-                                autofocus: false,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .copyWith(
-                                        color: kMainTextColor, fontSize: 18),
-                                decoration: InputDecoration(
-                                    hintText: hintText,
-                                    hintStyle:
-                                        Theme.of(context).textTheme.subtitle2,
-                                    contentPadding:
-                                        EdgeInsets.symmetric(vertical: 10),
-                                    prefixIcon: Icon(
-                                      Icons.search,
-                                      color: kIconColor,
+                                          ]),
+                                      // Text(
+                                      //   (locModel.storeFinderData != null &&
+                                      //           locModel.storeFinderData
+                                      //                   .store_opening_time !=
+                                      //               null)
+                                      //       ? '${locModel.storeFinderData.store_opening_time} AM - ${locModel.storeFinderData.store_closing_time} PM'
+                                      //       : '00:00 AM - 00:00 PM',
+                                      //   style: TextStyle(
+                                      //       color: kMainTextColor, fontSize: 12),
+                                      // )
+                                    ],
+                                  );
+                                }),
+                                actions: [
+                                  Visibility(
+                                    // visible: (storeFinderData != null &&
+                                    //     storeFinderData.store_id != null),
+                                    visible: true,
+                                    child: IconButton(
+                                      icon: Image.asset('assets/bell-icon.png'),
+                                      onPressed: () async {
+                                        // TODO: Need to change this to notifications instead of scanner
+                                        scanProductCode(context);
+                                      },
                                     ),
-                                    focusColor: kMainTextColor,
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    errorBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none)),
+                                  ),
+                                ],
                               ),
-                            )),
+                            ),
+                            Visibility(
+                              visible: (selectedInd == 1 || selectedInd == 3),
+                              child: AppBar(
+                                backgroundColor: kWhiteColor,
+                                title: Text(
+                                  appbarTitle,
+                                  style: TextStyle(
+                                      color: kMainTextColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                automaticallyImplyLeading: true,
+                                centerTitle: true,
+                                leading: GestureDetector(
+                                  onTap: () {
+                                    navBottomProvider.hitBottomNavigation(
+                                        0,
+                                        appbarTitle,
+                                        '${locale.searchOnGoGrocer}$appname');
+                                  },
+                                  behavior: HitTestBehavior.opaque,
+                                  child: const Icon(Icons.arrow_back_ios_sharp),
+                                ),
+                                actions: [
+                                  Visibility(
+                                    // visible: (storeFinderData != null &&
+                                    //     storeFinderData.store_id != null),
+                                    visible: true,
+                                    child: IconButton(
+                                      icon: const ImageIcon(AssetImage(
+                                        'assets/scanner_logo.png',
+                                      )),
+                                      onPressed: () async {
+                                        scanProductCode(context);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Visibility(
+                              visible: (selectedInd == 1),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    decoration: BoxDecoration(
+                                        color: kWhiteColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: const Color(0xfff8f8f8),
+                                            width: 1),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              color: Color(0xfff8f8f8),
+                                              offset: Offset(-1, -1),
+                                              blurRadius: 5),
+                                          BoxShadow(
+                                              color: Color(0xfff8f8f8),
+                                              offset: Offset(1, 1),
+                                              blurRadius: 5)
+                                        ]),
+                                    child: TextFormField(
+                                      readOnly: (selectedInd != 1),
+                                      onTap: () {
+                                        categoryList = cateP.getCategoryList();
+                                      },
+                                      onChanged: (value) {
+                                        List<CategoryDataModel> chList =
+                                            categoryList
+                                                .where((element) => element
+                                                    .title
+                                                    .toString()
+                                                    .toLowerCase()
+                                                    .contains(
+                                                        value.toLowerCase()))
+                                                .toList();
+                                        cateP.emitCategoryList(
+                                            chList, storeFinderData);
+                                      },
+                                      autofocus: false,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6
+                                          .copyWith(
+                                              color: kMainTextColor,
+                                              fontSize: 18),
+                                      decoration: InputDecoration(
+                                          hintText: hintText,
+                                          hintStyle: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2,
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          prefixIcon: Icon(
+                                            Icons.search,
+                                            color: kIconColor,
+                                          ),
+                                          focusColor: kMainTextColor,
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          errorBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none)),
+                                    ),
+                                  )),
+                                  Visibility(
+                                    visible: (selectedInd == 2),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Badge(
+                                        padding: EdgeInsets.all(5),
+                                        position:
+                                            BadgePosition(end: -2.5, top: -5),
+                                        animationDuration:
+                                            Duration(milliseconds: 300),
+                                        animationType: BadgeAnimationType.slide,
+                                        badgeContent: Text(
+                                          _NotiCounter.toString(),
+                                          style: TextStyle(
+                                              color: kWhiteColor, fontSize: 10),
+                                        ),
+                                        child: Icon(
+                                          Icons.filter_list_sharp,
+                                          color: kMainTextColor,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Visibility(
+                              visible: (selectedInd == 0),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                child: Row(children: [
+                                  IconButton(
+                                    icon: Image.asset(
+                                      'assets/menu-icon.png',
+                                    ),
+                                    iconSize: 40,
+                                    onPressed: () {
+                                      _scaffoldKey.currentState.openDrawer();
+                                    },
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      height: 40,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                              color: Color(0xfff8f8f8),
+                                              width: 1),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Color(0xfff8f8f8),
+                                            ),
+                                            BoxShadow(
+                                              color: Color(0xfff8f8f8),
+                                            )
+                                          ]),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: Icon(
+                                              Icons.search,
+                                              color: kIconColor,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 2.0),
+                                            child: Text('$hintText',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle2),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                              ),
+                            ),
                             Visibility(
                               visible: (selectedInd == 2),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Badge(
-                                  padding: EdgeInsets.all(5),
-                                  position: BadgePosition(end: -2.5, top: -5),
-                                  animationDuration:
-                                      Duration(milliseconds: 300),
-                                  animationType: BadgeAnimationType.slide,
-                                  badgeContent: Text(
-                                    _NotiCounter.toString(),
-                                    style: TextStyle(
-                                        color: kWhiteColor, fontSize: 10),
-                                  ),
-                                  child: Icon(
-                                    Icons.filter_list_sharp,
-                                    color: kMainTextColor,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                        visible: (selectedInd == 0),
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: Row(children: [
-                            IconButton(
-                              icon: Image.asset(
-                                'assets/menu-icon.png',
-                              ),
-                              iconSize: 40,
-                              onPressed: () {
-                                _scaffoldKey.currentState.openDrawer();
-                              },
-                            ),
-                            Expanded(
-                              child: Container(
-                                height: 40,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: Color(0xfff8f8f8), width: 1),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Color(0xfff8f8f8),
-                                      ),
-                                      BoxShadow(
-                                        color: Color(0xfff8f8f8),
-                                      )
-                                    ]),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: Icon(
-                                        Icons.search,
-                                        color: kIconColor,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 2.0),
-                                      child: Text('$hintText',
-                                          style: Theme.of(context)
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    decoration: BoxDecoration(
+                                        color: kWhiteColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: Color(0xfff8f8f8), width: 1),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              color: Color(0xfff8f8f8),
+                                              offset: Offset(-1, -1),
+                                              blurRadius: 5),
+                                          BoxShadow(
+                                              color: Color(0xfff8f8f8),
+                                              offset: Offset(1, 1),
+                                              blurRadius: 5)
+                                        ]),
+                                    child: TextFormField(
+                                      readOnly: false,
+                                      autofocus: false,
+                                      controller: searchController,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6
+                                          .copyWith(
+                                              color: kMainTextColor,
+                                              fontSize: 18),
+                                      decoration: InputDecoration(
+                                          hintText: hintText,
+                                          hintStyle: Theme.of(context)
                                               .textTheme
-                                              .subtitle2),
+                                              .subtitle2,
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          prefixIcon: Icon(
+                                            Icons.search,
+                                            color: kIconColor,
+                                          ),
+                                          focusColor: kMainTextColor,
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          errorBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none)),
                                     ),
-                                  ],
-                                ),
+                                  )),
+                                  Visibility(
+                                    // visible: (selectedInd == 2),
+                                    visible: false,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Badge(
+                                        padding: const EdgeInsets.all(5),
+                                        position: const BadgePosition(
+                                            end: -2.5, top: -5),
+                                        animationDuration:
+                                            const Duration(milliseconds: 300),
+                                        animationType: BadgeAnimationType.slide,
+                                        badgeContent: Text(
+                                          _NotiCounter.toString(),
+                                          style: TextStyle(
+                                              color: kWhiteColor, fontSize: 10),
+                                        ),
+                                        child: Icon(
+                                          Icons.filter_list_sharp,
+                                          color: kMainTextColor,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                          ]),
-                        ),
-                      ),
-                      Visibility(
-                        visible: (selectedInd == 2),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                  color: kWhiteColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: Color(0xfff8f8f8), width: 1),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Color(0xfff8f8f8),
-                                        offset: Offset(-1, -1),
-                                        blurRadius: 5),
-                                    BoxShadow(
-                                        color: Color(0xfff8f8f8),
-                                        offset: Offset(1, 1),
-                                        blurRadius: 5)
-                                  ]),
-                              child: TextFormField(
-                                readOnly: false,
-                                autofocus: false,
-                                controller: searchController,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .copyWith(
-                                        color: kMainTextColor, fontSize: 18),
-                                decoration: InputDecoration(
-                                    hintText: hintText,
-                                    hintStyle:
-                                        Theme.of(context).textTheme.subtitle2,
-                                    contentPadding:
-                                        EdgeInsets.symmetric(vertical: 10),
-                                    prefixIcon: Icon(
-                                      Icons.search,
-                                      color: kIconColor,
-                                    ),
-                                    focusColor: kMainTextColor,
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    errorBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none)),
-                              ),
-                            )),
                             Visibility(
                               // visible: (selectedInd == 2),
                               visible: false,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Badge(
-                                  padding: const EdgeInsets.all(5),
-                                  position:
-                                      const BadgePosition(end: -2.5, top: -5),
-                                  animationDuration:
-                                      const Duration(milliseconds: 300),
-                                  animationType: BadgeAnimationType.slide,
-                                  badgeContent: Text(
-                                    _NotiCounter.toString(),
-                                    style: TextStyle(
-                                        color: kWhiteColor, fontSize: 10),
-                                  ),
-                                  child: Icon(
-                                    Icons.filter_list_sharp,
-                                    color: kMainTextColor,
-                                  ),
+                              child: Container(
+                                height: 52,
+                                alignment: Alignment.centerLeft,
+                                child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 7),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          border: Border.all(
+                                              color: kButtonBorderColor,
+                                              width: 2)),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Category",
+                                            style: TextStyle(
+                                                color: kMainTextColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          const Icon(
+                                            Icons.close,
+                                            size: 20,
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  itemCount: 5,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
-                      Visibility(
-                        // visible: (selectedInd == 2),
-                        visible: false,
-                        child: Container(
-                          height: 52,
-                          alignment: Alignment.centerLeft,
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 7),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    border: Border.all(
-                                        color: kButtonBorderColor, width: 2)),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Category",
-                                      style: TextStyle(
-                                          color: kMainTextColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    const Icon(
-                                      Icons.close,
-                                      size: 20,
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                            itemCount: 5,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
               extendBody: true,
               body: BlocBuilder<CartListProvider, List<CartItemData>>(
                   builder: (context, cartList) {
@@ -905,7 +939,8 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                       fromHomePage: true,
                     ),
                     Wallet(),
-                    AccountData(),
+                    const AccountPage(),
+                    // AccountData(),
                   ],
                 );
               }),
