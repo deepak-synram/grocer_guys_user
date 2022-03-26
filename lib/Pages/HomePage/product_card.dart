@@ -7,7 +7,7 @@ import 'package:user/providergrocery/categoryprovider.dart';
 import 'package:user/providergrocery/locemittermodel.dart';
 
 class ProductCard extends StatefulWidget {
-  final int index;
+  final int index, total;
   final String image, title, previousPrice, newPrice, symbol;
   final dynamic subTitle;
 
@@ -18,6 +18,7 @@ class ProductCard extends StatefulWidget {
 
   const ProductCard({
     Key key,
+    @required this.total,
     @required this.locModel,
     @required this.catP,
     @required this.locale,
@@ -37,7 +38,23 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  List<bool> _isLiked = [false, false];
+  List<bool> _isLiked = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getIsLikedArray();
+  }
+
+  _getIsLikedArray() {
+    List<bool> _temp = [];
+    for (int i = 0; i < widget.total; i++) {
+      _temp.add(false);
+    }
+    setState(() {
+      _isLiked = _temp;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +80,7 @@ class _ProductCardState extends State<ProductCard> {
         ),
       ),
       child: Padding(
+        key: Key('product-card-${widget.index.toString()}'),
         padding: const EdgeInsets.all(8.0),
         child: Material(
           elevation: 10,

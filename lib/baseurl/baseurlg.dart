@@ -2,16 +2,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 var imagebaseUrl1 = 'https://manage.thegroceryguys.co.in/';
 var imagebaseUrl;
-void getImageBaseUrl() async{
-  SharedPreferences.getInstance().then((value){
-    if(value.containsKey('imagebaseurl')){
-      imagebaseUrl = value.getString('imagebaseurl')+'/';
-    }else{
+void getImageBaseUrl() async {
+  SharedPreferences.getInstance().then((value) {
+    if (value.containsKey('imagebaseurl')) {
+      imagebaseUrl = value.getString('imagebaseurl') + '/';
+    } else {
       imagebaseUrl = imagebaseUrl1;
     }
   });
 }
-var apibaseUrl = imagebaseUrl1+'api/';
+
+var apibaseUrl = imagebaseUrl1 + 'api/';
+var stagingBaseUrl = imagebaseUrl1 + 'api/';
 var cityUri = Uri.parse('${apibaseUrl}city');
 var appInfoUri = Uri.parse('${apibaseUrl}app_info');
 var checkOtpOnOffUri = Uri.parse('${apibaseUrl}checkotponoff');
@@ -24,7 +26,8 @@ var loginUri = Uri.parse('${apibaseUrl}login');
 var socialLoginUri = Uri.parse('${apibaseUrl}social_login');
 var checkNumUri = Uri.parse('${apibaseUrl}checknum');
 var loginVerifyPhoneUri = Uri.parse('${apibaseUrl}loginverify_phone');
-var loginVerifyViaFirebaseUri = Uri.parse('${apibaseUrl}loginverify_via_firebase');
+var loginVerifyViaFirebaseUri =
+    Uri.parse('${apibaseUrl}loginverify_via_firebase');
 var categoryUri = Uri.parse('${apibaseUrl}catee');
 var storeBannerUri = Uri.parse('${apibaseUrl}store_banner');
 var whatsNewUri = Uri.parse('${apibaseUrl}whatsnew');
@@ -66,7 +69,8 @@ var forGetPasswordByEmailUri = Uri.parse('${apibaseUrl}forgot_password');
 var verifyOtpPPhoneUri = Uri.parse('${apibaseUrl}verify_otp');
 var verifyOtpPFirebaseUri = Uri.parse('${apibaseUrl}firebase_otp_ver');
 var changePasswordUri = Uri.parse('${apibaseUrl}change_password');
-var walletRechargeHistoryUri = Uri.parse('${apibaseUrl}wallet_recharge_history');
+var walletRechargeHistoryUri =
+    Uri.parse('${apibaseUrl}wallet_recharge_history');
 var cancellingReasonsUri = Uri.parse('${apibaseUrl}cancelling_reasons');
 var deleteOrderUri = Uri.parse('${apibaseUrl}delete_order');
 var tagProductUri = Uri.parse('${apibaseUrl}tag_product');
@@ -80,7 +84,7 @@ var googleMapUri = Uri.parse('${apibaseUrl}google_map');
 var mapboxUri = Uri.parse('${apibaseUrl}mapbox');
 var notificationListUri = Uri.parse('${apibaseUrl}notificationlist');
 var redeemRewardsUri = Uri.parse('${apibaseUrl}redeem_rewards');
-  var oneApiUri = Uri.parse('${apibaseUrl}oneapi');
+var oneApiUri = Uri.parse('${apibaseUrl}oneapi');
 var topCatPrductUri = Uri.parse('${apibaseUrl}top_cat_prduct');
 var clearCartUri = Uri.parse('${apibaseUrl}clear_cart');
 var notiProductUri = Uri.parse('${apibaseUrl}noti_product');
@@ -100,4 +104,7 @@ var updateNotifyByUri = Uri.parse('${apibaseUrl}updatenotifyby');
 var checksumUri = Uri.parse('${apibaseUrl}checksum');
 var orderStatusUri = Uri.parse('https://securegw.paytm.in/v3/order/status');
 
+// subscription
+var subscriptionUri = Uri.parse(
+    'http://staging.thegroceryguys.co.in/api/get_subscriber_products');
 var appname = 'The Grocery Guys';

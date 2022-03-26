@@ -70,8 +70,7 @@ class ProductsCardWithTitle extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 2,
+              itemCount: 5,
               itemBuilder: (context, index) {
                 String _string = index == 0
                     ? 'assets/CategoryImages/oil.png'
@@ -91,6 +90,7 @@ class ProductsCardWithTitle extends StatelessWidget {
                   locModel: locModel,
                   catP: catP,
                   locale: locale,
+                  total: 5,
                 );
               },
             ),

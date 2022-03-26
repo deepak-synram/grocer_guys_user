@@ -78,7 +78,7 @@ class NotificationShowState extends State<NotificationShow> {
       backgroundColor: Color(0xfff8f8f8),
       appBar: CustomAppBar(
         title: locale.notificaitonh,
-        widget: SizedBox.shrink(),
+        widget: const SizedBox.shrink(),
       ),
       body: (!isLoading && listdata != null && listdata.length > 0)
           ? ListView.builder(

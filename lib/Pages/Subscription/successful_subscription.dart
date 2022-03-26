@@ -22,12 +22,12 @@ class _SuccessfulSubscriptionState extends State<SuccessfulSubscription> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: 'Your Subscription Successful',
         leading: 'assets/ic_cross.png',
         centerTile: false,
         widget: const SizedBox.shrink(),
-        function: true,
+        function: () => Navigator.of(context).pushNamed(PageRoutes.homePage),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),

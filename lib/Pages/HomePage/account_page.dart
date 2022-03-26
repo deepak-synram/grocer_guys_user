@@ -18,18 +18,23 @@ import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
 import 'package:user/beanmodel/appinfo.dart';
 import 'package:user/beanmodel/signinmodel.dart';
+import 'package:user/providergrocery/bottomnavigationnavigator.dart';
 import 'package:user/providergrocery/locationemiter.dart';
 import 'package:user/providergrocery/profileprovider.dart';
 
 class AccountPage extends StatefulWidget {
-  const AccountPage({Key key}) : super(key: key);
+  final BottomNavigationEmitter navBottomProvider;
+  const AccountPage({
+    Key key,
+    @required this.navBottomProvider,
+  }) : super(key: key);
 
   @override
   State<AccountPage> createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
-  static final FacebookLogin facebookSignIn = new FacebookLogin();
+  static final FacebookLogin facebookSignIn = FacebookLogin();
   GoogleSignIn _googleSignIn;
   bool showProgress = false;
   bool enteredFirst = false;
@@ -430,7 +435,11 @@ class _AccountPageState extends State<AccountPage> {
     }
 
     return Scaffold(
-      appBar: const CustomAppBar(title: 'My Account'),
+      appBar: CustomAppBar(
+        title: 'My Account',
+        function: () =>
+            widget.navBottomProvider.hitBottomNavigation(0, '--', '--'),
+      ),
       body: BlocBuilder<ProfileProvider, AppInfoModel>(
         builder: (context, signModel) {
           if (signModel != null) {
@@ -482,7 +491,7 @@ class _AccountPageState extends State<AccountPage> {
                                 //     ),
                                 //   ],
                                 // ),
-                                isThreeLine: true,
+                                isThreeLine: false,
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -531,7 +540,7 @@ class _AccountPageState extends State<AccountPage> {
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 child: Container(
-                                  height: 60,
+                                  height: 70,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     color: kWhiteColor,
@@ -555,7 +564,7 @@ class _AccountPageState extends State<AccountPage> {
                                         //       ),
                                         //       TextSpan(
                                         //         text: ' Location Location Location Location Location Location',
-
+                            
                                         //         style: TextStyle(
                                         //           fontWeight: FontWeight.w400,
                                         //           color: kMainColor,

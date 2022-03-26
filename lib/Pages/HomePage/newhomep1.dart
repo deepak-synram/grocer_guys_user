@@ -87,7 +87,12 @@ class NewHomeView1State extends State<NewHomeView1> {
   @override
   void initState() {
     getapCurrency();
+    getSubscribeProducts();
     super.initState();
+  }
+
+  getSubscribeProducts() async {
+    
   }
 
   void getapCurrency() async {

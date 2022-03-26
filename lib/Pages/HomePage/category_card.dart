@@ -6,7 +6,7 @@ class CategoryCard extends StatelessWidget {
   final double bottomImgHeight;
   final double iconSize;
   final double fontSize;
-  final double height;
+  final double width;
 
   const CategoryCard({
     Key key,
@@ -15,7 +15,7 @@ class CategoryCard extends StatelessWidget {
     @required this.color,
     @required this.icon,
     this.bottomImgHeight,
-    this.height,
+    this.width = 120,
     this.iconSize,
     this.fontSize,
   }) : super(key: key);
@@ -25,34 +25,22 @@ class CategoryCard extends StatelessWidget {
     return Material(
       borderRadius: BorderRadius.circular(15.0),
       elevation: 10,
-      child: height == null
-          ? SizedBox(
-              width: 120,
-              child: _cardWidget(
-                  bottomImage: bottomImage,
-                  title: title,
-                  fontSize: fontSize,
-                  color: color,
-                  icon: icon,
-                  iconSize: iconSize),
-            )
-          : SizedBox(
-              width: 120,
-              height: height,
-              child: _cardWidget(
-                  bottomImage: bottomImage,
-                  title: title,
-                  fontSize: fontSize,
-                  color: color,
-                  icon: icon,
-                  iconSize: iconSize),
-            ),
+      child: SizedBox(
+        width: width,
+        child: CardWidget(
+            bottomImage: bottomImage,
+            title: title,
+            fontSize: fontSize,
+            color: color,
+            icon: icon,
+            iconSize: iconSize),
+      ),
     );
   }
 }
 
-class _cardWidget extends StatelessWidget {
-  const _cardWidget({
+class CardWidget extends StatelessWidget {
+  const CardWidget({
     Key key,
     @required this.bottomImage,
     @required this.title,
@@ -76,13 +64,17 @@ class _cardWidget extends StatelessWidget {
         Positioned.fill(
           child: ClipRRect(
             borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(15.0),
-                bottomRight: Radius.circular(15.0)),
-            child: Image.asset(
-              bottomImage,
-              fit: BoxFit.fitWidth,
-              height: MediaQuery.of(context).size.height * 0.5,
-              alignment: Alignment.bottomLeft,
+              bottomLeft: Radius.circular(15.0),
+              bottomRight: Radius.circular(15.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 60),
+              child: Image.asset(
+                bottomImage,
+                fit: BoxFit.fitWidth,
+                height: MediaQuery.of(context).size.height * 0.5,
+                alignment: Alignment.bottomLeft,
+              ),
             ),
           ),
         ),

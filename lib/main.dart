@@ -6,13 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_drawer/slide_drawer.dart';
 import 'package:user/Locale/locales.dart';
-import 'package:user/Pages/Intro/splash.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/style.dart';
-import 'package:user/baseurl/baseurlg.dart';
+import 'package:user/constants.dart';
 import 'package:user/language_cubit.dart';
 import 'package:user/providergrocery/add2cartsnap.dart';
 import 'package:user/providergrocery/appnoticeprovider.dart';
@@ -28,9 +26,13 @@ import 'package:user/providergrocery/searchprovide.dart';
 import 'package:user/providergrocery/singleapiemiter.dart';
 import 'package:user/providergrocery/trndlistemitter.dart';
 
+import 'Pages/HomePage/newhomeview.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+  Key slidingDrawer = const Key('trial');
+
   try {
     FirebaseApp app;
     List<FirebaseApp> firebase = Firebase.apps;
@@ -147,25 +149,216 @@ Future<void> main() async {
                 // initialRoute: PageRoutes.signInRoot,
                 routes: PageRoutes().routes(),
                 title: 'Grocer Guys',
-                home: SplashScreen()
-                // SlideDrawer(
-                //   items: [
-                //     MenuItem('Home', onTap: () {}),
-                //     MenuItem('Project', onTap: () {}),
-                //     MenuItem('Favourite', onTap: () {}),
-                //     MenuItem('Profile', onTap: () {}),
-                //     MenuItem('Setting', onTap: () {}),
-                //   ],
-                //   child: SplashScreen(),
-                // ),
-                );
+                home: Builder(builder: (context) {
+                  return SlideDrawer(
+                    alignment: SlideDrawerAlignment.start,
+                    backgroundColor: const Color(0xffffc339),
+                    contentDrawer: Container(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        textBaseline: TextBaseline.ideographic,
+                        children: [
+                          Builder(builder: (context) {
+                            return IconButton(
+                              padding: const EdgeInsets.all(0),
+                              iconSize: 40,
+                              onPressed: () {
+                                SlideDrawer.of(context).toggle();
+                              },
+                              icon: Image.asset(
+                                'assets/DrawerIcon/close-button.png',
+                              ),
+                            );
+                          }),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            'Hello, Dhvanil',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    size: 30,
+                                    color: Colors.black,
+                                  ),
+                                  // const SizedBox(width: 1),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 2.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: const [
+                                        Text(
+                                          'Home:',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                        Text(
+                                          'Some address which is',
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          style: TextStyle(color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // const SizedBox(width: 3),
+                              Image.asset(
+                                'assets/DrawerIcon/pencil-icon.png',
+                                height: 30,
+                                width: 30,
+                              ),
+                            ],
+                          ),
+                          // ListTile(
+                          //   leading: Icon(Icons.location_on),
+                          //   title: Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                          //     children: const [
+                          //       Text(
+                          //         'Home:',
+                          //         style: TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             color: Colors.black),
+                          //       ),
+                          //       Text(
+                          //         'Some address which is locatable and in india',
+                          //         overflow: TextOverflow.ellipsis,
+                          //         style: TextStyle(color: Colors.black),
+                          //       )
+                          //     ],
+                          //   ),
+                          //   trailing: Image.asset('assets/pencil-icon.png'),
+                          // ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const MItems(
+                            index: 0,
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          const Text(
+                            'my information',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          const SizedBox(height: 4),
+                          for (var i = 1; i < 6; i++)
+                            MItems(
+                              index: i,
+                            ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            'other',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          const SizedBox(height: 4),
+                          for (var i = 6; i < 11; i++)
+                            MItems(
+                              index: i,
+                            ),
+                          const SizedBox(height: 10),
+                          // IconButton(onPressed: (){}, icon: Image.asset('assets/log-out-white.png'))
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              height: 40,
+                              width: 120,
+                              padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Center(
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/DrawerIcon/log-out-white.png',
+                                      height: 25,
+                                      width: 25,
+                                    ),
+                                    const SizedBox(width: 2),
+                                    const Text(
+                                      'LOGOUT',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'app version v2.0',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
+                      ),
+                    ),
+                    // Need to change it to splash screen
+                    child: NewHomeView(),
+                  );
+                }));
           },
         ),
       )),
     );
-    // child: ((skip != null && skip) || (result != null && result))
-    //     ? GroceryHome()
-    //     : GroceryLogin()));
+  }
+}
+
+class MItems extends StatelessWidget {
+  final int index;
+
+  const MItems({
+    Key key,
+    this.index,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Row(
+        children: [
+          Image.asset(
+            // 'assets/bell-icon.png',
+            Constants.iconArray[index],
+            height: 40,
+            width: 40,
+          ),
+          const SizedBox(
+            width: 4,
+          ),
+          Text(
+            Constants.itemArray[index],
+            // 'Home',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+      const SizedBox(
+        height: 4,
+      ),
+    ]);
   }
 }
 

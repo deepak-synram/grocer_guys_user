@@ -7,11 +7,13 @@ import 'package:badges/badges.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_drawer/slide_drawer.dart';
 import 'package:user/Components/constantfile.dart';
 import 'package:user/Components/drawer.dart';
 import 'package:user/Locale/locales.dart';
@@ -31,6 +33,7 @@ import 'package:user/beanmodel/banner/bannerdeatil.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
 import 'package:user/beanmodel/category/categorymodel.dart';
 import 'package:user/beanmodel/storefinder/storefinderbean.dart';
+import 'package:user/constants.dart';
 import 'package:user/providergrocery/appnoticeprovider.dart';
 import 'package:user/providergrocery/benprovider/toporbottombean.dart';
 import 'package:user/providergrocery/bottomnavigationnavigator.dart';
@@ -70,7 +73,6 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
   var userName = '--';
   var http = Client();
   dynamic _scanBarcode;
-  int selectedInd = 0;
   int _NotiCounter = 0;
   dynamic hintText = '--';
   String appbarTitle = '--';
@@ -345,14 +347,14 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
         bottom: true,
         child: BlocBuilder<BottomNavigationEmitter, TopAndBottomTitleCount>(
           builder: (context, bottonNavigator) {
-            selectedInd = bottonNavigator.navigation;
+            Constants.selectedInd = bottonNavigator.navigation;
             appbarTitle = bottonNavigator.apptitle;
             hintText = bottonNavigator.searchTitle;
             return Scaffold(
               key: _scaffoldKey,
               backgroundColor: const Color(0xfff8f8f8),
               drawerScrimColor: kTransparentColor,
-              drawer: (selectedInd == 0)
+              drawer: (Constants.selectedInd == 0)
                   ? buildDrawer(context, userName, islogin, onHit: () {
                       SharedPreferences.getInstance().then((pref) {
                         pref.clear().then((value) {
@@ -363,14 +365,18 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                       });
                     })
                   : null,
-              appBar: selectedInd == 3
+              appBar: Constants.selectedInd == 3
                   ? const PreferredSize(
                       preferredSize: Size(0, 0),
                       child: SizedBox.shrink(),
                     )
                   : PreferredSize(
-                      preferredSize: Size(MediaQuery.of(context).size.width,
-                          (selectedInd == 0 || selectedInd == 1) ? 120 : 60),
+                      preferredSize: Size(
+                          MediaQuery.of(context).size.width,
+                          (Constants.selectedInd == 0 ||
+                                  Constants.selectedInd == 1)
+                              ? 120
+                              : 60),
                       child: Container(
                         color: const Color(0xff022e2b),
                         alignment: Alignment.center,
@@ -378,15 +384,19 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Visibility(
-                              visible: (selectedInd == 0),
+                              visible: (Constants.selectedInd == 0),
                               child: AppBar(
-                                backgroundColor: const Color(0xff022e2b),
+                                backgroundColor: kMainColor,
+                                systemOverlayStyle: SystemUiOverlayStyle(
+                                  // Status bar color
+                                  statusBarColor: kMainColor,
+                                ),
                                 automaticallyImplyLeading: false,
                                 centerTitle: false,
                                 // bottom: PreferredSize(
                                 //   preferredSize: Size(
                                 //       MediaQuery.of(context).size.width,
-                                //       (selectedInd == 0 || selectedInd == 1)
+                                //       (Constants.selectedInd == 0 || Constants.selectedInd == 1)
                                 //           ? 60
                                 //           : 30),
                                 //   child: Row(children: [
@@ -543,9 +553,10 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               ),
                             ),
                             Visibility(
-                              visible: (selectedInd == 1 || selectedInd == 3),
+                              visible: (Constants.selectedInd == 1 ||
+                                  Constants.selectedInd == 3),
                               child: AppBar(
-                                backgroundColor: kWhiteColor,
+                                backgroundColor: kMainColor,
                                 title: Text(
                                   appbarTitle,
                                   style: TextStyle(
@@ -583,7 +594,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               ),
                             ),
                             Visibility(
-                              visible: (selectedInd == 1),
+                              visible: (Constants.selectedInd == 1),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -607,7 +618,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                               blurRadius: 5)
                                         ]),
                                     child: TextFormField(
-                                      readOnly: (selectedInd != 1),
+                                      readOnly: (Constants.selectedInd != 1),
                                       onTap: () {
                                         categoryList = cateP.getCategoryList();
                                       },
@@ -662,7 +673,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                     ),
                                   )),
                                   Visibility(
-                                    visible: (selectedInd == 2),
+                                    visible: (Constants.selectedInd == 2),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10),
@@ -689,7 +700,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               ),
                             ),
                             Visibility(
-                              visible: (selectedInd == 0),
+                              visible: (Constants.selectedInd == 0),
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: Row(children: [
@@ -699,7 +710,8 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                     ),
                                     iconSize: 40,
                                     onPressed: () {
-                                      _scaffoldKey.currentState.openDrawer();
+                                      // _scaffoldKey.currentState.openDrawer();
+                                      SlideDrawer.of(context)?.toggle();
                                     },
                                   ),
                                   Expanded(
@@ -748,7 +760,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               ),
                             ),
                             Visibility(
-                              visible: (selectedInd == 2),
+                              visible: (Constants.selectedInd == 2),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -811,7 +823,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                     ),
                                   )),
                                   Visibility(
-                                    // visible: (selectedInd == 2),
+                                    // visible: (Constants.selectedInd == 2),
                                     visible: false,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -839,7 +851,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               ),
                             ),
                             Visibility(
-                              // visible: (selectedInd == 2),
+                              // visible: (Constants.selectedInd == 2),
                               visible: false,
                               child: Container(
                                 height: 52,
@@ -888,7 +900,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
               body: BlocBuilder<CartListProvider, List<CartItemData>>(
                   builder: (context, cartList) {
                 cartItemd = List.from(cartList);
-                // print('indi d - $selectedInd ${bottonNavigator.navigation}');
+                // print('indi d - $Constants.selectedInd ${bottonNavigator.navigation}');
                 return IndexedStack(
                   index: bottonNavigator.navigation,
                   children: [
@@ -939,7 +951,8 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                       fromHomePage: true,
                     ),
                     Wallet(),
-                    const AccountPage(),
+                    AccountPage(navBottomProvider: navBottomProvider),
+
                     // AccountData(),
                   ],
                 );
@@ -1014,7 +1027,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                 }
               }),
               bottomNavigationBar: BottomAppBar(
-                notchMargin: 12.0,
+                notchMargin: 6.0,
                 color: kMainColor,
                 clipBehavior: Clip.antiAlias,
                 shape: const CircularNotchedRectangle(),
@@ -1036,7 +1049,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 '${locale.searchOnGoGrocer}$appname');
                             // hintText = ;
                             // setState(() {
-                            //   selectedInd = 0;
+                            //   Constants.selectedInd = 0;
                             //
                             // });
                           },
@@ -1046,7 +1059,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                             children: [
                               // Icon(
                               //   Icons.home,
-                              //   color: (selectedInd == 0)
+                              //   color: (Constants.selectedInd == 0)
                               //       ? kMainColor
                               //       : kMainTextColor,
                               // ),
@@ -1054,14 +1067,14 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 'assets/ic_home.png',
                                 width: 20,
                                 height: 20,
-                                color: (selectedInd == 0)
+                                color: (Constants.selectedInd == 0)
                                     ? kWhiteColor
                                     : kNavigationButtonColor,
                               ),
                               Text(
                                 "Home",
                                 style: TextStyle(
-                                    color: (selectedInd == 0)
+                                    color: (Constants.selectedInd == 0)
                                         ? kWhiteColor
                                         : kNavigationButtonColor),
                               )
@@ -1071,7 +1084,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                         // Expanded(
                         //   child: GestureDetector(
                         //     onTap: () {
-                        //       if (selectedInd != 1) {
+                        //       if (Constants.selectedInd != 1) {
                         //         navBottomProvider.hitBottomNavigation(
                         //             1,
                         //             'Category',
@@ -1095,14 +1108,14 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                         //       children: [
                         //         Icon(
                         //           Icons.category,
-                        //           color: (selectedInd == 1)
+                        //           color: (Constants.selectedInd == 1)
                         //               ? kMainColor
                         //               : kMainTextColor,
                         //         ),
                         //         Text(
                         //           "Categories",
                         //           style: TextStyle(
-                        //               color: (selectedInd == 1)
+                        //               color: (Constants.selectedInd == 1)
                         //                   ? kMainColor
                         //                   : kMainTextColor),
                         //         )
@@ -1119,7 +1132,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 '${locale.searchOnGoGrocer}$appname');
                             // hintText = ;
                             // setState(() {
-                            //   selectedInd = 2;
+                            //   Constants.selectedInd = 2;
                             // });
                           },
                           behavior: HitTestBehavior.opaque,
@@ -1128,7 +1141,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                             children: [
                               // Icon(
                               //   Icons.search,
-                              //   color: (selectedInd == 2)
+                              //   color: (Constants.selectedInd == 2)
                               //       ? kMainColor
                               //       : kMainTextColor,
                               // ),
@@ -1136,7 +1149,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 'assets/ic_order.png',
                                 width: 20,
                                 height: 20,
-                                color: (selectedInd == 1)
+                                color: (Constants.selectedInd == 1)
                                     ? kWhiteColor
                                     : kNavigationButtonColor,
                               ),
@@ -1144,7 +1157,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               Text(
                                 "Order",
                                 style: TextStyle(
-                                    color: (selectedInd == 1)
+                                    color: (Constants.selectedInd == 1)
                                         ? kWhiteColor
                                         : kNavigationButtonColor),
                               )
@@ -1166,7 +1179,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 2, 'My Wallets', hintText);
 
                             // setState(() {
-                            //   // selectedInd = 0;
+                            //   // Constants.selectedInd = 0;
                             // });
                           },
                           behavior: HitTestBehavior.opaque,
@@ -1190,7 +1203,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                   'assets/ic_wallet.png',
                                   width: 20,
                                   height: 20,
-                                  color: (selectedInd == 2)
+                                  color: (Constants.selectedInd == 2)
                                       ? kWhiteColor
                                       : kNavigationButtonColor,
 
@@ -1203,7 +1216,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               Text(
                                 "Wallet",
                                 style: TextStyle(
-                                  color: (selectedInd == 2)
+                                  color: (Constants.selectedInd == 2)
                                       ? kWhiteColor
                                       : kNavigationButtonColor,
                                 ),
@@ -1213,10 +1226,10 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // if (selectedInd != 0 &&
-                            //     selectedInd != 1 &&
-                            //     selectedInd != 2 &&
-                            //     selectedInd != 3) {
+                            // if (Constants.selectedInd != 0 &&
+                            //     Constants.selectedInd != 1 &&
+                            //     Constants.selectedInd != 2 &&
+                            //     Constants.selectedInd != 3) {
                             //   cartCountP.hitCounter();
                             // }
                             navBottomProvider.hitBottomNavigation(
@@ -1228,7 +1241,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                             children: [
                               // Icon(
                               //   Icons.account_box_outlined,
-                              //   color: (selectedInd == 3)
+                              //   color: (Constants.selectedInd == 3)
                               //       ? kMainColor
                               //       : kMainTextColor,
                               // ),
@@ -1236,7 +1249,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 'assets/ic_account.png',
                                 width: 20,
                                 height: 20,
-                                color: (selectedInd == 3)
+                                color: (Constants.selectedInd == 3)
                                     ? kWhiteColor
                                     : kNavigationButtonColor,
                               ),
@@ -1244,7 +1257,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                               Text(
                                 "Account",
                                 style: TextStyle(
-                                    color: (selectedInd == 3)
+                                    color: (Constants.selectedInd == 3)
                                         ? kWhiteColor
                                         : kNavigationButtonColor),
                               )

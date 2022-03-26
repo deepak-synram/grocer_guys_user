@@ -5,14 +5,15 @@ import 'package:user/Theme/colors.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title, leading;
   final widget;
-  final bool centerTile, function;
+  final bool centerTile;
+  final function;
 
   const CustomAppBar({
     Key key,
     @required this.title,
     this.widget,
     this.centerTile = true,
-    this.function = false,
+    this.function,
     this.leading = 'assets/back-arrow-icon.png',
   }) : super(key: key);
 
@@ -22,9 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: kMainColor,
       centerTitle: centerTile,
       leading: InkWell(
-        onTap: () => function
-            ? Navigator.of(context).pushNamed(PageRoutes.homePage)
-            : Navigator.of(context).pop(),
+        onTap: function ?? () => Navigator.of(context).pop(),
         child: Image.asset(
           leading,
           width: 15,

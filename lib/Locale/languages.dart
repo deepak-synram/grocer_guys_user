@@ -8,7 +8,7 @@ class Languages {
       'myOrders': 'MY ORDERS',
       'offers': 'OFFERS',
       'myWishList': 'MY WISHLIST',
-      'aboutUs': 'ABOUT US',
+      'aboutUs': 'About Us',
       'helpCentre': 'HELP CENTRE',
       'language': 'LANGUAGE',
       'logout': 'LOGOUT',
