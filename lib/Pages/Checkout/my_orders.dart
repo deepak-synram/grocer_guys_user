@@ -30,7 +30,7 @@ class _MyOrdersState extends State<MyOrders> {
   bool isloading = false;
   bool islogin = false;
   dynamic apcurrency;
-  MyOrderDataMain selectedDatabean = null;
+  MyOrderDataMain selectedDatabean;
 
   TextEditingController messageController = TextEditingController();
 
@@ -42,6 +42,13 @@ class _MyOrdersState extends State<MyOrders> {
   void initState() {
     super.initState();
     getOrderList();
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   void getAppCurrency() async {
@@ -104,27 +111,29 @@ class _MyOrdersState extends State<MyOrders> {
       },
       child: Scaffold(
         backgroundColor: Colors.grey[200],
-        appBar: widget.fromHomePage ? null : PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: AppBar(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            leading: IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_left_sharp,
-                size: 30,
+        appBar: widget.fromHomePage
+            ? null
+            : PreferredSize(
+                preferredSize: Size.fromHeight(60),
+                child: AppBar(
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  leading: IconButton(
+                    icon: Icon(
+                      Icons.keyboard_arrow_left_sharp,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, PageRoutes.homePage, (route) => false);
+                    },
+                  ),
+                  title: Text(
+                    locale.myOrders,
+                    style: TextStyle(color: kMainTextColor),
+                  ),
+                  centerTitle: true,
+                ),
               ),
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, PageRoutes.homePage, (route) => false);
-              },
-            ),
-            title: Text(
-              locale.myOrders,
-              style: TextStyle(color: kMainTextColor),
-            ),
-            centerTitle: true,
-          ),
-        ),
         body: (!isloading && myOrders != null && myOrders.length > 0)
             ? Stack(
                 children: [

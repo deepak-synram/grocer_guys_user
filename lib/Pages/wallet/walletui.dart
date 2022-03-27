@@ -38,6 +38,13 @@ class WalletState extends State<Wallet> {
     getWalletAmount();
   }
 
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   void getWalletAmount() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
@@ -48,10 +55,11 @@ class WalletState extends State<Wallet> {
     });
     var url = walletAmountUri;
     var http = Client();
-    http.post(url, body: {'user_id': '${pref.getInt('user_id')}'}, headers: {
+    http.post(url, body: {
+      'user_id': '${pref.getInt('user_id')}'
+    }, headers: {
       'Authorization': 'Bearer ${pref.getString('accesstoken')}'
-    }).then(
-        (value) {
+    }).then((value) {
       print('resp - ${value.body}');
       if (value.statusCode == 200) {
         // amount
@@ -168,8 +176,7 @@ class WalletState extends State<Wallet> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    WalletHistory()));
+                                builder: (context) => WalletHistory()));
                       }),
                 ),
                 Expanded(
@@ -178,10 +185,10 @@ class WalletState extends State<Wallet> {
                       widigitName: locale.walletrecharge,
                       clickCallBack: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    RechargeWallet(''))).then((value) {
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RechargeWallet('')))
+                            .then((value) {
                           if (value) {
                             getWalletAmount();
                           }
@@ -198,8 +205,7 @@ class WalletState extends State<Wallet> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    SpentAnalysisPage()));
+                                builder: (context) => SpentAnalysisPage()));
                       }),
                 ),
               ],
@@ -213,46 +219,49 @@ class WalletState extends State<Wallet> {
               height: 52,
               margin: EdgeInsets.symmetric(vertical: 10),
               child: ListView.separated(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  primary: true,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    int rsValue = 500*(index+1);
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    RechargeWallet('$rsValue'))).then((value) {
-                          if (value) {
-                            getWalletAmount();
-                          }
-                        }).catchError((e) {
-                          print(e);
-                        });
-                      },
-                      child: Container(
-                        height: 52,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: kMainColor,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            border: Border.all(color: kWhiteColor, width: 2)),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        // margin: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          '$apCurrency - $rsValue',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16, color: kWhiteColor),
-                        ),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                primary: true,
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  int rsValue = 500 * (index + 1);
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  RechargeWallet('$rsValue'))).then((value) {
+                        if (value) {
+                          getWalletAmount();
+                        }
+                      }).catchError((e) {
+                        print(e);
+                      });
+                    },
+                    child: Container(
+                      height: 52,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: kMainColor,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          border: Border.all(color: kWhiteColor, width: 2)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      // margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        '$apCurrency - $rsValue',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16, color: kWhiteColor),
                       ),
-                    );
-                  },
-                separatorBuilder: (context,i){
-                    return Divider(thickness: 2,color: Colors.transparent,);
+                    ),
+                  );
+                },
+                separatorBuilder: (context, i) {
+                  return Divider(
+                    thickness: 2,
+                    color: Colors.transparent,
+                  );
                 },
               ),
             ),
