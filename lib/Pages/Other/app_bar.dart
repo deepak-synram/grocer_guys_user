@@ -20,34 +20,46 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10.0),
+          bottomRight: Radius.circular(10.0),
+        ),
+      ),
       backgroundColor: kMainColor,
       centerTitle: centerTile,
-      leading: InkWell(
-        onTap: function ?? () => Navigator.of(context).pop(),
-        child: Image.asset(
-          leading,
-          width: 15,
-          height: 15,
+      leading: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: function ?? () => Navigator.of(context).pop(),
+          child: Image.asset(
+            leading,
+            width: 15,
+            height: 15,
+          ),
         ),
       ),
       title: title.isEmpty ? const SizedBox.shrink() : Text(title),
       actions: [
-        widget ??
-            InkWell(
-              highlightColor: kTransparentColor,
-              splashColor: kTransparentColor,
-              onTap: () =>
-                  Navigator.pushNamed(context, PageRoutes.notification),
-              child: Image.asset(
-                'assets/bell-icon.png',
-                width: 50,
-                height: 50,
+        Padding(
+          padding: const EdgeInsets.only(right: 5),
+          child: widget ??
+              InkWell(
+                highlightColor: kTransparentColor,
+                splashColor: kTransparentColor,
+                onTap: () =>
+                    Navigator.pushNamed(context, PageRoutes.notification),
+                child: Image.asset(
+                  'assets/bell-icon.png',
+                  width: 50,
+                  height: 50,
+                ),
               ),
-            )
+        ),
       ],
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(48.0);
+  Size get preferredSize => const Size.fromHeight(56.0);
 }

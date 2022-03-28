@@ -541,12 +541,22 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                     // visible: (storeFinderData != null &&
                                     //     storeFinderData.store_id != null),
                                     visible: true,
-                                    child: IconButton(
-                                      icon: Image.asset('assets/bell-icon.png'),
-                                      onPressed: () async {
-                                        // TODO: Need to change this to notifications instead of scanner
-                                        scanProductCode(context);
-                                      },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: InkWell(
+                                        splashColor: kTransparentColor,
+                                        highlightColor: kTransparentColor,
+                                        onTap: () => Navigator.pushNamed(
+                                          context,
+                                          PageRoutes.notification,
+                                        ),
+                                        child: Image.asset(
+                                          'assets/bell-icon.png',
+                                          width: 40,
+                                          height: 40,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -593,112 +603,114 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 ],
                               ),
                             ),
-                            Visibility(
-                              visible: (Constants.selectedInd == 1),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    decoration: BoxDecoration(
-                                        color: kWhiteColor,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: const Color(0xfff8f8f8),
-                                            width: 1),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                              color: Color(0xfff8f8f8),
-                                              offset: Offset(-1, -1),
-                                              blurRadius: 5),
-                                          BoxShadow(
-                                              color: Color(0xfff8f8f8),
-                                              offset: Offset(1, 1),
-                                              blurRadius: 5)
-                                        ]),
-                                    child: TextFormField(
-                                      readOnly: (Constants.selectedInd != 1),
-                                      onTap: () {
-                                        categoryList = cateP.getCategoryList();
-                                      },
-                                      onChanged: (value) {
-                                        List<CategoryDataModel> chList =
-                                            categoryList
-                                                .where((element) => element
-                                                    .title
-                                                    .toString()
-                                                    .toLowerCase()
-                                                    .contains(
-                                                        value.toLowerCase()))
-                                                .toList();
-                                        cateP.emitCategoryList(
-                                            chList, storeFinderData);
-                                      },
-                                      autofocus: false,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          .copyWith(
-                                              color: kMainTextColor,
-                                              fontSize: 18),
-                                      decoration: InputDecoration(
-                                          hintText: hintText,
-                                          hintStyle: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2,
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          prefixIcon: Icon(
-                                            Icons.search,
-                                            color: kIconColor,
-                                          ),
-                                          focusColor: kMainTextColor,
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none),
-                                          errorBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none)),
-                                    ),
-                                  )),
-                                  Visibility(
-                                    visible: (Constants.selectedInd == 2),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Badge(
-                                        padding: EdgeInsets.all(5),
-                                        position:
-                                            BadgePosition(end: -2.5, top: -5),
-                                        animationDuration:
-                                            Duration(milliseconds: 300),
-                                        animationType: BadgeAnimationType.slide,
-                                        badgeContent: Text(
-                                          _NotiCounter.toString(),
-                                          style: TextStyle(
-                                              color: kWhiteColor, fontSize: 10),
-                                        ),
-                                        child: Icon(
-                                          Icons.filter_list_sharp,
-                                          color: kMainTextColor,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                            // Visibility(
+                            //   visible: (Constants.selectedInd == 1),
+                            //   child: Row(
+                            //     children: [
+                            //       Expanded(
+                            //           child: Container(
+                            //         margin: const EdgeInsets.symmetric(
+                            //             horizontal: 20),
+                            //         decoration: BoxDecoration(
+                            //             color: kWhiteColor,
+                            //             borderRadius: BorderRadius.circular(10),
+                            //             border: Border.all(
+                            //                 color: const Color(0xfff8f8f8),
+                            //                 width: 1),
+                            //             boxShadow: const [
+                            //               BoxShadow(
+                            //                   color: Color(0xfff8f8f8),
+                            //                   offset: Offset(-1, -1),
+                            //                   blurRadius: 5),
+                            //               BoxShadow(
+                            //                   color: Color(0xfff8f8f8),
+                            //                   offset: Offset(1, 1),
+                            //                   blurRadius: 5)
+                            //             ]),
+                            //         child: TextFormField(
+                            //           readOnly: (Constants.selectedInd != 1),
+                            //           onTap: () {
+                            //             categoryList = cateP.getCategoryList();
+                            //           },
+                            //           onChanged: (value) {
+                            //             List<CategoryDataModel> chList =
+                            //                 categoryList
+                            //                     .where((element) => element
+                            //                         .title
+                            //                         .toString()
+                            //                         .toLowerCase()
+                            //                         .contains(
+                            //                             value.toLowerCase()))
+                            //                     .toList();
+                            //             cateP.emitCategoryList(
+                            //                 chList, storeFinderData);
+                            //           },
+                            //           autofocus: false,
+                            //           style: Theme.of(context)
+                            //               .textTheme
+                            //               .headline6
+                            //               .copyWith(
+                            //                   color: kMainTextColor,
+                            //                   fontSize: 18),
+                            //           decoration: InputDecoration(
+                            //               hintText: hintText,
+                            //               hintStyle: Theme.of(context)
+                            //                   .textTheme
+                            //                   .subtitle2,
+                            //               contentPadding:
+                            //                   const EdgeInsets.symmetric(
+                            //                 vertical: 10,
+                            //               ),
+                            //               prefixIcon: Icon(
+                            //                 Icons.search,
+                            //                 color: kIconColor,
+                            //               ),
+                            //               focusColor: kMainTextColor,
+                            //               border: OutlineInputBorder(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(10),
+                            //                   borderSide: BorderSide.none),
+                            //               enabledBorder: OutlineInputBorder(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(10),
+                            //                   borderSide: BorderSide.none),
+                            //               errorBorder: OutlineInputBorder(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(10),
+                            //                   borderSide: BorderSide.none),
+                            //               focusedBorder: OutlineInputBorder(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(10),
+                            //                   borderSide: BorderSide.none)),
+                            //         ),
+                            //       )),
+                            //       Visibility(
+                            //         visible: (Constants.selectedInd == 2),
+                            //         child: Padding(
+                            //           padding: const EdgeInsets.symmetric(
+                            //               horizontal: 10),
+                            //           child: Badge(
+                            //             padding: const EdgeInsets.all(5),
+                            //             position: const BadgePosition(
+                            //                 end: -2.5, top: -5),
+                            //             animationDuration:
+                            //                 const Duration(milliseconds: 300),
+                            //             animationType: BadgeAnimationType.slide,
+                            //             badgeContent: Text(
+                            //               _NotiCounter.toString(),
+                            //               style: TextStyle(
+                            //                   color: kWhiteColor, fontSize: 10),
+                            //             ),
+                            //             child: Icon(
+                            //               Icons.filter_list_sharp,
+                            //               color: kMainTextColor,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
                             Visibility(
                               visible: (Constants.selectedInd == 0),
                               child: Padding(
@@ -759,97 +771,97 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 ]),
                               ),
                             ),
-                            Visibility(
-                              visible: (Constants.selectedInd == 2),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    decoration: BoxDecoration(
-                                        color: kWhiteColor,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: Color(0xfff8f8f8), width: 1),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                              color: Color(0xfff8f8f8),
-                                              offset: Offset(-1, -1),
-                                              blurRadius: 5),
-                                          BoxShadow(
-                                              color: Color(0xfff8f8f8),
-                                              offset: Offset(1, 1),
-                                              blurRadius: 5)
-                                        ]),
-                                    child: TextFormField(
-                                      readOnly: false,
-                                      autofocus: false,
-                                      controller: searchController,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          .copyWith(
-                                              color: kMainTextColor,
-                                              fontSize: 18),
-                                      decoration: InputDecoration(
-                                          hintText: hintText,
-                                          hintStyle: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2,
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          prefixIcon: Icon(
-                                            Icons.search,
-                                            color: kIconColor,
-                                          ),
-                                          focusColor: kMainTextColor,
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none),
-                                          errorBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none)),
-                                    ),
-                                  )),
-                                  Visibility(
-                                    // visible: (Constants.selectedInd == 2),
-                                    visible: false,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Badge(
-                                        padding: const EdgeInsets.all(5),
-                                        position: const BadgePosition(
-                                            end: -2.5, top: -5),
-                                        animationDuration:
-                                            const Duration(milliseconds: 300),
-                                        animationType: BadgeAnimationType.slide,
-                                        badgeContent: Text(
-                                          _NotiCounter.toString(),
-                                          style: TextStyle(
-                                              color: kWhiteColor, fontSize: 10),
-                                        ),
-                                        child: Icon(
-                                          Icons.filter_list_sharp,
-                                          color: kMainTextColor,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                            // Visibility(
+                            //   visible: (Constants.selectedInd == 2),
+                            //   child: Row(
+                            //     children: [
+                            //       Expanded(
+                            //           child: Container(
+                            //         margin: const EdgeInsets.symmetric(
+                            //             horizontal: 20),
+                            //         decoration: BoxDecoration(
+                            //             color: kWhiteColor,
+                            //             borderRadius: BorderRadius.circular(10),
+                            //             border: Border.all(
+                            //                 color: Color(0xfff8f8f8), width: 1),
+                            //             boxShadow: const [
+                            //               BoxShadow(
+                            //                   color: Color(0xfff8f8f8),
+                            //                   offset: Offset(-1, -1),
+                            //                   blurRadius: 5),
+                            //               BoxShadow(
+                            //                   color: Color(0xfff8f8f8),
+                            //                   offset: Offset(1, 1),
+                            //                   blurRadius: 5)
+                            //             ]),
+                            //         child: TextFormField(
+                            //           readOnly: false,
+                            //           autofocus: false,
+                            //           controller: searchController,
+                            //           style: Theme.of(context)
+                            //               .textTheme
+                            //               .headline6
+                            //               .copyWith(
+                            //                   color: kMainTextColor,
+                            //                   fontSize: 18),
+                            //           decoration: InputDecoration(
+                            //               hintText: hintText,
+                            //               hintStyle: Theme.of(context)
+                            //                   .textTheme
+                            //                   .subtitle2,
+                            //               contentPadding: EdgeInsets.symmetric(
+                            //                   vertical: 10),
+                            //               prefixIcon: Icon(
+                            //                 Icons.search,
+                            //                 color: kIconColor,
+                            //               ),
+                            //               focusColor: kMainTextColor,
+                            //               border: OutlineInputBorder(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(10),
+                            //                   borderSide: BorderSide.none),
+                            //               enabledBorder: OutlineInputBorder(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(10),
+                            //                   borderSide: BorderSide.none),
+                            //               errorBorder: OutlineInputBorder(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(10),
+                            //                   borderSide: BorderSide.none),
+                            //               focusedBorder: OutlineInputBorder(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(10),
+                            //                   borderSide: BorderSide.none)),
+                            //         ),
+                            //       )),
+                            //       Visibility(
+                            //         // visible: (Constants.selectedInd == 2),
+                            //         visible: false,
+                            //         child: Padding(
+                            //           padding: const EdgeInsets.symmetric(
+                            //               horizontal: 10),
+                            //           child: Badge(
+                            //             padding: const EdgeInsets.all(5),
+                            //             position: const BadgePosition(
+                            //                 end: -2.5, top: -5),
+                            //             animationDuration:
+                            //                 const Duration(milliseconds: 300),
+                            //             animationType: BadgeAnimationType.slide,
+                            //             badgeContent: Text(
+                            //               _NotiCounter.toString(),
+                            //               style: TextStyle(
+                            //                   color: kWhiteColor, fontSize: 10),
+                            //             ),
+                            //             child: Icon(
+                            //               Icons.filter_list_sharp,
+                            //               color: kMainTextColor,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
                             Visibility(
                               // visible: (Constants.selectedInd == 2),
                               visible: false,
@@ -962,11 +974,19 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
               floatingActionButton: BlocBuilder<ProfileProvider, AppInfoModel>(
                   builder: (context, signModel) {
                 if (signModel != null) {
-                  return FloatingActionButton(
-                    onPressed: () {},
-                    backgroundColor: kWhiteColor,
-                    // backgroundColor: const Color.fromRGBO(246, 196, 88, 1.0),
-                    child: Image.asset('assets/ic_floating.png'),
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: kWhiteColor,
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                    padding: const EdgeInsets.all(4.0),
+                    child: SizedBox(
+                      child: Image.asset(
+                        'assets/ic_floating.png',
+                        width: 65,
+                        height: 65,
+                      ),
+                    ),
                   );
                   // return SpeedDial(
                   //     childMargin: EdgeInsets.only(bottom: 30, right: 10),

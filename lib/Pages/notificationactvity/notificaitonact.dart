@@ -75,63 +75,74 @@ class NotificationShowState extends State<NotificationShow> {
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: Color(0xfff8f8f8),
+      backgroundColor: const Color(0xfff8f8f8),
       appBar: CustomAppBar(
         title: locale.notificaitonh,
         widget: const SizedBox.shrink(),
       ),
-      body: (!isLoading && listdata != null && listdata.length > 0)
-          ? ListView.builder(
-              itemCount: listdata.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 1,
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  clipBehavior: Clip.hardEdge,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${listdata[index].notiTitle}',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: kMainTextColor),
+      body: (!isLoading && listdata != null && listdata.isNotEmpty)
+          ? SingleChildScrollView(
+              child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: listdata.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    bool isImagePresent = '${listdata[index].image}' != null &&
+                        '${listdata[index].image}' != 'N/A' &&
+                        '${listdata[index].image}'.toUpperCase() != 'NULL';
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 12.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Material(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 5.0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              title: Transform.translate(
+                                offset: Offset(isImagePresent ? -16 : 5, 0),
+                                child: Text(
+                                  '${listdata[index].notiTitle}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: kMainColor,
+                                  ),
+                                ),
+                              ),
+                              subtitle: Transform.translate(
+                                offset: Offset(isImagePresent ? -16 : 5, 0),
+                                child: Text(
+                                  '${listdata[index].notiMessage}',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: kMainTextColor,
+                                  ),
+                                ),
+                              ),
+                              leading: isImagePresent
+                                  ? Container(
+                                      height: 80,
+                                      width: 80,
+                                      margin: const EdgeInsets.only(bottom: 5),
+                                      // width: MediaQuery.of(context).size.width,
+                                      child: Image.network(
+                                          '${listdata[index].image}'),
+                                    )
+                                  : null),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Visibility(
-                          visible: ('${listdata[index].image}' != null &&
-                              '${listdata[index].image}' != 'N/A' &&
-                              '${listdata[index].image}'.toUpperCase() !=
-                                  'NULL'),
-                          child: Container(
-                            height: 120,
-                            margin: const EdgeInsets.only(bottom: 5),
-                            width: MediaQuery.of(context).size.width,
-                            child: Image.network('${listdata[index].image}'),
-                          ),
-                        ),
-                        Text(
-                          '${listdata[index].notiMessage}',
-                          style: TextStyle(fontSize: 13, color: kMainTextColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              })
+                      ),
+                    );
+                  }),
+            )
           : Align(
               child: isLoading
-                  ? SizedBox(
+                  ? const SizedBox(
                       width: 50,
                       height: 50,
                       child: CircularProgressIndicator(),
