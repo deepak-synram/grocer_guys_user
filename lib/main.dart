@@ -9,6 +9,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:slide_drawer/slide_drawer.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Routes/routes.dart';
+import 'package:user/Theme/colors.dart';
 import 'package:user/Theme/style.dart';
 import 'package:user/constants.dart';
 import 'package:user/language_cubit.dart';
@@ -57,8 +58,9 @@ Future<void> main() async {
       }
     }
   } finally {
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: kMainColor,
+    ));
 
     runApp(
       Phoenix(

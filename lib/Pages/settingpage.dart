@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
 import 'package:http/http.dart';
@@ -71,12 +72,8 @@ class SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff8f8f8),
-      appBar: AppBar(
-        backgroundColor: kWhiteColor,
-        title: Text('My Settings'),
-        centerTitle: true,
-      ),
+      backgroundColor: const Color(0xfff8f8f8),
+      appBar: const CustomAppBar(title: 'My Settings'),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -89,9 +86,7 @@ class SettingPageState extends State<SettingPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Icon(Icons.sms, size: 20.0, color: kIconColor),
-                SizedBox(
-                  width: 10,
-                ),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text("SMS",
                       style: TextStyle(
@@ -99,32 +94,36 @@ class SettingPageState extends State<SettingPage> {
                           color: kMainTextColor,
                           fontSize: 18)),
                 ),
-                SizedBox(
-                  width: 10,
-                ),
+                const SizedBox(width: 10),
                 isRuning
                     ? SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Align(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1,
-                      color: kMainColor,
-                    ),
-                  ),
-                )
+                        width: 30,
+                        height: 30,
+                        child: Align(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1,
+                            color: kMainColor,
+                          ),
+                        ),
+                      )
                     : Switch(
-                  onChanged: (value) {
-                    setState(() {
-                      valueSMS = value;
-                    });
-                    updateNotify();
-                  },
-                  value: valueSMS,
-                  activeColor: kMainColor,
-                  inactiveThumbColor: kButtonBorderColor,
-                  inactiveTrackColor: kMainColor.withOpacity(0.5),
-                )
+                        onChanged: (value) {
+                          setState(() {
+                            valueSMS = value;
+                          });
+                          updateNotify();
+                        },
+                        thumbColor: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) => kNavigationButtonColor,
+                        ),
+                        trackColor: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) => kMainColor,
+                        ),
+                        value: valueSMS,
+                        activeColor: kMainColor,
+                        inactiveThumbColor: kButtonBorderColor,
+                        inactiveTrackColor: kMainColor.withOpacity(0.5),
+                      )
               ],
             ),
           ),
@@ -152,27 +151,33 @@ class SettingPageState extends State<SettingPage> {
                 ),
                 isRuning
                     ? SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Align(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1,
-                      color: kMainColor,
-                    ),
-                  ),
-                )
+                        width: 30,
+                        height: 30,
+                        child: Align(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1,
+                            color: kMainColor,
+                          ),
+                        ),
+                      )
                     : Switch(
-                  onChanged: (value) {
-                    setState(() {
-                      valueINAPP = value;
-                    });
-                    updateNotify();
-                  },
-                  value: valueINAPP,
-                  activeColor: kMainColor,
-                  inactiveThumbColor: kButtonBorderColor,
-                  inactiveTrackColor: kMainColor.withOpacity(0.5),
-                )
+                        onChanged: (value) {
+                          setState(() {
+                            valueINAPP = value;
+                          });
+                          updateNotify();
+                        },
+                        thumbColor: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) => kNavigationButtonColor,
+                        ),
+                        trackColor: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) => kMainColor,
+                        ),
+                        value: valueINAPP,
+                        activeColor: kMainColor,
+                        inactiveThumbColor: kButtonBorderColor,
+                        inactiveTrackColor: kMainColor.withOpacity(0.5),
+                      )
               ],
             ),
           ),
@@ -216,6 +221,12 @@ class SettingPageState extends State<SettingPage> {
                           });
                           updateNotify();
                         },
+                        thumbColor: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) => kNavigationButtonColor,
+                        ),
+                        trackColor: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) => kMainColor,
+                        ),
                         value: valueEmail,
                         activeColor: kMainColor,
                         inactiveThumbColor: kButtonBorderColor,
@@ -236,19 +247,20 @@ class SettingPageState extends State<SettingPage> {
     SharedPreferences.getInstance().then((pref) {
       http.post(updateNotifyByUri, body: {
         'user_id': '${pref.getInt('user_id')}',
-        'sms': '${valueSMS?1:0}',
-        'email': '${valueEmail?1:0}',
-        'app': '${valueINAPP?1:0}',
+        'sms': '${valueSMS ? 1 : 0}',
+        'email': '${valueEmail ? 1 : 0}',
+        'app': '${valueINAPP ? 1 : 0}',
       }, headers: {
         'Authorization': 'Bearer ${pref.getString('accesstoken')}'
       }).then((value) {
         print('cart - ${value.body}');
         var uno = jsonDecode(value.body);
-        if (value.statusCode == 200 && '${uno['status']}'=='1') {
+        if (value.statusCode == 200 && '${uno['status']}' == '1') {
           pref.setBool('sms', valueSMS);
           pref.setBool('inapp', valueINAPP);
           pref.setBool('email', valueEmail);
-          Toast.show(uno['message'], context,duration: Toast.LENGTH_SHORT,gravity: Toast.CENTER);
+          Toast.show(uno['message'], context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
         }
         setState(() {
           isRuning = false;

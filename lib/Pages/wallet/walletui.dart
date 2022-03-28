@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:user/Components/drawer.dart';
 import 'package:user/Locale/locales.dart';
+import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Pages/wallet/rechargewallet.dart';
 import 'package:user/Pages/wallet/spentanalysis.dart';
 import 'package:user/Pages/wallet/wallethistory.dart';
@@ -90,327 +91,349 @@ class WalletState extends State<Wallet> {
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
     return Scaffold(
-      // drawer: buildDrawer(context, '${userName}',islogin,onHit: () {
-      //   SharedPreferences.getInstance().then((pref){
-      //     pref.clear().then((value) {
-      //       // Navigator.pushAndRemoveUntil(context,
-      //       //     MaterialPageRoute(builder: (context) {
-      //       //       return GroceryLogin();
-      //       //     }), (Route<dynamic> route) => false);
-      //       Navigator.of(context).pushNamedAndRemoveUntil(PageRoutes.signInRoot, (Route<dynamic> route) => false);
-      //     });
-      //   });
-      // }),
-      appBar: AppBar(
-        title: Text(
-          locale.mywallet,
-          style: TextStyle(color: kMainTextColor),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  Text(
-                    locale.advancevalue,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: kMainColor),
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '$apCurrency -> $amount/-',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, color: kMainTextColor),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Visibility(
-                        visible: isLoading,
-                        child: Container(
-                          height: 20,
-                          width: 20,
-                          alignment: Alignment.center,
-                          child: Align(
-                            heightFactor: 15,
-                            widthFactor: 15,
-                            alignment: Alignment.center,
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                ],
+      appBar: PreferredSize(
+        preferredSize: const Size(100, 60.0),
+        child: AppBar(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10.0),
+              bottomRight: Radius.circular(10.0),
+            ),
+          ),
+          backgroundColor: kMainColor,
+          centerTitle: true,
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () => Navigator.of(context).pop(),
+              child: Image.asset(
+                'assets/back-arrow-icon.png',
+                width: 15,
+                height: 15,
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 2,
-              color: kLightTextColor.withOpacity(0.6),
+          ),
+          title: Text(locale.mywallet),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: widget ??
+                  InkWell(
+                    highlightColor: kTransparentColor,
+                    splashColor: kTransparentColor,
+                    onTap: () =>
+                        Navigator.pushNamed(context, PageRoutes.notification),
+                    child: Image.asset(
+                      'assets/bell-icon.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                  ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
               children: [
-                Expanded(
-                  child: RowWallet(
-                      iconData: Icons.account_balance_wallet,
-                      widigitName: locale.rechargehistory,
-                      clickCallBack: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WalletHistory()));
-                      }),
+                Text(
+                  locale.advancevalue,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: kMainColor),
                 ),
-                Expanded(
-                  child: RowWallet(
-                      iconData: Icons.money,
-                      widigitName: locale.walletrecharge,
-                      clickCallBack: () {
-                        Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RechargeWallet('')))
-                            .then((value) {
-                          if (value) {
-                            getWalletAmount();
-                          }
-                        }).catchError((e) {
-                          print(e);
-                        });
-                      }),
+                SizedBox(
+                  height: 6,
                 ),
-                Expanded(
-                  child: RowWallet(
-                      iconData: Icons.money_off,
-                      widigitName: locale.spentanalysis,
-                      clickCallBack: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SpentAnalysisPage()));
-                      }),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$apCurrency -> $amount/-',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, color: kMainTextColor),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Visibility(
+                      visible: isLoading,
+                      child: Container(
+                        height: 20,
+                        width: 20,
+                        alignment: Alignment.center,
+                        child: Align(
+                          heightFactor: 15,
+                          widthFactor: 15,
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 40,
                 ),
               ],
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 2,
-              color: kLightTextColor.withOpacity(0.6),
-            ),
-            Container(
-              height: 52,
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: ListView.separated(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                primary: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  int rsValue = 500 * (index + 1);
-                  return GestureDetector(
-                    onTap: () {
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 2,
+            color: kLightTextColor.withOpacity(0.6),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: RowWallet(
+                    iconData: Icons.account_balance_wallet,
+                    widigitName: locale.rechargehistory,
+                    clickCallBack: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  RechargeWallet('$rsValue'))).then((value) {
+                              builder: (context) => WalletHistory()));
+                    }),
+              ),
+              Expanded(
+                child: RowWallet(
+                    iconData: Icons.money,
+                    widigitName: locale.walletrecharge,
+                    clickCallBack: () {
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RechargeWallet('')))
+                          .then((value) {
                         if (value) {
                           getWalletAmount();
                         }
                       }).catchError((e) {
                         print(e);
                       });
-                    },
-                    child: Container(
-                      height: 52,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: kMainColor,
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          border: Border.all(color: kWhiteColor, width: 2)),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      // margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        '$apCurrency - $rsValue',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, color: kWhiteColor),
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, i) {
-                  return Divider(
-                    thickness: 2,
-                    color: Colors.transparent,
-                  );
-                },
+                    }),
               ),
+              Expanded(
+                child: RowWallet(
+                    iconData: Icons.money_off,
+                    widigitName: locale.spentanalysis,
+                    clickCallBack: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SpentAnalysisPage()));
+                    }),
+              ),
+            ],
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 2,
+            color: kLightTextColor.withOpacity(0.6),
+          ),
+          Container(
+            height: 52,
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: ListView.separated(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              primary: true,
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                int rsValue = 500 * (index + 1);
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RechargeWallet('$rsValue'))).then((value) {
+                      if (value) {
+                        getWalletAmount();
+                      }
+                    }).catchError((e) {
+                      print(e);
+                    });
+                  },
+                  child: Container(
+                    height: 52,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: kMainColor,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(color: kWhiteColor, width: 2)),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    // margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      '$apCurrency - $rsValue',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, color: kWhiteColor),
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (context, i) {
+                return Divider(
+                  thickness: 2,
+                  color: Colors.transparent,
+                );
+              },
             ),
-            // ListView.separated(
-            //   shrinkWrap: true,
-            //   scrollDirection: Axis.horizontal,
-            //   itemCount: 10,
-            //   itemBuilder: (context, index) {
-            //     return GestureDetector(
-            //       onTap: () {
-            //         Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //                 builder: (context) =>
-            //                     RechargeWallet('500'))).then((value) {
-            //           if (value) {
-            //             getWalletAmount();
-            //           }
-            //         }).catchError((e) {
-            //           print(e);
-            //         });
-            //       },
-            //       child: Card(
-            //         elevation: 4,
-            //         color: kWhiteColor,
-            //         clipBehavior: Clip.hardEdge,
-            //         child: Container(
-            //           decoration: BoxDecoration(
-            //               color: kWhiteColor,
-            //               borderRadius: BorderRadius.all(Radius.circular(15))),
-            //           child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.start,
-            //             crossAxisAlignment: CrossAxisAlignment.stretch,
-            //             children: [
-            //               Container(
-            //                 color: kMainColor,
-            //                 padding:
-            //                 EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            //                 child: Row(
-            //                   children: [
-            //                     Image.asset(
-            //                       "assets/icon.png",
-            //                       scale: 2.5,
-            //                       height: 50,
-            //                       color: kWhiteColor,
-            //                     ),
-            //                     SizedBox(
-            //                       width: 15,
-            //                     ),
-            //                     Text(
-            //                       'Powerd by GrowShop',
-            //                       style: TextStyle(color: kWhiteColor),
-            //                     )
-            //                   ],
-            //                 ),
-            //               ),
-            //               Container(
-            //                 padding:
-            //                 EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //                 child: Text(
-            //                     'Recharge of 500 get 10% Extra amount in your wallet.'),
-            //               ),
-            //               Container(
-            //                 alignment: Alignment.center,
-            //                 margin:
-            //                 EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //                 child: Row(
-            //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //                   children: [
-            //                     Text('- - - -'),
-            //                     Text('- - - -'),
-            //                     Text('- - - -'),
-            //                     Text('Rs 500'),
-            //                   ],
-            //                 ),
-            //               )
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //     );
-            //   },
-            //   separatorBuilder: (context,i){
-            //     return Divider(thickness: 2,color: Colors.transparent,);
-            //   },
-            // ),
-            // Expanded(
-            //     child: Container(
-            //   alignment: Alignment.center,
-            //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            //   child: Card(
-            //     elevation: 4,
-            //     color: kWhiteColor,
-            //     clipBehavior: Clip.hardEdge,
-            //     child: Container(
-            //       decoration: BoxDecoration(
-            //           color: kWhiteColor,
-            //           borderRadius: BorderRadius.all(Radius.circular(15))),
-            //       child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         crossAxisAlignment: CrossAxisAlignment.stretch,
-            //         children: [
-            //           Container(
-            //             color: kMainColor,
-            //             padding:
-            //                 EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            //             child: Row(
-            //               children: [
-            //                 Image.asset(
-            //                   "assets/icon.png",
-            //                   scale: 2.5,
-            //                   height: 50,
-            //                   color: kWhiteColor,
-            //                 ),
-            //                 SizedBox(
-            //                   width: 15,
-            //                 ),
-            //                 Text(
-            //                   'Powerd by GrowShop',
-            //                   style: TextStyle(color: kWhiteColor),
-            //                 )
-            //               ],
-            //             ),
-            //           ),
-            //           Container(
-            //             padding:
-            //                 EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //             child: Text(
-            //                 'Recharge of 500 get 10% Extra amount in your wallet.'),
-            //           ),
-            //           Container(
-            //             alignment: Alignment.center,
-            //             margin:
-            //             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //             child: Row(
-            //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //               children: [
-            //                 Text('- - - -'),
-            //                 Text('- - - -'),
-            //                 Text('- - - -'),
-            //                 Text('Rs 500'),
-            //               ],
-            //             ),
-            //           )
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // )),
+          ),
+          // ListView.separated(
+          //   shrinkWrap: true,
+          //   scrollDirection: Axis.horizontal,
+          //   itemCount: 10,
+          //   itemBuilder: (context, index) {
+          //     return GestureDetector(
+          //       onTap: () {
+          //         Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) =>
+          //                     RechargeWallet('500'))).then((value) {
+          //           if (value) {
+          //             getWalletAmount();
+          //           }
+          //         }).catchError((e) {
+          //           print(e);
+          //         });
+          //       },
+          //       child: Card(
+          //         elevation: 4,
+          //         color: kWhiteColor,
+          //         clipBehavior: Clip.hardEdge,
+          //         child: Container(
+          //           decoration: BoxDecoration(
+          //               color: kWhiteColor,
+          //               borderRadius: BorderRadius.all(Radius.circular(15))),
+          //           child: Column(
+          //             mainAxisAlignment: MainAxisAlignment.start,
+          //             crossAxisAlignment: CrossAxisAlignment.stretch,
+          //             children: [
+          //               Container(
+          //                 color: kMainColor,
+          //                 padding:
+          //                 EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //                 child: Row(
+          //                   children: [
+          //                     Image.asset(
+          //                       "assets/icon.png",
+          //                       scale: 2.5,
+          //                       height: 50,
+          //                       color: kWhiteColor,
+          //                     ),
+          //                     SizedBox(
+          //                       width: 15,
+          //                     ),
+          //                     Text(
+          //                       'Powerd by GrowShop',
+          //                       style: TextStyle(color: kWhiteColor),
+          //                     )
+          //                   ],
+          //                 ),
+          //               ),
+          //               Container(
+          //                 padding:
+          //                 EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          //                 child: Text(
+          //                     'Recharge of 500 get 10% Extra amount in your wallet.'),
+          //               ),
+          //               Container(
+          //                 alignment: Alignment.center,
+          //                 margin:
+          //                 EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          //                 child: Row(
+          //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //                   children: [
+          //                     Text('- - - -'),
+          //                     Text('- - - -'),
+          //                     Text('- - - -'),
+          //                     Text('Rs 500'),
+          //                   ],
+          //                 ),
+          //               )
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     );
+          //   },
+          //   separatorBuilder: (context,i){
+          //     return Divider(thickness: 2,color: Colors.transparent,);
+          //   },
+          // ),
+          // Expanded(
+          //     child: Container(
+          //   alignment: Alignment.center,
+          //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          //   child: Card(
+          //     elevation: 4,
+          //     color: kWhiteColor,
+          //     clipBehavior: Clip.hardEdge,
+          //     child: Container(
+          //       decoration: BoxDecoration(
+          //           color: kWhiteColor,
+          //           borderRadius: BorderRadius.all(Radius.circular(15))),
+          //       child: Column(
+          //         mainAxisAlignment: MainAxisAlignment.start,
+          //         crossAxisAlignment: CrossAxisAlignment.stretch,
+          //         children: [
+          //           Container(
+          //             color: kMainColor,
+          //             padding:
+          //                 EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //             child: Row(
+          //               children: [
+          //                 Image.asset(
+          //                   "assets/icon.png",
+          //                   scale: 2.5,
+          //                   height: 50,
+          //                   color: kWhiteColor,
+          //                 ),
+          //                 SizedBox(
+          //                   width: 15,
+          //                 ),
+          //                 Text(
+          //                   'Powerd by GrowShop',
+          //                   style: TextStyle(color: kWhiteColor),
+          //                 )
+          //               ],
+          //             ),
+          //           ),
+          //           Container(
+          //             padding:
+          //                 EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          //             child: Text(
+          //                 'Recharge of 500 get 10% Extra amount in your wallet.'),
+          //           ),
+          //           Container(
+          //             alignment: Alignment.center,
+          //             margin:
+          //             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //               children: [
+          //                 Text('- - - -'),
+          //                 Text('- - - -'),
+          //                 Text('- - - -'),
+          //                 Text('Rs 500'),
+          //               ],
+          //             ),
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // )),
 //            Expanded(child: Container(
 //              alignment: Alignment.center,
 // child: Column(
@@ -459,8 +482,7 @@ class WalletState extends State<Wallet> {
 //   ],
 // ),
 //            )),
-          ],
-        ),
+        ],
       ),
     );
   }
