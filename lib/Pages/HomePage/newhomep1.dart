@@ -20,6 +20,7 @@ import 'package:user/Pages/HomePage/product_card_with_title.dart';
 import 'package:user/Pages/categorypage/sub_category_page.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
+import 'package:user/baseurl/api_services.dart';
 import 'package:user/baseurl/baseurlg.dart';
 import 'package:user/beanmodel/appinfo.dart';
 import 'package:user/beanmodel/appnotice/appnotice.dart';
@@ -28,6 +29,7 @@ import 'package:user/beanmodel/cart/addtocartbean.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
 import 'package:user/beanmodel/category/categorymodel.dart';
 import 'package:user/beanmodel/coupon/storecoupon.dart';
+import 'package:user/beanmodel/productbean/subscriber_product_model.dart';
 import 'package:user/beanmodel/singleapibean.dart';
 import 'package:user/beanmodel/tablist.dart';
 import 'package:user/providergrocery/add2cartsnap.dart';
@@ -84,15 +86,17 @@ class NewHomeView1State extends State<NewHomeView1> {
   AppNoitceProvider appNotice;
   CategoryModel _categoryModel;
 
+  SubscriberProducts sProducts;
+
   @override
   void initState() {
     getapCurrency();
-    getSubscribeProducts();
+    getSubscriberProducts();
     super.initState();
   }
 
-  getSubscribeProducts() async {
-    
+  void getSubscriberProducts() async {
+    sProducts = await ApiServices.getSubscribeProductList();
   }
 
   void getapCurrency() async {
@@ -1447,6 +1451,8 @@ class NewHomeView1State extends State<NewHomeView1> {
                                           catP: cateP,
                                           locale: locale,
                                           locModel: widget.locModel,
+                                          count: sProducts.data.length,
+                                          data: sProducts.data,
                                         )
                                       : const SizedBox.shrink(),
                                   const SizedBox(
@@ -1512,6 +1518,8 @@ class NewHomeView1State extends State<NewHomeView1> {
                                           catP: cateP,
                                           locale: locale,
                                           locModel: widget.locModel,
+                                          count: sProducts.data.length,
+                                          data: sProducts.data,
                                         )
                                       : const SizedBox.shrink(),
                                   const SizedBox(
@@ -1524,6 +1532,8 @@ class NewHomeView1State extends State<NewHomeView1> {
                                           catP: cateP,
                                           locale: locale,
                                           locModel: widget.locModel,
+                                          count: sProducts.data.length,
+                                          data: sProducts.data,
                                         )
                                       : const SizedBox.shrink(),
 

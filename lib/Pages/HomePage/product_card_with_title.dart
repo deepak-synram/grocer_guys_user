@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/HomePage/product_card.dart';
 import 'package:user/Theme/colors.dart';
+import 'package:user/baseurl/baseurlg.dart';
 import 'package:user/providergrocery/categoryprovider.dart';
 import 'package:user/providergrocery/locemittermodel.dart';
 
@@ -11,17 +11,22 @@ class ProductsCardWithTitle extends StatelessWidget {
   final CategoryProvider catP;
   final AppLocalizations locale;
   final String title;
+  final int count;
+  final List<dynamic> data;
 
   const ProductsCardWithTitle(
       {Key key,
       @required this.title,
       @required this.locModel,
       @required this.catP,
-      @required this.locale})
+      @required this.locale,
+      this.count,
+      this.data})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('This data came : $data !!!!!!!!!!!!!!!!!!!!!!!!');
     return SizedBox(
       height: 400,
       width: double.infinity,
@@ -70,15 +75,19 @@ class ProductsCardWithTitle extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 5,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: count ?? 2,
               itemBuilder: (context, index) {
-                String _string = index == 0
-                    ? 'assets/CategoryImages/oil.png'
-                    : 'assets/CategoryImages/cadbuary.png';
+                String _string = data != null
+                    ? data[index].productImage
+                    : 'assets/ProductImages/Garlic.png';
+                print(_string);
+                if (data != null) {
+                  _string = _string.substring(1, _string.length);
+                  _string = imagebaseUrl1 + _string;
+                }
+                String _title = data != null ? data[index].title : 'Garlic';
 
-                String _title = index == 0
-                    ? 'Gulab Health Refined Cottonseed Oil'
-                    : 'Cadbuary Dairy Milk Chocolate';
                 return ProductCard(
                   index: index,
                   image: _string,

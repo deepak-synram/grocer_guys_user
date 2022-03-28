@@ -95,11 +95,15 @@ class _ProductCardState extends State<ProductCard> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 15.0),
-                      child: Image.asset(
-                        widget.image,
-                        width: widget.width,
-                        height: widget.height,
-                      ),
+                      child: widget.image.contains('https') == true
+                          ? Image.network(
+                              widget.image,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              widget.image,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/HomePage/full_screen_image.dart';
-import 'package:user/Pages/HomePage/full_screen_image_modal.dart';
 import 'package:user/Pages/HomePage/product_card_with_title.dart';
 import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Theme/colors.dart';
@@ -289,6 +288,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 catP: widget.catP,
                 locale: widget.locale,
                 locModel: widget.locModel,
+                count: 2,
               )
             ],
           ),
