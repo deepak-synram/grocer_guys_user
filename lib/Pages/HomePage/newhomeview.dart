@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:badges/badges.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +20,6 @@ import 'package:user/Pages/Checkout/my_orders.dart';
 import 'package:user/Pages/HomePage/account_page.dart';
 import 'package:user/Pages/HomePage/newhomep1.dart';
 import 'package:user/Pages/locpage/locationpage.dart';
-import 'package:user/Pages/newaccountscreen.dart';
-import 'package:user/Pages/wallet/walletui.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
@@ -962,7 +959,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                     MyOrders(
                       fromHomePage: true,
                     ),
-                    Wallet(),
+                    //Wallet(),
                     AccountPage(navBottomProvider: navBottomProvider),
 
                     // AccountData(),

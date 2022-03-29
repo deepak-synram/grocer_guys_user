@@ -5,6 +5,9 @@ import 'package:user/Pages/HomePage/full_screen_image.dart';
 import 'package:user/Pages/HomePage/product_card_with_title.dart';
 import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Theme/colors.dart';
+import 'package:user/baseurl/api_services.dart';
+import 'package:user/baseurl/baseurlg.dart';
+import 'package:user/beanmodel/productbean/product_details_model.dart';
 import 'package:user/providergrocery/categoryprovider.dart';
 import 'package:user/providergrocery/locemittermodel.dart';
 
@@ -16,6 +19,7 @@ class ProductDetails extends StatefulWidget {
   final CategoryProvider catP;
   final AppLocalizations locale;
   final bool isLiked;
+  final int productId;
 
   const ProductDetails({
     Key key,
@@ -30,6 +34,7 @@ class ProductDetails extends StatefulWidget {
     @required this.newPrice,
     @required this.symbol,
     @required this.isLiked,
+    this.productId,
   }) : super(key: key);
 
   @override
@@ -38,13 +43,26 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   bool _isLiked = false;
+  ProductDetailsModel pdm;
+  bool isPDMSuccess = false;
 
   @override
   void initState() {
     setState(() {
       _isLiked = widget.isLiked;
     });
+    getProductDetails();
     super.initState();
+  }
+
+  void getProductDetails() async {
+    // Here we will pass the productID
+    pdm = await ApiServices.getProductDetail('50');
+    if (pdm != null && pdm.success == 1) {
+      isPDMSuccess = true;
+      print(imagebaseUrl1 + pdm.data.productImage.substring(1));
+    }
+    print('PDM SUCESSS  STATUS ----------> $isPDMSuccess');
   }
 
   @override
@@ -68,17 +86,33 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Stack(
                         alignment: Alignment.topCenter,
                         children: [
-                          Image.asset(
-                            widget.image,
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: 200,
-                          ),
+                          isPDMSuccess
+                              ? Image.network(
+                                  imagebaseUrl1 +
+                                      pdm.data.productImage.substring(1),
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height: 200,
+                                )
+                              : widget.image.contains('http')
+                                  ? Image.network(
+                                      widget.image,
+                                      width:
+                                          MediaQuery.of(context).size.width / 3,
+                                      height: 200,
+                                    )
+                                  : Image.asset(
+                                      widget.image,
+                                      width:
+                                          MediaQuery.of(context).size.width / 3,
+                                      height: 200,
+                                    ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Chip(
                                 backgroundColor: Colors.green,
                                 label: Text(
+                                  //TODO: Calculate this based on base_mrp and base_price
                                   '50% OFF',
                                   style: TextStyle(
                                     fontSize: 8,
@@ -242,15 +276,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
-                            children: [
-                              const Text(
+                            children: const [
+                              Text(
                                 'Product Details',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 5),
+                              SizedBox(height: 5),
                               Text(
                                 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
                                 maxLines: 3,

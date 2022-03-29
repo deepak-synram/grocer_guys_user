@@ -107,4 +107,6 @@ var orderStatusUri = Uri.parse('https://securegw.paytm.in/v3/order/status');
 // subscription
 var subscriptionUri = Uri.parse(
     'http://staging.thegroceryguys.co.in/api/get_subscriber_products');
+var productDetailsUri =
+    Uri.parse('https://staging.thegroceryguys.co.in/api/product_details');
 var appname = 'The Grocery Guys';

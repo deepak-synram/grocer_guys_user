@@ -75,6 +75,7 @@ class _ProductCardState extends State<ProductCard> {
             isLiked: _isLiked[widget.index],
             catP: widget.catP,
             locale: widget.locale,
+            productId: 50,
             locModel: widget.locModel,
           ),
         ),
