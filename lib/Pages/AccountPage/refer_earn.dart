@@ -28,9 +28,9 @@ class _ReferAndEarnState extends State<ReferAndEarn> {
               ),
             ),
             const Text('Refer & Earn Wallet Amount Upto',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            const Text('from 1 to 15',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const Text('from 1 to 15',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             GestureDetector(
               onTap: () {
                 Clipboard.setData(ClipboardData(text: referCode));

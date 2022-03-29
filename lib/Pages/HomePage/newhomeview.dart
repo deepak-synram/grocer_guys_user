@@ -18,7 +18,7 @@ import 'package:user/Components/constantfile.dart';
 import 'package:user/Components/drawer.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/Checkout/my_orders.dart';
-import 'package:user/Pages/HomePage/account_page.dart';
+import 'package:user/Pages/AccountPage/account_page.dart';
 import 'package:user/Pages/HomePage/newhomep1.dart';
 import 'package:user/Pages/locpage/locationpage.dart';
 import 'package:user/Pages/newaccountscreen.dart';
