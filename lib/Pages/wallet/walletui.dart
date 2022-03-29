@@ -91,48 +91,49 @@ class WalletState extends State<Wallet> {
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size(100, 60.0),
-        child: AppBar(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10.0),
-              bottomRight: Radius.circular(10.0),
-            ),
-          ),
-          backgroundColor: kMainColor,
-          centerTitle: true,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap: () => Navigator.of(context).pop(),
-              child: Image.asset(
-                'assets/back-arrow-icon.png',
-                width: 15,
-                height: 15,
-              ),
-            ),
-          ),
-          title: Text(locale.mywallet),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: widget ??
-                  InkWell(
-                    highlightColor: kTransparentColor,
-                    splashColor: kTransparentColor,
-                    onTap: () =>
-                        Navigator.pushNamed(context, PageRoutes.notification),
-                    child: Image.asset(
-                      'assets/bell-icon.png',
-                      width: 50,
-                      height: 50,
-                    ),
-                  ),
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(title: locale.mywallet),
+      // appBar: PreferredSize(
+      //   preferredSize: const Size(100, 60.0),
+      //   child: AppBar(
+      //     shape: const RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.only(
+      //         bottomLeft: Radius.circular(10.0),
+      //         bottomRight: Radius.circular(10.0),
+      //       ),
+      //     ),
+      //     backgroundColor: kMainColor,
+      //     centerTitle: true,
+      //     leading: Padding(
+      //       padding: const EdgeInsets.all(8.0),
+      //       child: InkWell(
+      //         onTap: () => Navigator.of(context).pop(),
+      //         child: Image.asset(
+      //           'assets/back-arrow-icon.png',
+      //           width: 15,
+      //           height: 15,
+      //         ),
+      //       ),
+      //     ),
+      //     title: Text(locale.mywallet),
+      //     actions: [
+      //       Padding(
+      //         padding: const EdgeInsets.only(right: 5),
+      //         child: widget ??
+      //             InkWell(
+      //               highlightColor: kTransparentColor,
+      //               splashColor: kTransparentColor,
+      //               onTap: () =>
+      //                   Navigator.pushNamed(context, PageRoutes.notification),
+      //               child: Image.asset(
+      //                 'assets/bell-icon.png',
+      //                 width: 50,
+      //                 height: 50,
+      //               ),
+      //             ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: Column(
         children: [
           Container(

@@ -12,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/MyAccount/account_card.dart';
+import 'package:user/Pages/AccountPage/Coupons/coupon_page.dart';
+import 'package:user/Pages/AccountPage/refer_earn.dart';
 import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
@@ -564,7 +566,7 @@ class _AccountPageState extends State<AccountPage> {
                                         //       ),
                                         //       TextSpan(
                                         //         text: ' Location Location Location Location Location Location',
-                            
+
                                         //         style: TextStyle(
                                         //           fontWeight: FontWeight.w400,
                                         //           color: kMainColor,
@@ -660,6 +662,21 @@ class _AccountPageState extends State<AccountPage> {
                           onClick: () => Navigator.of(context)
                               .pushNamed(PageRoutes.settingsAccount),
                         ),
+                        AccountCard(
+                          image: 'assets/MyAccount/ic_settings.png',
+                          title: ' Coupons',
+                          onClick: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => CouponPage())),
+                        ),
+                        AccountCard(
+                          image: 'assets/MyAccount/ic_settings.png',
+                          title: ' Refer & Earn',
+                          onClick: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => ReferAndEarn())),
+                        ),
+                        const SizedBox(height: 60),
                       ],
                     ),
                   ),

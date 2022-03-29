@@ -137,7 +137,7 @@ class _SubscribeState extends State<Subscribe> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Center(
-                  child: Image.asset(
+                  child: Image.network(
                     widget.image,
                     height: 100,
                     width: 100,
