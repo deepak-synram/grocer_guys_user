@@ -350,18 +350,18 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
             return Scaffold(
               key: _scaffoldKey,
               backgroundColor: const Color(0xfff8f8f8),
-              drawerScrimColor: kTransparentColor,
-              drawer: (Constants.selectedInd == 0)
-                  ? buildDrawer(context, userName, islogin, onHit: () {
-                      SharedPreferences.getInstance().then((pref) {
-                        pref.clear().then((value) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              PageRoutes.signInRoot,
-                              (Route<dynamic> route) => false);
-                        });
-                      });
-                    })
-                  : null,
+              // drawerScrimColor: kTransparentColor,
+              // drawer: (Constants.selectedInd == 0)
+              //     ? buildDrawer(context, userName, islogin, onHit: () {
+              //         SharedPreferences.getInstance().then((pref) {
+              //           pref.clear().then((value) {
+              //             Navigator.of(context).pushNamedAndRemoveUntil(
+              //                 PageRoutes.signInRoot,
+              //                 (Route<dynamic> route) => false);
+              //           });
+              //         });
+              //       })
+              //     : null,
               appBar: Constants.selectedInd == 3
                   ? const PreferredSize(
                       preferredSize: Size(0, 0),
@@ -1216,26 +1216,32 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 //         color: kWhiteColor, fontSize: 10),
                                 //   ),
                                 //   child:
-                                return Image.asset(
-                                  'assets/ic_wallet.png',
-                                  width: 20,
-                                  height: 20,
-                                  color: (Constants.selectedInd == 2)
-                                      ? kWhiteColor
-                                      : kNavigationButtonColor,
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Image.asset(
+                                    'assets/ic_wallet.png',
+                                    width: 20,
+                                    height: 20,
+                                    color: (Constants.selectedInd == 2)
+                                        ? kWhiteColor
+                                        : kNavigationButtonColor,
 
-                                  // Icon(
-                                  //   Icons.shopping_basket,
-                                  //   color: kMainTextColor,
-                                  // ),
+                                    // Icon(
+                                    //   Icons.shopping_basket,
+                                    //   color: kMainTextColor,
+                                    // ),
+                                  ),
                                 );
                               }),
-                              Text(
-                                "Wallet",
-                                style: TextStyle(
-                                  color: (Constants.selectedInd == 2)
-                                      ? kWhiteColor
-                                      : kNavigationButtonColor,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 12.0),
+                                child: Text(
+                                  "Wallet",
+                                  style: TextStyle(
+                                    color: (Constants.selectedInd == 2)
+                                        ? kWhiteColor
+                                        : kNavigationButtonColor,
+                                  ),
                                 ),
                               )
                             ],

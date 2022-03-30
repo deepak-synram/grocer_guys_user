@@ -1451,8 +1451,8 @@ class NewHomeView1State extends State<NewHomeView1> {
                                           catP: cateP,
                                           locale: locale,
                                           locModel: widget.locModel,
-                                          count: sProducts.data.length,
-                                          data: sProducts.data,
+                                          count: sProducts?.data?.length,
+                                          data: sProducts?.data,
                                         )
                                       : const SizedBox.shrink(),
                                   const SizedBox(
