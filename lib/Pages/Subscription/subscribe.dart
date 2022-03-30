@@ -137,11 +137,18 @@ class _SubscribeState extends State<Subscribe> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Center(
-                  child: Image.network(
-                    widget.image,
-                    height: 100,
-                    width: 100,
-                  ),
+                  child: (widget.image.contains('http') ||
+                          widget.image.contains('https'))
+                      ? Image.network(
+                          widget.image,
+                          height: 100,
+                          width: 100,
+                        )
+                      : Image.asset(
+                          widget.image,
+                          height: 100,
+                          width: 100,
+                        ),
                 ),
                 Expanded(
                   child: Column(
