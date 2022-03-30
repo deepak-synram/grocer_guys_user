@@ -85,7 +85,7 @@ class _ProductCardState extends State<ProductCard> {
         padding: const EdgeInsets.all(8.0),
         child: Material(
           elevation: 10,
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(10.0),
           child: SizedBox(
             width: MediaQuery.of(context).size.width / 2.25,
             child: Column(
