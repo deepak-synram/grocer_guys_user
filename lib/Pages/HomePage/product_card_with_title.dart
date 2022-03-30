@@ -100,6 +100,7 @@ class ProductsCardWithTitle extends StatelessWidget {
                   catP: catP,
                   locale: locale,
                   total: 5,
+                  isSubscribed: false,
                 );
               },
             ),
