@@ -24,13 +24,12 @@ import 'package:user/baseurl/api_services.dart';
 import 'package:user/baseurl/baseurlg.dart';
 import 'package:user/beanmodel/appinfo.dart';
 import 'package:user/beanmodel/appnotice/appnotice.dart';
-import 'package:user/beanmodel/banner/bannerdeatil.dart';
 import 'package:user/beanmodel/cart/addtocartbean.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
 import 'package:user/beanmodel/category/categorymodel.dart';
 import 'package:user/beanmodel/coupon/storecoupon.dart';
 import 'package:user/beanmodel/productbean/subscriber_product_model.dart';
-import 'package:user/beanmodel/singleapibean.dart';
+import 'package:user/beanmodel/singleapibean.dart' as sa;
 import 'package:user/beanmodel/tablist.dart';
 import 'package:user/providergrocery/add2cartsnap.dart';
 import 'package:user/providergrocery/appnoticeprovider.dart';
@@ -64,7 +63,7 @@ class NewHomeView1State extends State<NewHomeView1> {
   var http = Client();
   bool isEnteredFirst = false;
   List<Tablist> tabList = [];
-  List<TabsD> tabDataList = [];
+  // List<TabsD> tabDataList = [];
   int selectTabt = 0;
   PageSnapReview pageSnap;
   String shownMessage = '--';
@@ -262,22 +261,23 @@ class NewHomeView1State extends State<NewHomeView1> {
                           print('is enter');
                           return buildSingleScreenView(context);
                         } else {
-                          // print(apiData.dataModel.toString());
+                          print(apiData.dataModel.status);
                           if (apiData != null &&
                               apiData.dataModel.status == '1') {
-                            tabList = [];
-                            if (apiData.dataModel.tabs != null &&
-                                apiData.dataModel.tabs.isNotEmpty) {
-                              for (int i = 0;
-                                  i < apiData.dataModel.tabs.length;
-                                  i++) {
-                                tabList.add(
-                                    Tablist(apiData.dataModel.tabs[i].type, i));
-                              }
-                              tabDataList = List.from(apiData.dataModel.tabs);
-                              trndProvider.hitTopRecentNewDealPro(
-                                  tabDataList[selectTabt].data, selectTabt);
-                            }
+                            print('Data Found !!!');
+                            // tabList = [];
+                            // if (apiData.dataModel.tabs != null &&
+                            //     apiData.dataModel.tabs.isNotEmpty) {
+                            //   for (int i = 0;
+                            //       i < apiData.dataModel.tabs.length;
+                            //       i++) {
+                            //     tabList.add(
+                            //         Tablist(apiData.dataModel.tabs[i].type, i));
+                            //   }
+                            //   tabDataList = List.from(apiData.dataModel.tabs);
+                            //   trndProvider.hitTopRecentNewDealPro(
+                            //       tabDataList[selectTabt].data, selectTabt);
+                            // }
                             return SingleChildScrollView(
                               primary: true,
                               child: Column(
@@ -383,14 +383,15 @@ class NewHomeView1State extends State<NewHomeView1> {
                                                 kWhiteColor,
                                             children: apiData.dataModel.banner
                                                 .map(
-                                                  (BannerDataModel dataModel) =>
+                                                  (sa.BannerDataModel
+                                                          dataModel) =>
                                                       ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             5),
                                                     child: CachedNetworkImage(
                                                       imageUrl:
-                                                          '${dataModel.banner_image}',
+                                                          '${dataModel.bannerImage}',
                                                       placeholder:
                                                           (context, url) =>
                                                               Align(
@@ -1469,13 +1470,13 @@ class NewHomeView1State extends State<NewHomeView1> {
                                       indicatorBackgroundColor: kWhiteColor,
                                       children: apiData.dataModel.banner
                                           .map(
-                                            (BannerDataModel dataModel) =>
+                                            (sa.BannerDataModel dataModel) =>
                                                 ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                               child: CachedNetworkImage(
                                                 imageUrl:
-                                                    '${dataModel.banner_image}',
+                                                    '${dataModel.bannerImage}',
                                                 placeholder: (context, url) =>
                                                     Align(
                                                   widthFactor: 50,
@@ -1511,233 +1512,37 @@ class NewHomeView1State extends State<NewHomeView1> {
                                   const SizedBox(
                                     height: 15,
                                   ),
-                                  (apiData.dataModel.topCat != null &&
-                                          apiData.dataModel.topCat.isNotEmpty)
+                                  (apiData.dataModel.spotlight != null &&
+                                          apiData
+                                              .dataModel.spotlight.isNotEmpty)
                                       ? ProductsCardWithTitle(
                                           title: 'Spotlight Products',
                                           catP: cateP,
                                           locale: locale,
                                           locModel: widget.locModel,
-                                          count: 4,
-                                          data: null,
+                                          count: apiData
+                                              .dataModel.spotlight.length,
+                                          data: apiData.dataModel.spotlight,
                                         )
                                       : const SizedBox.shrink(),
                                   const SizedBox(
                                     height: 15,
                                   ),
-                                  (apiData.dataModel.topCat != null &&
-                                          apiData.dataModel.topCat.isNotEmpty)
+                                  (apiData.dataModel.topselling != null &&
+                                          apiData
+                                              .dataModel.topselling.isNotEmpty)
                                       ? ProductsCardWithTitle(
                                           title: 'Top Selling',
                                           catP: cateP,
                                           locale: locale,
                                           locModel: widget.locModel,
-                                          count: sProducts?.data?.length,
-                                          data: sProducts?.data,
+                                          count: apiData
+                                              .dataModel.topselling.length,
+                                          data: apiData.dataModel.topselling,
                                         )
                                       : const SizedBox.shrink(),
 
                                   const SizedBox(height: 45),
-                                  // (apiData.dataModel.topCat != null &&
-                                  //         apiData.dataModel.topCat.length > 0)
-                                  //     ? Container(
-                                  //         margin: const EdgeInsets.symmetric(
-                                  //             vertical: 10),
-                                  //         padding: const EdgeInsets.symmetric(
-                                  //             horizontal: 10, vertical: 10),
-                                  //         decoration: BoxDecoration(
-                                  //             borderRadius:
-                                  //                 BorderRadius.circular(5),
-                                  //             color: kWhiteColor),
-                                  //         child: Column(
-                                  //           crossAxisAlignment:
-                                  //               CrossAxisAlignment.stretch,
-                                  //           children: [
-                                  //             Row(
-                                  //               mainAxisAlignment:
-                                  //                   MainAxisAlignment
-                                  //                       .spaceBetween,
-                                  //               children: [
-                                  //                 Text(
-                                  //                   locale.aa4,
-                                  //                   textAlign: TextAlign.center,
-                                  //                   style: TextStyle(
-                                  //                       color: kMainTextColor,
-                                  //                       fontSize: 13,
-                                  //                       fontWeight:
-                                  //                           FontWeight.w300),
-                                  //                 ),
-                                  //                 GestureDetector(
-                                  //                   onTap: () {
-                                  //                     navBottomProvider
-                                  //                         .hitBottomNavigation(
-                                  //                             1,
-                                  //                             locale.aa2,
-                                  //                             locale.aa3);
-                                  //                     if (widget.locModel
-                                  //                             .storeFinderData !=
-                                  //                         null) {
-                                  //                       if (!cateP.state
-                                  //                           .isSearching) {
-                                  //                         cateP.hitBannerDetails(
-                                  //                             '${widget.locModel.storeFinderData.store_id}',
-                                  //                             widget.locModel
-                                  //                                 .storeFinderData);
-                                  //                       } else {
-                                  //                         Toast.show(locale.aa1,
-                                  //                             context,
-                                  //                             duration: Toast
-                                  //                                 .LENGTH_SHORT,
-                                  //                             gravity:
-                                  //                                 Toast.CENTER);
-                                  //                       }
-                                  //                     }
-                                  //                   },
-                                  //                   behavior:
-                                  //                       HitTestBehavior.opaque,
-                                  //                   child: Text(
-                                  //                     locale.yb6,
-                                  //                     textAlign:
-                                  //                         TextAlign.center,
-                                  //                     style: TextStyle(
-                                  //                         color: kMainColor,
-                                  //                         fontSize: 13,
-                                  //                         fontWeight:
-                                  //                             FontWeight.w300),
-                                  //                   ),
-                                  //                 )
-                                  //               ],
-                                  //             ),
-                                  //             SizedBox(
-                                  //               height: 8,
-                                  //             ),
-                                  //             Divider(
-                                  //               thickness: 1.5,
-                                  //               height: 1.5,
-                                  //               color: kButtonBorderColor
-                                  //                   .withOpacity(0.5),
-                                  //             ),
-                                  //             SizedBox(
-                                  //               height: 8,
-                                  //             ),
-                                  //             GridView.builder(
-                                  //                 gridDelegate:
-                                  //                     SliverGridDelegateWithFixedCrossAxisCount(
-                                  //                   mainAxisSpacing: 10,
-                                  //                   crossAxisCount: 3,
-                                  //                   crossAxisSpacing: 20,
-                                  //                   childAspectRatio: 0.65,
-                                  //                 ),
-                                  //                 itemCount: apiData
-                                  //                     .dataModel.topCat.length,
-                                  //                 shrinkWrap: true,
-                                  //                 primary: false,
-                                  //                 physics:
-                                  //                     NeverScrollableScrollPhysics(),
-                                  //                 itemBuilder:
-                                  //                     (context, index) {
-                                  //                   return GestureDetector(
-                                  //                     onTap: () {
-                                  //                       Navigator.pushNamed(
-                                  //                           context,
-                                  //                           PageRoutes
-                                  //                               .cat_product,
-                                  //                           arguments: {
-                                  //                             'title': apiData
-                                  //                                 .dataModel
-                                  //                                 .topCat[index]
-                                  //                                 .title,
-                                  //                             'storeid': apiData
-                                  //                                 .dataModel
-                                  //                                 .topCat[index]
-                                  //                                 .store_id,
-                                  //                             'cat_id': apiData
-                                  //                                 .dataModel
-                                  //                                 .topCat[index]
-                                  //                                 .cat_id,
-                                  //                             'storedetail': widget
-                                  //                                 .locModel
-                                  //                                 .storeFinderData,
-                                  //                           });
-                                  //                     },
-                                  //                     behavior: HitTestBehavior
-                                  //                         .opaque,
-                                  //                     child: Column(
-                                  //                       children: [
-                                  //                         Container(
-                                  //                           height: 100,
-                                  //                           padding:
-                                  //                               EdgeInsets.all(
-                                  //                                   5),
-                                  //                           decoration: BoxDecoration(
-                                  //                               color:
-                                  //                                   kWhiteColor,
-                                  //                               borderRadius:
-                                  //                                   BorderRadius
-                                  //                                       .circular(
-                                  //                                           10)),
-                                  //                           child: ClipRRect(
-                                  //                             borderRadius:
-                                  //                                 BorderRadius
-                                  //                                     .circular(
-                                  //                                         10),
-                                  //                             child:
-                                  //                                 CachedNetworkImage(
-                                  //                               imageUrl:
-                                  //                                   '${apiData.dataModel.topCat[index].image}',
-                                  //                               placeholder:
-                                  //                                   (context,
-                                  //                                           url) =>
-                                  //                                       Align(
-                                  //                                 widthFactor:
-                                  //                                     50,
-                                  //                                 heightFactor:
-                                  //                                     50,
-                                  //                                 alignment:
-                                  //                                     Alignment
-                                  //                                         .center,
-                                  //                                 child:
-                                  //                                     Container(
-                                  //                                   padding:
-                                  //                                       const EdgeInsets.all(
-                                  //                                           5.0),
-                                  //                                   width: 50,
-                                  //                                   height: 50,
-                                  //                                   child:
-                                  //                                       CircularProgressIndicator(),
-                                  //                                 ),
-                                  //                               ),
-                                  //                               errorWidget: (context,
-                                  //                                       url,
-                                  //                                       error) =>
-                                  //                                   Image.asset(
-                                  //                                       'assets/icon.png'),
-                                  //                               fit:
-                                  //                                   BoxFit.fill,
-                                  //                             ),
-                                  //                           ),
-                                  //                           //   child:Image.asset('assets/icon.png'),
-                                  //                         ),
-                                  //                         SizedBox(
-                                  //                           height: 10,
-                                  //                         ),
-                                  //                         Text(
-                                  //                           '${apiData.dataModel.topCat[index].title}',
-                                  //                           textAlign: TextAlign
-                                  //                               .center,
-                                  //                           maxLines: 2,
-                                  //                         )
-                                  //                       ],
-                                  //                     ),
-                                  //                   );
-                                  //                 }),
-                                  //             SizedBox(
-                                  //               height: 10,
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //       )
-                                  //     : SizedBox.shrink(),
                                 ],
                               ),
                             );
