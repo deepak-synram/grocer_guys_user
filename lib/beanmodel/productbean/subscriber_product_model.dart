@@ -28,6 +28,7 @@ class SubscriberProducts {
 }
 
 class Data {
+  bool isSubscribe;
   int id;
   int productId;
   String createdAt;
@@ -77,6 +78,7 @@ class Data {
       this.taxType,
       this.taxName,
       this.taxPer,
+      this.isSubscribe,
       this.txId});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -104,6 +106,7 @@ class Data {
     taxName = json['tax_name'];
     taxPer = json['tax_per'];
     txId = json['tx_id'];
+    isSubscribe = json['is_subscribe'] == 1;
   }
 
   Map<String, dynamic> toJson() {
@@ -132,6 +135,7 @@ class Data {
     data['tax_name'] = taxName;
     data['tax_per'] = taxPer;
     data['tx_id'] = txId;
+    data['is_subscribe'] = isSubscribe;
     return data;
   }
 }

@@ -10,6 +10,7 @@ class ProductCard extends StatefulWidget {
   final int index, total;
   final String image, title, previousPrice, newPrice, symbol;
   final dynamic subTitle;
+  final bool isSubscribe;
 
   final LocEmitterModel locModel;
   final CategoryProvider catP;
@@ -31,6 +32,7 @@ class ProductCard extends StatefulWidget {
     @required this.symbol,
     this.width = 150,
     this.height = 160,
+    this.isSubscribe,
   }) : super(key: key);
 
   @override
@@ -164,7 +166,7 @@ class _ProductCardState extends State<ProductCard> {
                         color: Colors.grey[400],
                       ),
                     ),
-                  )
+                  ),
                 ],
                 if (widget.subTitle is List) ...[
                   Padding(
@@ -203,32 +205,33 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Subscribe(
-                          image: widget.image,
-                          price: widget.symbol + widget.newPrice,
-                          title: widget.title,
-                          id: widget.index.toString(),
-                          subTitle: widget.subTitle,
+                if (widget.isSubscribe != null && widget.isSubscribe == true)
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Subscribe(
+                            image: widget.image,
+                            price: widget.symbol + widget.newPrice,
+                            title: widget.title,
+                            id: widget.index.toString(),
+                            subTitle: widget.subTitle,
+                          ),
                         ),
                       ),
-                    ),
-                    child: Text(
-                      'SUBSCRIBE @ ${widget.symbol + widget.newPrice}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: kMainColor,
+                      child: Text(
+                        'SUBSCRIBE @ ${widget.symbol + widget.newPrice}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: kMainColor,
+                        ),
                       ),
+                      style: ElevatedButton.styleFrom(
+                          primary: kNavigationButtonColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0))),
                     ),
-                    style: ElevatedButton.styleFrom(
-                        primary: kNavigationButtonColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0))),
                   ),
-                ),
                 const Divider(
                   color: Colors.grey,
                 ),

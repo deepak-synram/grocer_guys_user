@@ -145,7 +145,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   FullScreenView(
-                                                image: widget.image,
+                                                image: isPDMSuccess
+                                                    ? imagebaseUrl1 +
+                                                        pdm.data.productImage
+                                                            .substring(1)
+                                                    : widget.image,
                                                 locale: widget.locale,
                                               ),
                                             ),

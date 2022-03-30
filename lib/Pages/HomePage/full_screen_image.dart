@@ -107,7 +107,9 @@ class _FullScreenViewState extends State<FullScreenView> {
                   .map(
                     (e) => ClipRRect(
                         borderRadius: BorderRadius.circular(5),
-                        child: Image.asset(e)
+                        child: e.contains('http')
+                            ? Image.network(e)
+                            : Image.asset(e)
                         // CachedNetworkImage(
                         //   imageUrl: '${dataModel.banner_image}',
                         //   placeholder: (context, url) => Align(
@@ -159,9 +161,13 @@ class _FullScreenViewState extends State<FullScreenView> {
                         borderRadius: BorderRadius.circular(15.0),
                         color: Colors.grey[300],
                       ),
-                      child: Image.asset(
-                        _listOfImages[index1],
-                      ),
+                      child: _listOfImages[index1].contains('http')
+                          ? Image.network(
+                              _listOfImages[index1],
+                            )
+                          : Image.asset(
+                              _listOfImages[index1],
+                            ),
                     ),
                   ),
                 ),

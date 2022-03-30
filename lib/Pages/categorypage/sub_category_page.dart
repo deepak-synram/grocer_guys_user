@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/HomePage/product_card.dart';
-import 'package:user/Theme/colors.dart';
-import 'package:user/baseurl/baseurlg.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
 import 'package:user/beanmodel/storefinder/storefinderbean.dart';
 import 'package:user/providergrocery/bottomnavigationnavigator.dart';
-import 'package:user/providergrocery/cartcountprovider.dart';
 import 'package:user/providergrocery/categoryprovider.dart';
 import 'package:user/providergrocery/locemittermodel.dart';
 
@@ -85,6 +81,7 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
               itemBuilder: (context, index) {
                 return ProductCard(
                   total: 4,
+                  isSubscribe: false,
                   locModel: widget.locModel,
                   catP: cateP,
                   locale: locale,

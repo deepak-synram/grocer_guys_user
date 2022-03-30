@@ -26,7 +26,6 @@ class ProductsCardWithTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('This data came : $data !!!!!!!!!!!!!!!!!!!!!!!!');
     return SizedBox(
       height: 400,
       width: double.infinity,
@@ -92,6 +91,7 @@ class ProductsCardWithTitle extends StatelessWidget {
                   index: index,
                   image: _string,
                   title: _title,
+                  isSubscribe: data != null ? data[index].isSubscribe : false,
                   subTitle: '500g',
                   symbol: '\u{20B9}',
                   previousPrice: '35',
