@@ -412,9 +412,11 @@ class NewHomeView1State extends State<NewHomeView1> {
                                                       ),
                                                       errorWidget: (context,
                                                               url, error) =>
-                                                          Image.asset(
-                                                        'assets/icon.png',
-                                                        fit: BoxFit.fill,
+                                                          Center(
+                                                        child: Image.asset(
+                                                          'assets/HomeBanner/no-icon.png',
+                                                          fit: BoxFit.fill,
+                                                        ),
                                                       ),
                                                       fit: BoxFit.fill,
                                                     ),
@@ -1497,7 +1499,7 @@ class NewHomeView1State extends State<NewHomeView1> {
                                                 errorWidget:
                                                     (context, url, error) =>
                                                         Image.asset(
-                                                  'assets/icon.png',
+                                                  'assets/HomeBanner/no-icon.png',
                                                   fit: BoxFit.fill,
                                                 ),
                                                 fit: BoxFit.fill,

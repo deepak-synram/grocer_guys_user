@@ -15,7 +15,7 @@ class ProductCard extends StatefulWidget {
   final LocEmitterModel locModel;
   final CategoryProvider catP;
   final AppLocalizations locale;
-  final double width, height;
+  // final double width, height;
 
   const ProductCard({
     Key key,
@@ -30,8 +30,8 @@ class ProductCard extends StatefulWidget {
     @required this.previousPrice,
     @required this.newPrice,
     @required this.symbol,
-    this.width = 150,
-    this.height = 160,
+    // this.width = 150,
+    // this.height = 160,
     this.isSubscribe,
   }) : super(key: key);
 
@@ -85,38 +85,43 @@ class _ProductCardState extends State<ProductCard> {
       child: Padding(
         key: Key('product-card-${widget.index.toString()}'),
         padding: const EdgeInsets.all(8.0),
-        child: Material(
-          elevation: 10,
-          borderRadius: BorderRadius.circular(15.0),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width / 2.25,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width / 2.25,
+          child: Material(
+            elevation: 10,
+            borderRadius: BorderRadius.circular(10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    SizedBox(
-                      height: 170,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
-                        child: widget.image.contains('https') == true
-                            ? Image.network(
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: widget.image.contains('http') ||
+                              widget.image.contains('https')
+                          ? Center(
+                              child: Image.network(
                                 widget.image,
                                 fit: BoxFit.cover,
-                              )
-                            : Image.asset(
-                                widget.image,
-                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 120,
                               ),
-                      ),
+                            )
+                          : Image.asset(
+                              widget.image,
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 120,
+                            ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Chip(
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Chip(
+                            padding: EdgeInsets.only(top: 1.0, bottom: 1.0),
                             backgroundColor: Colors.green,
                             label: Text(
                               '50% OFF',
@@ -126,23 +131,24 @@ class _ProductCardState extends State<ProductCard> {
                               ),
                             ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isLiked[widget.index] = !_isLiked[widget.index];
-                            });
-                          },
-                          icon: Icon(
-                            _isLiked[widget.index]
-                                ? Icons.favorite_outlined
-                                : Icons.favorite_outline,
-                            color: _isLiked[widget.index]
-                                ? kNavigationButtonColor
-                                : kMainColor,
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isLiked[widget.index] =
+                                    !_isLiked[widget.index];
+                              });
+                            },
+                            icon: Icon(
+                              _isLiked[widget.index]
+                                  ? Icons.favorite_outlined
+                                  : Icons.favorite_outline,
+                              color: _isLiked[widget.index]
+                                  ? kNavigationButtonColor
+                                  : kMainColor,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -151,6 +157,7 @@ class _ProductCardState extends State<ProductCard> {
                   child: Text(
                     widget.title,
                     textAlign: TextAlign.left,
+                    maxLines: 2,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: kMainTextColor,
@@ -207,8 +214,8 @@ class _ProductCardState extends State<ProductCard> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 5),
-                if (widget.isSubscribe != null && widget.isSubscribe == true)
+                if (widget.isSubscribe != null && widget.isSubscribe) ...[
+                  const SizedBox(height: 5),
                   Center(
                     child: ElevatedButton(
                       onPressed: () => Navigator.of(context).push(
@@ -235,11 +242,13 @@ class _ProductCardState extends State<ProductCard> {
                               borderRadius: BorderRadius.circular(15.0))),
                     ),
                   ),
-                Expanded(child: const SizedBox(height: 5)),
+                ],
+                const SizedBox(height: 5),
                 const Divider(
                   color: Colors.grey,
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
@@ -251,9 +260,9 @@ class _ProductCardState extends State<ProductCard> {
                     Text('Add To Bag', style: TextStyle(color: kMainTextColor)),
                   ],
                 ),
-                SizedBox(
-                  height: 5,
-                )
+                // const SizedBox(
+                //   height: 5,
+                // )
               ],
             ),
           ),

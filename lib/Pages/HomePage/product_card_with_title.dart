@@ -12,25 +12,25 @@ class ProductsCardWithTitle extends StatelessWidget {
   final AppLocalizations locale;
   final String title;
   final int count;
-  bool isAlwaysSubscribe = false;
+  final bool isAlwaysSubscribe;
 
   final List<dynamic> data;
 
-  ProductsCardWithTitle(
-      {Key key,
-      @required this.title,
-      @required this.locModel,
-      @required this.catP,
-      @required this.locale,
-      this.count,
-      this.isAlwaysSubscribe,
-      this.data})
-      : super(key: key);
+  const ProductsCardWithTitle({
+    Key key,
+    @required this.title,
+    @required this.locModel,
+    @required this.catP,
+    @required this.locale,
+    this.count,
+    this.isAlwaysSubscribe = false,
+    this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 400,
+      height: isAlwaysSubscribe ? 385 : 327,
       width: double.infinity,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -82,7 +82,7 @@ class ProductsCardWithTitle extends StatelessWidget {
               itemBuilder: (context, index) {
                 String _string = data != null
                     ? data[index].productImage
-                    : 'assets/ProductImages/Garlic.png';
+                    : 'assets/HomeBanner/no-icon.png';
                 print(_string);
                 if (data != null) {
                   _string = _string.substring(1, _string.length);
