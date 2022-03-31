@@ -1454,6 +1454,7 @@ class NewHomeView1State extends State<NewHomeView1> {
                                           locModel: widget.locModel,
                                           count: sProducts?.data?.length,
                                           data: sProducts?.data,
+                                          isAlwaysSubscribe: true,
                                         )
                                       : const SizedBox.shrink(),
                                   const SizedBox(
@@ -1525,9 +1526,13 @@ class NewHomeView1State extends State<NewHomeView1> {
                                           data: apiData.dataModel.spotlight,
                                         )
                                       : const SizedBox.shrink(),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
+                                  (apiData.dataModel.spotlight != null &&
+                                          apiData
+                                              .dataModel.spotlight.isNotEmpty)
+                                      ? const SizedBox(
+                                          height: 15,
+                                        )
+                                      : const SizedBox.shrink(),
                                   (apiData.dataModel.topselling != null &&
                                           apiData
                                               .dataModel.topselling.isNotEmpty)
@@ -1541,7 +1546,64 @@ class NewHomeView1State extends State<NewHomeView1> {
                                           data: apiData.dataModel.topselling,
                                         )
                                       : const SizedBox.shrink(),
-
+                                  (apiData.dataModel.topselling != null &&
+                                          apiData
+                                              .dataModel.topselling.isNotEmpty)
+                                      ? const SizedBox(
+                                          height: 15,
+                                        )
+                                      : const SizedBox.shrink(),
+                                  (apiData.dataModel.recentselling != null &&
+                                          apiData.dataModel.recentselling
+                                              .isNotEmpty)
+                                      ? ProductsCardWithTitle(
+                                          title: 'Recent Selling',
+                                          catP: cateP,
+                                          locale: locale,
+                                          locModel: widget.locModel,
+                                          count: apiData
+                                              .dataModel.recentselling.length,
+                                          data: apiData.dataModel.recentselling,
+                                        )
+                                      : const SizedBox.shrink(),
+                                  (apiData.dataModel.recentselling != null &&
+                                          apiData.dataModel.recentselling
+                                              .isNotEmpty)
+                                      ? const SizedBox(
+                                          height: 15,
+                                        )
+                                      : const SizedBox.shrink(),
+                                  (apiData.dataModel.whatsnew != null &&
+                                          apiData.dataModel.whatsnew.isNotEmpty)
+                                      ? ProductsCardWithTitle(
+                                          title: 'Whats New',
+                                          catP: cateP,
+                                          locale: locale,
+                                          locModel: widget.locModel,
+                                          count:
+                                              apiData.dataModel.whatsnew.length,
+                                          data: apiData.dataModel.whatsnew,
+                                        )
+                                      : const SizedBox.shrink(),
+                                  (apiData.dataModel.whatsnew != null &&
+                                          apiData.dataModel.whatsnew.isNotEmpty)
+                                      ? const SizedBox(
+                                          height: 15,
+                                        )
+                                      : const SizedBox.shrink(),
+                                  (apiData.dataModel.dealproduct != null &&
+                                          apiData
+                                              .dataModel.dealproduct.isNotEmpty)
+                                      ? ProductsCardWithTitle(
+                                          title: 'Deal Products',
+                                          catP: cateP,
+                                          locale: locale,
+                                          locModel: widget.locModel,
+                                          count: apiData
+                                              .dataModel.dealproduct.length,
+                                          data: apiData.dataModel.dealproduct,
+                                        )
+                                      : const SizedBox.shrink(),
                                   const SizedBox(height: 45),
                                 ],
                               ),

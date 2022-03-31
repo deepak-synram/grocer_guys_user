@@ -12,16 +12,18 @@ class ProductsCardWithTitle extends StatelessWidget {
   final AppLocalizations locale;
   final String title;
   final int count;
+  bool isAlwaysSubscribe = false;
 
   final List<dynamic> data;
 
-  const ProductsCardWithTitle(
+  ProductsCardWithTitle(
       {Key key,
       @required this.title,
       @required this.locModel,
       @required this.catP,
       @required this.locale,
       this.count,
+      this.isAlwaysSubscribe,
       this.data})
       : super(key: key);
 
@@ -103,7 +105,8 @@ class ProductsCardWithTitle extends StatelessWidget {
                   index: index,
                   image: _string,
                   title: _title,
-                  isSubscribe: data != null ? false : false,
+                  // TODO: Change here condition after the is_subscribe is available in API
+                  isSubscribe: isAlwaysSubscribe,
                   subTitle: '500g',
                   symbol: '\u{20B9}',
                   previousPrice: '35',

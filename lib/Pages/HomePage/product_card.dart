@@ -96,17 +96,20 @@ class _ProductCardState extends State<ProductCard> {
                 Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      child: widget.image.contains('https') == true
-                          ? Image.network(
-                              widget.image,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.asset(
-                              widget.image,
-                              fit: BoxFit.cover,
-                            ),
+                    SizedBox(
+                      height: 170,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: widget.image.contains('https') == true
+                            ? Image.network(
+                                widget.image,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                widget.image,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -232,6 +235,7 @@ class _ProductCardState extends State<ProductCard> {
                               borderRadius: BorderRadius.circular(15.0))),
                     ),
                   ),
+                Expanded(child: const SizedBox(height: 5)),
                 const Divider(
                   color: Colors.grey,
                 ),
@@ -246,6 +250,9 @@ class _ProductCardState extends State<ProductCard> {
                     const SizedBox(width: 5),
                     Text('Add To Bag', style: TextStyle(color: kMainTextColor)),
                   ],
+                ),
+                SizedBox(
+                  height: 5,
                 )
               ],
             ),
