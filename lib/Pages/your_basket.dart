@@ -5,6 +5,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:user/Locale/locales.dart';
+import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
@@ -42,14 +43,14 @@ class BasketState extends State<YourBasket> {
 
   void scanProductCode(BuildContext context) async {
     await FlutterBarcodeScanner.scanBarcode(
-        "#ff6666", "Cancel", true, ScanMode.DEFAULT)
+            "#ff6666", "Cancel", true, ScanMode.DEFAULT)
         .then((value) {
       if (value != null && value.length > 0 && '$value' != '-1') {
-        if(storeDetails!=null){
+        if (storeDetails != null) {
           Navigator.pushNamed(context, PageRoutes.search, arguments: {
             'ean_code': value,
             'storedetails': storeDetails,
-          }).then((value){
+          }).then((value) {
             getCartList();
           });
         }
@@ -66,25 +67,26 @@ class BasketState extends State<YourBasket> {
     getCartList();
   }
 
-  void getCartList() async{
+  void getCartList() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     print(preferences.getString('accesstoken'));
     setState(() {
       apcurrency = preferences.getString('app_currency');
     });
     print('${preferences.getInt('user_id')}');
-    http.post(showCartUri,body: {
-      'user_id':'${preferences.getInt('user_id')}'
+    http.post(showCartUri, body: {
+      'user_id': '${preferences.getInt('user_id')}'
     }, headers: {
       'Authorization': 'Bearer ${preferences.getString('accesstoken')}'
-    }).then((value){
+    }).then((value) {
       print('cart - ${value.body}');
-      if(value.statusCode == 200){
-        CartItemMainBean data1 = CartItemMainBean.fromJson(jsonDecode(value.body));
-        if('${data1.status}'=='1'){
+      if (value.statusCode == 200) {
+        CartItemMainBean data1 =
+            CartItemMainBean.fromJson(jsonDecode(value.body));
+        if ('${data1.status}' == '1') {
           // cartItemd.clear();
           // cartItemd = List.from(data1.data);
-          cartListPro.emitCartList(data1.data,data1.total_price);
+          cartListPro.emitCartList(data1.data, data1.total_price);
           cartCounterProvider.hitCartCounter(data1.data.length);
           cart_id = cartItemd[0].order_cart_id;
           setState(() {
@@ -93,8 +95,8 @@ class BasketState extends State<YourBasket> {
             storeDetails = data1.store_details;
             deliveryFee = double.parse('${data1.delivery_charge}');
           });
-        }else{
-          cartListPro.emitCartList([],0.0);
+        } else {
+          cartListPro.emitCartList([], 0.0);
           cartCounterProvider.hitCartCounter(0);
           setState(() {
             totalPrice = 0.0;
@@ -103,7 +105,7 @@ class BasketState extends State<YourBasket> {
           });
         }
       }
-    }).catchError((e){
+    }).catchError((e) {
       print(e);
     });
   }
@@ -112,631 +114,785 @@ class BasketState extends State<YourBasket> {
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
     return SafeArea(
-      top: true,
+        top: true,
         bottom: true,
         left: false,
         right: false,
         child: Scaffold(
-          backgroundColor: Color(0xfff8f8f8),
-          appBar: AppBar(
-            backgroundColor: kWhiteColor,
-            title: Text(
-              'Your Basket',
-              style: TextStyle(
-                  color: kMainTextColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
-            ),
-            automaticallyImplyLeading: true,
-            centerTitle: true,
-            actions: [
-              Visibility(
-                // visible: (storeFinderData != null &&
-                //     storeFinderData.store_id != null),
-                visible: true,
-                child: IconButton(
-                  icon: const ImageIcon(AssetImage(
-                    'assets/scanner_logo.png',
-                  )),
-                  onPressed: () async {
-                    scanProductCode(context);
-                  },
-                ),
-              ),
-            ],
+          backgroundColor: const Color(0xfff8f8f8),
+          appBar: const CustomAppBar(
+            title: 'Your Basket',
+            widget: SizedBox.shrink(),
           ),
+          // appBar: AppBar(
+          //   backgroundColor: kWhiteColor,
+          //   title: Text(
+          //     'Your Basket',
+          //     style: TextStyle(
+          //         color: kMainTextColor,
+          //         fontSize: 16,
+          //         fontWeight: FontWeight.w600),
+          //   ),
+          //   automaticallyImplyLeading: true,
+          //   centerTitle: true,
+          //   actions: [
+          //     Visibility(
+          //       // visible: (storeFinderData != null &&
+          //       //     storeFinderData.store_id != null),
+          //       visible: true,
+          //       child: IconButton(
+          //         icon: const ImageIcon(AssetImage(
+          //           'assets/scanner_logo.png',
+          //         )),
+          //         onPressed: () async {
+          //           scanProductCode(context);
+          //         },
+          //       ),
+          //     ),
+          //   ],
+          // ),
           body: BlocBuilder<CartListProvider, List<CartItemData>>(
               builder: (context, cartList) {
-                if(cartList!=null && cartList.length>0){
-                  cartItemd = List.from(cartList);
-                  cart_id = cartItemd[0].order_cart_id;
-                  return Column(
-                    children: [
-                      Expanded(
-                          child: SingleChildScrollView(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      height: 45,
-                                      margin:
-                                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                      decoration: BoxDecoration(
-                                          color: kWhiteColor,
-                                          borderRadius: BorderRadius.circular(10),
-                                          border: Border.all(color: kMainColor, width: 1),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: kMainColor,
-                                                offset: Offset(-1, 0),
-                                                blurRadius: 1),
-                                            BoxShadow(
-                                                color: kMainColor,
-                                                offset: Offset(1, 1),
-                                                blurRadius: 1)
-                                          ]),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.only(left: 10, right: 5),
-                                            child: Icon(Icons.savings,
-                                                size: 25.0, color: kMainColor),
-                                          ),
-                                          Expanded(
-                                            child: Padding(
-                                              padding:
-                                              const EdgeInsets.only(left: 5, right: 10),
-                                              child: Text(
-                                                  'You are saving $apcurrency ${((totalMrp-totalPrice)+promocodeprice).toStringAsFixed(2)} with this purchase.',
-                                                  maxLines: 1,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.normal,
-                                                      color: kMainTextColor,
-                                                      fontSize: 13)),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    (cartItemd != null && cartItemd.isNotEmpty)
-                                        ?BlocBuilder<A2CartSnap, AddtoCartB>(
-                                        builder: (_, dVal) {
-                                          return ListView.builder(
-                                              scrollDirection: Axis.vertical,
-                                              shrinkWrap: true,
-                                              primary: false,
-                                              physics: const NeverScrollableScrollPhysics(),
-                                              itemBuilder: (context, index) {
-                                                return Slidable(
-                                                  key: Key('${cartItemd[index].product_name}'),
-                                                  actionPane: const SlidableDrawerActionPane(),
-                                                  actionExtentRatio: 0.25,
-                                                  child: Material(
-                                                    elevation: 1,
-                                                    child: Container(
-                                                      width: MediaQuery.of(context).size.width,
-                                                      color: kWhiteColor,
-                                                      padding:
-                                                      const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                        children: [
-                                                          Row(
-                                                            // mainAxisAlignment: MainAxisAlignment.start,
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
-                                                            children: [
-                                                              Expanded(
-                                                                  child: Column(
-                                                                    mainAxisAlignment:
-                                                                    MainAxisAlignment.start,
-                                                                    crossAxisAlignment:
-                                                                    CrossAxisAlignment.start,
-                                                                    children: [
-                                                                      Text('${cartItemd[index].product_name}',
-                                                                          textAlign: TextAlign.start,
-                                                                          maxLines: 2,
-                                                                          style: TextStyle(
-                                                                              fontWeight:
-                                                                              FontWeight.w500,
-                                                                              letterSpacing: 1.5,
-                                                                              color: kMainTextColor,
-                                                                              fontSize: 15)),
-                                                                      Padding(
-                                                                        padding: const EdgeInsets.only(
-                                                                            top: 8.0),
-                                                                        child: Text('$apcurrency ${(double.parse('${cartItemd[index].price}')/int.parse('${cartItemd[index].qty}')).toStringAsFixed(2)}',
-                                                                            textAlign: TextAlign.start,
-                                                                            maxLines: 1,
-                                                                            style: TextStyle(
-                                                                                fontWeight:
-                                                                                FontWeight.bold,
-                                                                                color: kMainTextColor,
-                                                                                fontSize: 13)),
-                                                                      ),
-                                                                    ],
-                                                                  )),
-                                                              Column(
-                                                                // mainAxisAlignment: MainAxisAlignment.end,
-                                                                crossAxisAlignment:
-                                                                CrossAxisAlignment.end,
-                                                                children: [
-                                                                  Container(
-                                                                    height: 33,
-                                                                    alignment: Alignment.center,
-                                                                    decoration: BoxDecoration(
-                                                                        color:
-                                                                        kMainColor.withOpacity(0.4),
-                                                                        borderRadius: BorderRadius.circular(30)
-                                                                    ),
-                                                                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                    child: Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                      children: [
-                                                                        buildIconButton(Icons.remove, context,
-                                                                            onpressed: () {
-                                                                              if (int.parse('${cartItemd[index].qty}') > 0 &&
-                                                                                  dVal.status == false) {
-                                                                                a2cartSnap.hitSnap(int.parse('${cartItemd[index].productid}'), true);
-                                                                                addtocart2(
-                                                                                    '${cartItemd[index].store_id}',
-                                                                                    '${cartItemd[index].varient_id}',
-                                                                                    (int.parse('${cartItemd[index].qty}') - 1),
-                                                                                    '0',
-                                                                                    context,
-                                                                                    0);
-                                                                              }else{
-                                                                                Toast.show(locale.pcurprogress,
-                                                                                    context,
-                                                                                    duration: Toast.LENGTH_SHORT,
-                                                                                    gravity: Toast.CENTER);
-                                                                              }
-                                                                            }),
-                                                                        const SizedBox(
-                                                                          width: 8,
-                                                                        ),
-                                                                        (dVal.status == true && '${dVal.prodId}' == '${cartItemd[index].productid}')
-                                                                            ? const SizedBox(
-                                                                          height: 10,
-                                                                          width: 10,
-                                                                          child: CircularProgressIndicator(
-                                                                            strokeWidth: 1,
-                                                                          ),
-                                                                        ):Text('x${cartItemd[index].qty}',
-                                                                            style:
-                                                                            Theme.of(context).textTheme.subtitle1),
-                                                                        const SizedBox(
-                                                                          width: 8,
-                                                                        ),
-                                                                        buildIconButton(Icons.add, context, type: 1,
-                                                                            onpressed: () {
-                                                                              if ((int.parse('${cartItemd[index].qty}') + 1) <=
-                                                                                  int.parse('${cartItemd[index].stock}') &&
-                                                                                  dVal.status == false) {
-                                                                                a2cartSnap.hitSnap(int.parse('${cartItemd[index].productid}'), true);
-                                                                                addtocart2(
-                                                                                    '${cartItemd[index].store_id}',
-                                                                                    '${cartItemd[index].varient_id}',
-                                                                                    (int.parse('${cartItemd[index].qty}') + 1),
-                                                                                    '0',
-                                                                                    context,
-                                                                                    0);
-                                                                              } else {
-                                                                                if(dVal.status == false){
-                                                                                  Toast.show(locale.outstock2,
-                                                                                      context,
-                                                                                      duration: Toast.LENGTH_SHORT,
-                                                                                      gravity: Toast.CENTER);
-                                                                                }else{
-                                                                                  Toast.show(locale.pcurprogress,
-                                                                                      context,
-                                                                                      duration: Toast.LENGTH_SHORT,
-                                                                                      gravity: Toast.CENTER);
-                                                                                }
-                                                                              }
-                                                                            }),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(height: 8,),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets.only(right: 10),
-                                                                    child: Text("$apcurrency ${double.parse('${cartItemd[index].price}').toStringAsFixed(2)}",
-                                                                        textAlign: TextAlign.left,
-                                                                        style: TextStyle(
-                                                                            color: kMainTextColor,
-                                                                            fontSize: 13)),
-                                                                  ),
-                                                                ],
-                                                              )
-                                                            ],
-                                                          ),
-                                                          const SizedBox(height: 10,),
-                                                          Text('${cartItemd[index].quantity} ${cartItemd[index].unit}',
-                                                              textAlign: TextAlign.start,
-                                                              style: TextStyle(
-                                                                  color: kLightTextColor,
-                                                                  fontSize: 13)),
-                                                          const Padding(
-                                                            padding: EdgeInsets.fromLTRB(
-                                                                5, 5, 5, 0),
-                                                            child: Divider(
-                                                              thickness: 1.5,
-                                                              height: 1.5,
-                                                              color: Color(0xfff8f8f8),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  secondaryActions: <Widget>[
-                                                    IconSlideAction(
-                                                      color: kTransparentColor,
-                                                      iconWidget: ClipRRect(
-                                                        borderRadius: BorderRadius.circular(30),
-                                                        child: Container(
-                                                          color: kRedColor,
-                                                          padding: const EdgeInsets.all(6),
-                                                          child: Icon(
-                                                            Icons.delete_outline,
-                                                            color: kWhiteColor,
-                                                            size: 20,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      onTap: (){
-                                                        if (dVal.status == false) {
-                                                          a2cartSnap.hitSnap(int.parse('${cartItemd[index].productid}'), true);
-                                                          addtocart2(
-                                                              '${cartItemd[index].store_id}',
-                                                              '${cartItemd[index].varient_id}',
-                                                              0,
-                                                              '0',
-                                                              context,
-                                                              0);
-                                                        }else{
-                                                          Toast.show(locale.pcurprogress,
-                                                              context,
-                                                              duration: Toast.LENGTH_SHORT,
-                                                              gravity: Toast.CENTER);
-                                                        }
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                              itemCount: cartItemd.length);
-                                        })
-                                        :const SizedBox.shrink(),
-                                    const Divider(
-                                      height: 10,
-                                      thickness: 10,
-                                      color: Color(0xfff8f8f8),
-                                    ),
-                                    Visibility(
-                                      visible: isOpenMenu,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                                        children: [
-                                          const Divider(
-                                            height: 10,
-                                            thickness: 10,
-                                            color: Color(0xfff8f8f8),
-                                          ),
-                                          Material(
+            if (cartList != null && cartList.length > 0) {
+              cartItemd = List.from(cartList);
+              cart_id = cartItemd[0].order_cart_id;
+              return Column(
+                children: [
+                  Expanded(
+                      child: SingleChildScrollView(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                        Container(
+                          height: 45,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                              color: kWhiteColor,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: kMainColor, width: 1),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: kMainColor,
+                                    offset: Offset(-1, 0),
+                                    blurRadius: 1),
+                                BoxShadow(
+                                    color: kMainColor,
+                                    offset: Offset(1, 1),
+                                    blurRadius: 1)
+                              ]),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10, right: 5),
+                                child: Icon(Icons.savings,
+                                    size: 25.0, color: kMainColor),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 5, right: 10),
+                                  child: Text(
+                                      'You are saving $apcurrency ${((totalMrp - totalPrice) + promocodeprice).toStringAsFixed(2)} with this purchase.',
+                                      maxLines: 1,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color: kMainTextColor,
+                                          fontSize: 13)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        (cartItemd != null && cartItemd.isNotEmpty)
+                            ? BlocBuilder<A2CartSnap, AddtoCartB>(
+                                builder: (_, dVal) {
+                                return ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return Slidable(
+                                        key: Key(
+                                            '${cartItemd[index].product_name}'),
+                                        actionPane:
+                                            const SlidableDrawerActionPane(),
+                                        actionExtentRatio: 0.25,
+                                        child: Material(
+                                          elevation: 1,
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
                                             color: kWhiteColor,
-                                            elevation: 1,
-                                            child: Container(
-                                              color: kWhiteColor,
-                                              padding: const EdgeInsets.only(
-                                                  left: 20, right: 20, top: 10, bottom: 10),
-                                              child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding:
-                                                      const EdgeInsets.symmetric(vertical: 15),
-                                                      child: Text("${locale.do10} (${cartItemd.length} ${locale.od5})",
-                                                          textAlign: TextAlign.start,
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight.w300,
-                                                              color: kMainTextColor,
-                                                              letterSpacing: 1.5,
-                                                              fontSize: 13)),
-                                                    ),
-                                                    Divider(
-                                                      thickness: 1.5,
-                                                      height: 1.5,
-                                                      color: kButtonBorderColor.withOpacity(0.5),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(top: 15),
-                                                      child: Column(children: <Widget>[
+                                            padding: const EdgeInsets.fromLTRB(
+                                                10, 10, 10, 0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                        child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                            '${cartItemd[index].product_name}',
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                            maxLines: 2,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                letterSpacing:
+                                                                    1.5,
+                                                                color:
+                                                                    kMainTextColor,
+                                                                fontSize: 15)),
                                                         Padding(
-                                                          padding: const EdgeInsets.only(bottom: 8),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              Expanded(
-                                                                child: Text(locale.do111,
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.w400,
-                                                                        color: kMainTextColor,
-                                                                        fontSize: 15)),
-                                                              ),
-                                                              Text('$apcurrency $totalMrp',
-                                                                  style: TextStyle(
-                                                                      fontWeight: FontWeight.normal,
-                                                                      color: kMainTextColor,
-                                                                      fontSize: 15)),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.only(bottom: 8),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              Expanded(
-                                                                child: Text(locale.do12,
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.w400,
-                                                                        color: kMainTextColor,
-                                                                        fontSize: 15)),
-                                                              ),
-                                                              Text('$apcurrency $totalPrice',
-                                                                  style: TextStyle(
-                                                                      fontWeight: FontWeight.normal,
-                                                                      color: kMainTextColor,
-                                                                      fontSize: 15)),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.only(bottom: 8),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              Expanded(
-                                                                child: Text(locale.do13,
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.w400,
-                                                                        color: kMainTextColor,
-                                                                        letterSpacing: 1.5,
-                                                                        fontSize: 15)),
-                                                              ),
-                                                              Text('- $apcurrency ${(totalMrp-totalPrice).toStringAsFixed(2)}',
-                                                                  style: TextStyle(
-                                                                      fontWeight: FontWeight.normal,
-                                                                      color: kMainTextColor,
-                                                                      letterSpacing: 1.5,
-                                                                      fontSize: 15)),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.only(bottom: 8),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              Expanded(
-                                                                child: Text(locale.do14,
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.w400,
-                                                                        color: kMainTextColor,
-                                                                        letterSpacing: 1.5,
-                                                                        fontSize: 15)),
-                                                              ),
-                                                              Text('- $apcurrency $promocodeprice',
-                                                                  style: TextStyle(
-                                                                      fontWeight: FontWeight.normal,
-                                                                      color: kMainTextColor,
-                                                                      letterSpacing: 1.5,
-                                                                      fontSize: 15)),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.only(bottom: 8),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              Expanded(
-                                                                child: Text(locale.do15,
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.w400,
-                                                                        color: kMainTextColor,
-                                                                        letterSpacing: 1.5,
-                                                                        fontSize: 15)),
-                                                              ),
-                                                              Text('$apcurrency $deliveryFee',
-                                                                  style: TextStyle(
-                                                                      fontWeight: FontWeight.normal,
-                                                                      color: kMainTextColor,
-                                                                      letterSpacing: 1.5,
-                                                                      fontSize: 15)),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ]),
-                                                    ),
-                                                    Divider(
-                                                      thickness: 1.5,
-                                                      height: 1.5,
-                                                      color: kButtonBorderColor.withOpacity(0.5),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                      const EdgeInsets.only(bottom: 8, top: 8),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment.spaceEvenly,
-                                                        children: [
-                                                          Expanded(
-                                                            child: Text(locale.do11,
-                                                                style: TextStyle(
-                                                                    fontWeight: FontWeight.w400,
-                                                                    color: kMainTextColor,
-                                                                    fontSize: 15)),
-                                                          ),
-                                                          Text('$apcurrency ${(totalPrice+deliveryFee).toStringAsFixed(2)}',
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 8.0),
+                                                          child: Text(
+                                                              '$apcurrency ${(double.parse('${cartItemd[index].price}') / int.parse('${cartItemd[index].qty}')).toStringAsFixed(2)}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                              maxLines: 1,
                                                               style: TextStyle(
-                                                                  fontWeight: FontWeight.normal,
-                                                                  color: kMainTextColor,
-                                                                  fontSize: 15)),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ]),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color:
+                                                                      kMainTextColor,
+                                                                  fontSize:
+                                                                      13)),
+                                                        ),
+                                                      ],
+                                                    )),
+                                                    Column(
+                                                      // mainAxisAlignment: MainAxisAlignment.end,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Container(
+                                                          height: 33,
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration: BoxDecoration(
+                                                              color: kMainColor
+                                                                  .withOpacity(
+                                                                      0.4),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          30)),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      5),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              buildIconButton(
+                                                                  Icons.remove,
+                                                                  context,
+                                                                  onpressed:
+                                                                      () {
+                                                                if (int.parse(
+                                                                            '${cartItemd[index].qty}') >
+                                                                        0 &&
+                                                                    dVal.status ==
+                                                                        false) {
+                                                                  a2cartSnap.hitSnap(
+                                                                      int.parse(
+                                                                          '${cartItemd[index].productid}'),
+                                                                      true);
+                                                                  addtocart2(
+                                                                      '${cartItemd[index].store_id}',
+                                                                      '${cartItemd[index].varient_id}',
+                                                                      (int.parse(
+                                                                              '${cartItemd[index].qty}') -
+                                                                          1),
+                                                                      '0',
+                                                                      context,
+                                                                      0);
+                                                                } else {
+                                                                  Toast.show(
+                                                                      locale
+                                                                          .pcurprogress,
+                                                                      context,
+                                                                      duration:
+                                                                          Toast
+                                                                              .LENGTH_SHORT,
+                                                                      gravity: Toast
+                                                                          .CENTER);
+                                                                }
+                                                              }),
+                                                              const SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              (dVal.status ==
+                                                                          true &&
+                                                                      '${dVal.prodId}' ==
+                                                                          '${cartItemd[index].productid}')
+                                                                  ? const SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                      width: 10,
+                                                                      child:
+                                                                          CircularProgressIndicator(
+                                                                        strokeWidth:
+                                                                            1,
+                                                                      ),
+                                                                    )
+                                                                  : Text(
+                                                                      'x${cartItemd[index].qty}',
+                                                                      style: Theme.of(
+                                                                              context)
+                                                                          .textTheme
+                                                                          .subtitle1),
+                                                              const SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              buildIconButton(
+                                                                  Icons.add,
+                                                                  context,
+                                                                  type: 1,
+                                                                  onpressed:
+                                                                      () {
+                                                                if ((int.parse('${cartItemd[index].qty}') +
+                                                                            1) <=
+                                                                        int.parse(
+                                                                            '${cartItemd[index].stock}') &&
+                                                                    dVal.status ==
+                                                                        false) {
+                                                                  a2cartSnap.hitSnap(
+                                                                      int.parse(
+                                                                          '${cartItemd[index].productid}'),
+                                                                      true);
+                                                                  addtocart2(
+                                                                      '${cartItemd[index].store_id}',
+                                                                      '${cartItemd[index].varient_id}',
+                                                                      (int.parse(
+                                                                              '${cartItemd[index].qty}') +
+                                                                          1),
+                                                                      '0',
+                                                                      context,
+                                                                      0);
+                                                                } else {
+                                                                  if (dVal.status ==
+                                                                      false) {
+                                                                    Toast.show(
+                                                                        locale
+                                                                            .outstock2,
+                                                                        context,
+                                                                        duration:
+                                                                            Toast
+                                                                                .LENGTH_SHORT,
+                                                                        gravity:
+                                                                            Toast.CENTER);
+                                                                  } else {
+                                                                    Toast.show(
+                                                                        locale
+                                                                            .pcurprogress,
+                                                                        context,
+                                                                        duration:
+                                                                            Toast
+                                                                                .LENGTH_SHORT,
+                                                                        gravity:
+                                                                            Toast.CENTER);
+                                                                  }
+                                                                }
+                                                              }),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 8,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 10),
+                                                          child: Text(
+                                                              "$apcurrency ${double.parse('${cartItemd[index].price}').toStringAsFixed(2)}",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left,
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      kMainTextColor,
+                                                                  fontSize:
+                                                                      13)),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                    '${cartItemd[index].quantity} ${cartItemd[index].unit}',
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                        color: kLightTextColor,
+                                                        fontSize: 13)),
+                                                const Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      5, 5, 5, 0),
+                                                  child: Divider(
+                                                    thickness: 1.5,
+                                                    height: 1.5,
+                                                    color: Color(0xfff8f8f8),
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                          ),
-                                          const Divider(
-                                            height: 10,
-                                            thickness: 10,
-                                            color: Color(0xfff8f8f8),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const Divider(
-                                      height: 10,
-                                      thickness: 10,
-                                      color: Color(0xfff8f8f8),
-                                    ),
-                                  ]))),
-                      Container(
-                        color: kWhiteColor,
-                        padding: const EdgeInsets.only(top: 10,bottom: 10,right: 15,left: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text('$apcurrency ${(totalPrice+deliveryFee).toStringAsFixed(2)}',
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            color: kMainTextColor,
-                                            letterSpacing: 1.7,
-                                            fontSize: 18)),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: GestureDetector(
-                                        onTap: (){
-                                          setState(() {
-                                            isOpenMenu = !isOpenMenu;
-                                          });
-                                        },
-                                        behavior: HitTestBehavior.opaque,
-                                        child: Text("View Details",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                color: kMainColor,
-                                                fontSize: 15)),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                            Expanded(
-                                child: GestureDetector(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, PageRoutes.deliveryoption, arguments: {
-                                      'store_id':'${storeDetails.store_id}',
-                                      'store_d':storeDetails,
-                                      'cartdetails':cartItemd,
-                                      'currency':apcurrency,
-                                      'totalmrp':totalMrp,
-                                      'totalprice':totalPrice,
-                                      'deliveryfee':deliveryFee,
-                                    });
-
-                                  },
-                                  child: (!isMakeingOrder)?Container(
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: kMainColor,
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 5),
-                                          child: Text(
-                                            'Continue',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: kWhiteColor,
-                                                fontWeight: FontWeight.w600,
-                                                letterSpacing: 0.6),
                                           ),
                                         ),
-                                        Icon(Icons.arrow_forward_ios,
-                                            size: 17.0, color: kWhiteColor)
-                                      ],
-                                    ),
-                                  ):Align(
-                                    widthFactor: 40,
-                                    heightFactor: 40,
-                                    child: CircularProgressIndicator(strokeWidth: 2,color: kMainColor,),
-                                  ),
-                                )),
-                          ],
+                                        secondaryActions: <Widget>[
+                                          IconSlideAction(
+                                            color: kTransparentColor,
+                                            iconWidget: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                              child: Container(
+                                                color: kRedColor,
+                                                padding:
+                                                    const EdgeInsets.all(6),
+                                                child: Icon(
+                                                  Icons.delete_outline,
+                                                  color: kWhiteColor,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              if (dVal.status == false) {
+                                                a2cartSnap.hitSnap(
+                                                    int.parse(
+                                                        '${cartItemd[index].productid}'),
+                                                    true);
+                                                addtocart2(
+                                                    '${cartItemd[index].store_id}',
+                                                    '${cartItemd[index].varient_id}',
+                                                    0,
+                                                    '0',
+                                                    context,
+                                                    0);
+                                              } else {
+                                                Toast.show(locale.pcurprogress,
+                                                    context,
+                                                    duration:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity: Toast.CENTER);
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    itemCount: cartItemd.length);
+                              })
+                            : const SizedBox.shrink(),
+                        const Divider(
+                          height: 10,
+                          thickness: 10,
+                          color: Color(0xfff8f8f8),
                         ),
-                      ),
-                      Divider(
-                        height: 5,
-                        thickness: 5,
-                        color: kWhiteColor,
-                      ),
-                    ],
-                  );
-                }else{
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Text('No item in your please proceed to shop something to continue.',textAlign: TextAlign.center,),
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        children: [
-                          MaterialButton(onPressed: (){
-Navigator.of(context).pop();
-                          },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)
+                        Visibility(
+                          visible: isOpenMenu,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const Divider(
+                                height: 10,
+                                thickness: 10,
+                                color: Color(0xfff8f8f8),
+                              ),
+                              Material(
+                                color: kWhiteColor,
+                                elevation: 1,
+                                child: Container(
+                                  color: kWhiteColor,
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 10, bottom: 10),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 15),
+                                          child: Text(
+                                              "${locale.do10} (${cartItemd.length} ${locale.od5})",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w300,
+                                                  color: kMainTextColor,
+                                                  letterSpacing: 1.5,
+                                                  fontSize: 13)),
+                                        ),
+                                        Divider(
+                                          thickness: 1.5,
+                                          height: 1.5,
+                                          color: kButtonBorderColor
+                                              .withOpacity(0.5),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15),
+                                          child: Column(children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(locale.do111,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color:
+                                                                kMainTextColor,
+                                                            fontSize: 15)),
+                                                  ),
+                                                  Text('$apcurrency $totalMrp',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color: kMainTextColor,
+                                                          fontSize: 15)),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(locale.do12,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color:
+                                                                kMainTextColor,
+                                                            fontSize: 15)),
+                                                  ),
+                                                  Text(
+                                                      '$apcurrency $totalPrice',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color: kMainTextColor,
+                                                          fontSize: 15)),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(locale.do13,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color:
+                                                                kMainTextColor,
+                                                            letterSpacing: 1.5,
+                                                            fontSize: 15)),
+                                                  ),
+                                                  Text(
+                                                      '- $apcurrency ${(totalMrp - totalPrice).toStringAsFixed(2)}',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color: kMainTextColor,
+                                                          letterSpacing: 1.5,
+                                                          fontSize: 15)),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(locale.do14,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color:
+                                                                kMainTextColor,
+                                                            letterSpacing: 1.5,
+                                                            fontSize: 15)),
+                                                  ),
+                                                  Text(
+                                                      '- $apcurrency $promocodeprice',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color: kMainTextColor,
+                                                          letterSpacing: 1.5,
+                                                          fontSize: 15)),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(locale.do15,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color:
+                                                                kMainTextColor,
+                                                            letterSpacing: 1.5,
+                                                            fontSize: 15)),
+                                                  ),
+                                                  Text(
+                                                      '$apcurrency $deliveryFee',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color: kMainTextColor,
+                                                          letterSpacing: 1.5,
+                                                          fontSize: 15)),
+                                                ],
+                                              ),
+                                            ),
+                                          ]),
+                                        ),
+                                        Divider(
+                                          thickness: 1.5,
+                                          height: 1.5,
+                                          color: kButtonBorderColor
+                                              .withOpacity(0.5),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8, top: 8),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Expanded(
+                                                child: Text(locale.do11,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: kMainTextColor,
+                                                        fontSize: 15)),
+                                              ),
+                                              Text(
+                                                  '$apcurrency ${(totalPrice + deliveryFee).toStringAsFixed(2)}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      color: kMainTextColor,
+                                                      fontSize: 15)),
+                                            ],
+                                          ),
+                                        ),
+                                      ]),
+                                ),
+                              ),
+                              const Divider(
+                                height: 10,
+                                thickness: 10,
+                                color: Color(0xfff8f8f8),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Divider(
+                          height: 10,
+                          thickness: 10,
+                          color: Color(0xfff8f8f8),
+                        ),
+                      ]))),
+                  Container(
+                    color: kWhiteColor,
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 10, right: 15, left: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                                '$apcurrency ${(totalPrice + deliveryFee).toStringAsFixed(2)}',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: kMainTextColor,
+                                    letterSpacing: 1.7,
+                                    fontSize: 18)),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isOpenMenu = !isOpenMenu;
+                                  });
+                                },
+                                behavior: HitTestBehavior.opaque,
+                                child: Text("View Details",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        color: kMainColor,
+                                        fontSize: 15)),
+                              ),
                             ),
-                            color: kMainColor,
-                            child: Text('Shop Now',style: TextStyle(
+                          ],
+                        )),
+                        Expanded(
+                            child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, PageRoutes.deliveryoption,
+                                arguments: {
+                                  'store_id': '${storeDetails.store_id}',
+                                  'store_d': storeDetails,
+                                  'cartdetails': cartItemd,
+                                  'currency': apcurrency,
+                                  'totalmrp': totalMrp,
+                                  'totalprice': totalPrice,
+                                  'deliveryfee': deliveryFee,
+                                });
+                          },
+                          child: (!isMakeingOrder)
+                              ? Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: kMainColor,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 5),
+                                        child: Text(
+                                          'Continue',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: kWhiteColor,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.6),
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_forward_ios,
+                                          size: 17.0, color: kWhiteColor)
+                                    ],
+                                  ),
+                                )
+                              : Align(
+                                  widthFactor: 40,
+                                  heightFactor: 40,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: kMainColor,
+                                  ),
+                                ),
+                        )),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    height: 5,
+                    thickness: 5,
+                    color: kWhiteColor,
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    'No item in your please proceed to shop something to continue.',
+                    textAlign: TextAlign.center,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: [
+                      MaterialButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        color: kMainColor,
+                        child: Text('Shop Now',
+                            style: TextStyle(
                                 fontWeight: FontWeight.w300,
                                 color: kWhiteColor,
                                 letterSpacing: 1.5,
-                                fontSize: 16)),)
-                        ],
+                                fontSize: 16)),
                       )
                     ],
-                  );
-                }
-
+                  )
+                ],
+              );
+            }
           }),
         ));
   }
-
 
   Widget buildIconButton(IconData icon, BuildContext context,
       {Function onpressed, int type}) {
@@ -754,24 +910,23 @@ Navigator.of(context).pop();
         //     border: Border.all(color: type==1?kMainColor:kRedColor, width: 0)),
         child: Icon(
           icon,
-          color: type==1?kMainColor:kRedColor,
+          color: type == 1 ? kMainColor : kRedColor,
           size: 16,
         ),
       ),
     );
   }
 
-  void addtocart2(String storeid, String varientid, dynamic qnty, String special,
-      BuildContext context, int index) async {
+  void addtocart2(String storeid, String varientid, dynamic qnty,
+      String special, BuildContext context, int index) async {
     var locale = AppLocalizations.of(context);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if (preferences.containsKey('islogin') && preferences.getBool('islogin')) {
-      if(preferences.getString('block')=='1'){
+      if (preferences.getString('block') == '1') {
         a2cartSnap.hitSnap(-1, false);
         Toast.show(locale.blockmsg, context,
-            gravity: Toast.CENTER,
-            duration: Toast.LENGTH_SHORT);
-      }else{
+            gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+      } else {
         http.post(addToCartUri, body: {
           'user_id': '${preferences.getInt('user_id')}',
           'qty': '${int.parse('$qnty')}',
@@ -785,23 +940,23 @@ Navigator.of(context).pop();
           a2cartSnap.hitSnap(-1, false);
           if (value.statusCode == 200) {
             AddToCartMainModel data1 =
-            AddToCartMainModel.fromJson(jsonDecode(value.body));
+                AddToCartMainModel.fromJson(jsonDecode(value.body));
             if ('${data1.status}' == '1') {
-              if(data1.cart_items!=null && data1.cart_items.length>0){
+              if (data1.cart_items != null && data1.cart_items.length > 0) {
                 totalPrice = double.parse('${data1.total_price}');
                 totalMrp = double.parse('${data1.total_mrp}');
-                cartListPro.emitCartList(data1.cart_items,data1.total_price);
+                cartListPro.emitCartList(data1.cart_items, data1.total_price);
                 cartCounterProvider.hitCartCounter(data1.cart_items.length);
-              }else{
+              } else {
                 totalPrice = 0.0;
                 totalMrp = 0.0;
-                cartListPro.emitCartList([],0.0);
+                cartListPro.emitCartList([], 0.0);
                 cartCounterProvider.hitCartCounter(0);
               }
             } else {
               totalPrice = 0.0;
               totalMrp = 0.0;
-              cartListPro.emitCartList([],0.0);
+              cartListPro.emitCartList([], 0.0);
               // _counter = 0;
               cartCounterProvider.hitCartCounter(0);
             }
@@ -818,8 +973,5 @@ Navigator.of(context).pop();
       Toast.show(locale.loginfirst, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
     }
-
   }
-
-
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:user/Locale/locales.dart';
+import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
@@ -113,27 +114,31 @@ class _MyOrdersState extends State<MyOrders> {
         backgroundColor: Colors.grey[200],
         appBar: widget.fromHomePage
             ? null
-            : PreferredSize(
-                preferredSize: Size.fromHeight(60),
-                child: AppBar(
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  leading: IconButton(
-                    icon: Icon(
-                      Icons.keyboard_arrow_left_sharp,
-                      size: 30,
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, PageRoutes.homePage, (route) => false);
-                    },
-                  ),
-                  title: Text(
-                    locale.myOrders,
-                    style: TextStyle(color: kMainTextColor),
-                  ),
-                  centerTitle: true,
-                ),
-              ),
+            : CustomAppBar(
+                title: locale.myOrders,
+                function: () => Navigator.pushNamedAndRemoveUntil(
+                    context, PageRoutes.homePage, (route) => false)),
+        // PreferredSize(
+        //     preferredSize: Size.fromHeight(60),
+        //     child: AppBar(
+        //       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        //       leading: IconButton(
+        //         icon: Icon(
+        //           Icons.keyboard_arrow_left_sharp,
+        //           size: 30,
+        //         ),
+        //         onPressed: () {
+        //           Navigator.pushNamedAndRemoveUntil(
+        //               context, PageRoutes.homePage, (route) => false);
+        //         },
+        //       ),
+        //       title: Text(
+        //         locale.myOrders,
+        //         style: TextStyle(color: kMainTextColor),
+        //       ),
+        //       centerTitle: true,
+        //     ),
+        //   ),
         body: (!isloading && myOrders != null && myOrders.length > 0)
             ? Stack(
                 children: [

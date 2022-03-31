@@ -21,6 +21,7 @@ import 'package:user/Pages/AccountPage/account_page.dart';
 import 'package:user/Pages/HomePage/newhomep1.dart';
 import 'package:user/Pages/locpage/locationpage.dart';
 import 'package:user/Pages/wallet/walletui.dart';
+import 'package:user/Pages/your_basket.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
@@ -972,85 +973,55 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
               floatingActionButton: BlocBuilder<ProfileProvider, AppInfoModel>(
                   builder: (context, signModel) {
                 if (signModel != null) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: kWhiteColor,
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    padding: const EdgeInsets.all(4.0),
+                  return Transform.translate(
+                    offset: const Offset(0.0,10.0),
                     child: SizedBox(
-                      child: Image.asset(
-                        'assets/ic_floating.png',
-                        width: 65,
-                        height: 65,
+                      height: 70.0,
+                      width: 70.0,
+                      child: FittedBox(
+                        child: FloatingActionButton(
+                          backgroundColor: kTransparentColor,
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => YourBasket(),
+                            ),
+                          ),
+                          child: Image.asset(
+                            'assets/ic_floating.png',
+                          ),
+                        ),
                       ),
                     ),
                   );
-                  // return SpeedDial(
-                  //     childMargin: EdgeInsets.only(bottom: 30, right: 10),
-                  //     animatedIcon: AnimatedIcons.menu_close,
-                  //     // animatedIconColor:Colors.white,
-                  //     animatedIconTheme: IconThemeData(size: 22.0),
-                  //     closeManually: false,
-                  //     curve: Curves.bounceIn,
-                  //     overlayColor: Colors.white,
-                  //     overlayOpacity: 0.5,
-                  //     onOpen: () => print('OPENING DIAL'),
-                  //     onClose: () => print('DIAL CLOSED'),
-                  //     tooltip: 'Speed Dial',
-                  //     heroTag: 'speed-dial-hero-tag',
-                  //     backgroundColor: kMainColor,
-                  //     foregroundColor: Colors.white,
-                  //     elevation: 8.0,
-                  //     shape: CircleBorder(),
-                  //     children: [
-                  //       SpeedDialChild(
-                  //           child: Icon(Icons.share, color: Colors.white),
-                  //           backgroundColor: kMainColor,
-                  //           labelStyle: TextStyle(fontSize: 18.0),
-                  //           onTap: () {
-                  //             share(locale.shareheading, locale.sharetext, signModel);
-                  //           }),
-                  //       SpeedDialChild(
-                  //         child: Icon(Icons.rate_review, color: Colors.white),
-                  //         backgroundColor: kMainColor,
-                  //         onTap: () {
-                  //           launchUrl(signModel);
-                  //         },
-                  //       ),
-                  //       SpeedDialChild(
-                  //         child: Icon(Icons.call, color: Colors.white),
-                  //         backgroundColor: kMainColor,
-                  //         onTap: () {
-                  //           callNumberStore(
-                  //               widget.locModel.storeFinderData.store_number);
-                  //         },
-                  //       ),
-                  //       SpeedDialChild(
-                  //         child: ImageIcon(
-                  //             AssetImage(
-                  //               'assets/whatsapp.png',
-                  //             ),
-                  //             size: 20,
-                  //             color: kWhiteColor),
-                  //         backgroundColor: kMainColor,
-                  //         onTap: () {
-                  //           openWhatsApp(widget.locModel.storeFinderData.store_number,
-                  //               locale.nowhatsappinstalled, context);
-                  //         },
-                  //       ),
-                  //     ]);
+
+                  // return Container(
+                  //   decoration: BoxDecoration(
+                  //     // color: kTransparentColor,
+                  //     color: kWhiteColor,
+                  //     borderRadius: BorderRadius.circular(50.0),
+                  //   ),
+                  //   padding: const EdgeInsets.all(4.0),
+                  //   child: SizedBox(
+                  //     child: Image.asset(
+                  //       'assets/ic_floating.png',
+                  //       width: 65,
+                  //       height: 65,
+                  //     ),
+                  //   ),
+                  // );
+
                 } else {
                   return const SizedBox.shrink();
                 }
               }),
+
               bottomNavigationBar: BottomAppBar(
-                notchMargin: 6.0,
-                color: kMainColor,
-                clipBehavior: Clip.antiAlias,
+                notchMargin: 30.0,
+                // clipBehavior: Clip.antiAlias,
                 shape: const CircularNotchedRectangle(),
+                color: kMainColor,
                 child: SizedBox(
-                  height: 52,
+                  height: 60,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Row(
@@ -1099,6 +1070,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                             ],
                           ),
                         ),
+
                         // Expanded(
                         //   child: GestureDetector(
                         //     onTap: () {
@@ -1141,6 +1113,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                         //     ),
                         //   ),
                         // ),
+
                         GestureDetector(
                           onTap: () {
                             // searchP.emitSearchNull();
@@ -1182,6 +1155,8 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                             ],
                           ),
                         ),
+                        const SizedBox(width: 10),
+
                         GestureDetector(
                           onTap: () {
                             // Navigator.of(context)
@@ -1218,7 +1193,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 //   ),
                                 //   child:
                                 return Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
+                                  padding: const EdgeInsets.only(left: 30.0),
                                   child: Image.asset(
                                     'assets/ic_wallet.png',
                                     width: 20,
@@ -1235,7 +1210,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                 );
                               }),
                               Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
+                                padding: const EdgeInsets.only(left: 30.0),
                                 child: Text(
                                   "Wallet",
                                   style: TextStyle(
