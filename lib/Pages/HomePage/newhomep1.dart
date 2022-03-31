@@ -391,7 +391,7 @@ class NewHomeView1State extends State<NewHomeView1> {
                                                             5),
                                                     child: CachedNetworkImage(
                                                       imageUrl:
-                                                          '${dataModel.bannerImage}',
+                                                          '$imagebaseUrl1${dataModel.bannerImage.substring(1)}',
                                                       placeholder:
                                                           (context, url) =>
                                                               Align(
@@ -1476,7 +1476,7 @@ class NewHomeView1State extends State<NewHomeView1> {
                                                   BorderRadius.circular(5),
                                               child: CachedNetworkImage(
                                                 imageUrl:
-                                                    '${dataModel.bannerImage}',
+                                                    '$imagebaseUrl1${dataModel.bannerImage.substring(1)}',
                                                 placeholder: (context, url) =>
                                                     Align(
                                                   widthFactor: 50,
