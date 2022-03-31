@@ -339,23 +339,36 @@ class MItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Row(
-        children: [
-          Image.asset(
-            // 'assets/bell-icon.png',
-            Constants.iconArray[index],
-            height: 40,
-            width: 40,
-          ),
-          const SizedBox(
-            width: 4,
-          ),
-          Text(
-            Constants.itemArray[index],
-            // 'Home',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ],
+      GestureDetector(
+        onTap: () {
+          print('$index  Tapped !!!! ${Constants.routeArray[index]}');
+          if (Constants.routeArray[index] != null) {
+            SlideDrawer.of(context).close();
+            Navigator.push(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+              print('came here!!');
+              return Constants.routeArray[index];
+            }));
+          }
+        },
+        child: Row(
+          children: [
+            Image.asset(
+              // 'assets/bell-icon.png',
+              Constants.iconArray[index],
+              height: 40,
+              width: 40,
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Text(
+              Constants.itemArray[index],
+              // 'Home',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
       const SizedBox(
         height: 4,

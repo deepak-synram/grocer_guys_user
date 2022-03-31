@@ -1,3 +1,15 @@
+import 'package:flutter/cupertino.dart';
+import 'package:user/Pages/categorypage/view_all_categories.dart';
+
+import 'Pages/About/about_us.dart';
+import 'Pages/AccountPage/Coupons/coupon_page.dart';
+import 'Pages/AccountPage/account_page.dart';
+import 'Pages/AccountPage/refer_earn.dart';
+import 'Pages/DrawerPages/my_orders_drawer.dart';
+import 'Pages/Subscription/my_subscription_page.dart';
+import 'Pages/User/wishlist.dart';
+import 'Pages/wallet/walletui.dart';
+
 class Constants {
   static int selectedInd = 0;
   static List<String> iconArray = [
@@ -26,5 +38,19 @@ class Constants {
     'Live Chat',
     'Refer & Earn',
     'About Us'
+  ];
+
+  static List<Widget> routeArray = [
+    const ViewAllCategory(),
+    const AccountPage(),
+    MyOrdersDrawer(),
+    MySubscriptionPage(),
+    Wallet(),
+    MyWishList(),
+    CouponPage(),
+    null,
+    null,
+    ReferAndEarn(),
+    AboutUsPage(),
   ];
 }

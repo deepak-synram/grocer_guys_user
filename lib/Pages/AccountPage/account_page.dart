@@ -440,7 +440,8 @@ class _AccountPageState extends State<AccountPage> {
       appBar: CustomAppBar(
         title: 'My Account',
         function: () =>
-            widget.navBottomProvider.hitBottomNavigation(0, '--', '--'),
+        Navigator.pop(context),
+        // widget.navBottomProvider.hitBottomNavigation(0, '--', '--'),
       ),
       body: BlocBuilder<ProfileProvider, AppInfoModel>(
         builder: (context, signModel) {
