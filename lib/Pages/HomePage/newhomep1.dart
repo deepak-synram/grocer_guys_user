@@ -1447,16 +1447,18 @@ class NewHomeView1State extends State<NewHomeView1> {
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  (apiData.dataModel.topCat != null &&
-                                          apiData.dataModel.topCat.isNotEmpty)
+                                  (apiData.dataModel.subProdList != null &&
+                                          apiData
+                                              .dataModel.subProdList.isNotEmpty)
                                       ? ProductsCardWithTitle(
                                           title: 'Subscribe Products',
                                           catP: cateP,
                                           locale: locale,
                                           locModel: widget.locModel,
-                                          count: sProducts?.data?.length,
-                                          data: sProducts?.data,
-                                          isAlwaysSubscribe: true,
+                                          count: apiData
+                                              .dataModel.subProdList.length,
+                                          data: apiData.dataModel.subProdList,
+                                      isAlwaysSubscribe : true
                                         )
                                       : const SizedBox.shrink(),
                                   const SizedBox(
