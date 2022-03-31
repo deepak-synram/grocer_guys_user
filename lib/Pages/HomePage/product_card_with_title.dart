@@ -12,6 +12,7 @@ class ProductsCardWithTitle extends StatelessWidget {
   final AppLocalizations locale;
   final String title;
   final int count;
+
   final List<dynamic> data;
 
   const ProductsCardWithTitle(
@@ -85,13 +86,24 @@ class ProductsCardWithTitle extends StatelessWidget {
                   _string = _string.substring(1, _string.length);
                   _string = imagebaseUrl1 + _string;
                 }
-                String _title = data != null ? data[index].title : 'Garlic';
+                String _title = 'Garlic';
+                if (data != null) {
+                  try {
+                    _title = data[index].productName;
+                  } catch (e) {
+                    try {
+                      _title = data[index].title;
+                    } catch (e) {
+                      _title = 'Garlic';
+                    }
+                  }
+                }
 
                 return ProductCard(
                   index: index,
                   image: _string,
                   title: _title,
-                  isSubscribe: data != null ? data[index].isSubscribe : false,
+                  isSubscribe: data != null ? false : false,
                   subTitle: '500g',
                   symbol: '\u{20B9}',
                   previousPrice: '35',

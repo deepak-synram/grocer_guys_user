@@ -84,7 +84,8 @@ var googleMapUri = Uri.parse('${apibaseUrl}google_map');
 var mapboxUri = Uri.parse('${apibaseUrl}mapbox');
 var notificationListUri = Uri.parse('${apibaseUrl}notificationlist');
 var redeemRewardsUri = Uri.parse('${apibaseUrl}redeem_rewards');
-var oneApiUri = Uri.parse('${apibaseUrl}oneapi');
+var oneApiUri =
+    Uri.parse('https://staging.thegroceryguys.co.in/newversion/api/oneapi');
 var topCatPrductUri = Uri.parse('${apibaseUrl}top_cat_prduct');
 var clearCartUri = Uri.parse('${apibaseUrl}clear_cart');
 var notiProductUri = Uri.parse('${apibaseUrl}noti_product');
