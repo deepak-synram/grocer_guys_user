@@ -663,20 +663,6 @@ class _AccountPageState extends State<AccountPage> {
                           onClick: () => Navigator.of(context)
                               .pushNamed(PageRoutes.settingsAccount),
                         ),
-                        AccountCard(
-                          image: 'assets/MyAccount/ic_settings.png',
-                          title: ' Coupons',
-                          onClick: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => CouponPage())),
-                        ),
-                        AccountCard(
-                          image: 'assets/MyAccount/ic_settings.png',
-                          title: ' Refer & Earn',
-                          onClick: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => ReferAndEarn())),
-                        ),
                         const SizedBox(height: 60),
                       ],
                     ),
