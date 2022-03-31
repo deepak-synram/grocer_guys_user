@@ -2,7 +2,7 @@ class SingleApiHomePage {
   String status;
   String message;
   List<BannerDataModel> banner;
-  List<Null> secondBanner;
+  List<void> secondBanner;
   List<TopCat> topCat;
   List<Recentselling> recentselling;
   List<Topselling> topselling;
@@ -25,56 +25,42 @@ class SingleApiHomePage {
   SingleApiHomePage.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-
     if (json['banner'] != null) {
-      banner = [];
+      banner = new List<BannerDataModel>();
       json['banner'].forEach((v) {
-        banner.add(BannerDataModel.fromJson(v));
+        banner.add(new BannerDataModel.fromJson(v));
       });
     }
-
     if (json['top_cat'] != null) {
-      topCat = [];
+      topCat = new List<TopCat>();
       json['top_cat'].forEach((v) {
-        topCat.add(TopCat.fromJson(v));
+        topCat.add(new TopCat.fromJson(v));
       });
     }
     if (json['recentselling'] != null) {
-      recentselling = [];
+      recentselling = new List<Recentselling>();
       json['recentselling'].forEach((v) {
-        recentselling.add(Recentselling.fromJson(v));
+        recentselling.add(new Recentselling.fromJson(v));
       });
     }
     if (json['topselling'] != null) {
-      topselling = [];
+      topselling = new List<Topselling>();
       json['topselling'].forEach((v) {
-        topselling.add(Topselling.fromJson(v));
-      });
-    }
-    if (json['dealproduct'] != null) {
-      dealproduct = [];
-      json['dealproduct'].forEach((v) {
-        dealproduct.add(Recentselling.fromJson(v));
+        topselling.add(new Topselling.fromJson(v));
       });
     }
     if (json['whatsnew'] != null) {
-      whatsnew = [];
+      whatsnew = new List<Whatsnew>();
       json['whatsnew'].forEach((v) {
-        whatsnew.add(Whatsnew.fromJson(v));
-      });
-    }
-    if (json['spotlight'] != null) {
-      spotlight = [];
-      json['spotlight'].forEach((v) {
-        spotlight.add(Recentselling.fromJson(v));
+        whatsnew.add(new Whatsnew.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
     if (this.banner != null) {
       data['banner'] = this.banner.map((v) => v.toJson()).toList();
     }
@@ -88,14 +74,8 @@ class SingleApiHomePage {
     if (this.topselling != null) {
       data['topselling'] = this.topselling.map((v) => v.toJson()).toList();
     }
-    if (this.dealproduct != null) {
-      data['dealproduct'] = this.dealproduct.map((v) => v.toJson()).toList();
-    }
     if (this.whatsnew != null) {
       data['whatsnew'] = this.whatsnew.map((v) => v.toJson()).toList();
-    }
-    if (this.spotlight != null) {
-      data['spotlight'] = this.spotlight.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -193,7 +173,7 @@ class Recentselling {
   String description;
   int price;
   int mrp;
-  String varientImage;
+  Null varientImage;
   String unit;
   int quantity;
   String type;
@@ -202,7 +182,7 @@ class Recentselling {
   int cartQty;
   int avgrating;
   int countrating;
-  double discountper;
+  num discountper;
   List<Varients> varients;
   List<Images> images;
   List<Tags> tags;
@@ -233,21 +213,15 @@ class Recentselling {
 
   Recentselling.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
-
     stock = json['stock'];
-
     varientId = json['varient_id'];
-
     productId = json['product_id'];
-
     productName = json['product_name'];
-
     productImage = json['product_image'];
     description = json['description'];
     price = json['price'];
     mrp = json['mrp'];
-
-    varientImage = json['varient_image'];
+    // varientImage = json['varient_image'];
     unit = json['unit'];
     quantity = json['quantity'];
     type = json['type'];
@@ -257,19 +231,16 @@ class Recentselling {
     avgrating = json['avgrating'];
     countrating = json['countrating'];
     discountper = json['discountper'];
-
     if (json['varients'] != null) {
       varients = new List<Varients>();
       json['varients'].forEach((v) {
         varients.add(new Varients.fromJson(v));
       });
     }
-
     if (json['images'] != null) {
       images = new List<Images>();
-      json['images']?.forEach((v) {
-        print('Came Till here 2');
-        images.add(Images.fromJson(v));
+      json['images'].forEach((v) {
+        images.add(new Images.fromJson(v));
       });
     }
     if (json['tags'] != null) {
@@ -291,7 +262,7 @@ class Recentselling {
     data['description'] = this.description;
     data['price'] = this.price;
     data['mrp'] = this.mrp;
-    data['varient_image'] = this.varientImage;
+    // data['varient_image'] = this.varientImage;
     data['unit'] = this.unit;
     data['quantity'] = this.quantity;
     data['type'] = this.type;
@@ -329,9 +300,9 @@ class Varients {
   Null validTo;
   String isFavourite;
   int cartQty;
-  int avgrating;
+  num avgrating;
   int countrating;
-  double discountper;
+  num discountper;
 
   Varients(
       {this.storeId,
@@ -359,7 +330,7 @@ class Varients {
     description = json['description'];
     price = json['price'];
     mrp = json['mrp'];
-    varientImage = json['varient_image'];
+    // varientImage = json['varient_image'];
     unit = json['unit'];
     quantity = json['quantity'];
     dealPrice = json['deal_price'];
@@ -380,7 +351,7 @@ class Varients {
     data['description'] = this.description;
     data['price'] = this.price;
     data['mrp'] = this.mrp;
-    data['varient_image'] = this.varientImage;
+    // data['varient_image'] = this.varientImage;
     data['unit'] = this.unit;
     data['quantity'] = this.quantity;
     data['deal_price'] = this.dealPrice;
@@ -450,9 +421,9 @@ class Topselling {
   int count;
   String isFavourite;
   int cartQty;
-  double avgrating;
+  num avgrating;
   int countrating;
-  double discountper;
+  num discountper;
   List<Varients> varients;
   List<Images> images;
   List<Tags> tags;
@@ -483,33 +454,24 @@ class Topselling {
 
   Topselling.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
-
     stock = json['stock'];
-
     varientId = json['varient_id'];
-
     productId = json['product_id'];
-
     productName = json['product_name'];
     productImage = json['product_image'];
     description = json['description'];
-
     price = json['price'];
     mrp = json['mrp'];
-
     varientImage = json['varient_image'];
     unit = json['unit'];
     quantity = json['quantity'];
     type = json['type'];
-
     count = json['count'];
     isFavourite = json['isFavourite'];
     cartQty = json['cart_qty'];
-
     avgrating = json['avgrating'];
     countrating = json['countrating'];
     discountper = json['discountper'];
-
     if (json['varients'] != null) {
       varients = new List<Varients>();
       json['varients'].forEach((v) {
@@ -582,7 +544,7 @@ class Whatsnew {
   int cartQty;
   int avgrating;
   int countrating;
-  double discountper;
+  num discountper;
   List<Varients> varients;
   List<Images> images;
   List<Tags> tags;
@@ -620,7 +582,7 @@ class Whatsnew {
     description = json['description'];
     price = json['price'];
     mrp = json['mrp'];
-    varientImage = json['varient_image'];
+    // varientImage = json['varient_image'];
     unit = json['unit'];
     quantity = json['quantity'];
     type = json['type'];
@@ -660,7 +622,7 @@ class Whatsnew {
     data['description'] = this.description;
     data['price'] = this.price;
     data['mrp'] = this.mrp;
-    data['varient_image'] = this.varientImage;
+    // data['varient_image'] = this.varientImage;
     data['unit'] = this.unit;
     data['quantity'] = this.quantity;
     data['type'] = this.type;
