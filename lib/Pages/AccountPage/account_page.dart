@@ -116,7 +116,7 @@ class _AccountPageState extends State<AccountPage> {
   void getSharedValue() async {
     print('do');
     SharedPreferences.getInstance().then((prefs) {
-      if (prefs.getBool('islogin')) {
+      if (prefs.getBool('islogin') ?? false) {
         setState(() {
           isLogin = true;
           userName = prefs.getString('user_name');

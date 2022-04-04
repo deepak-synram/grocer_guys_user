@@ -726,55 +726,65 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                     },
                                   ),
                                   Expanded(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return const SearchProduct();
-                                        }));
-                                      },
-                                      child: Container(
-                                        height: 40,
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.transparent,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            border: Border.all(
-                                                color: Color(0xfff8f8f8),
-                                                width: 1),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color(0xfff8f8f8),
-                                              ),
-                                              BoxShadow(
-                                                color: Color(0xfff8f8f8),
-                                              )
-                                            ]),
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
+                                    child: BlocBuilder<LocationEmitter,
+                                        LocEmitterModel>(
+                                      builder: (context, locModel) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return SearchProduct(
+                                                catP: cateP,
+                                                locale: locale,
+                                                locModel: locModel,
+                                              );
+                                            }));
+                                          },
+                                          child: Container(
+                                            height: 40,
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 5),
+                                            decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                border: Border.all(
+                                                    color: Color(0xfff8f8f8),
+                                                    width: 1),
+                                                boxShadow: const [
+                                                  BoxShadow(
+                                                    color: Color(0xfff8f8f8),
+                                                  ),
+                                                  BoxShadow(
+                                                    color: Color(0xfff8f8f8),
+                                                  )
+                                                ]),
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
                                                       horizontal: 8.0),
-                                              child: Icon(
-                                                Icons.search,
-                                                color: kIconColor,
-                                              ),
+                                                  child: Icon(
+                                                    Icons.search,
+                                                    color: kIconColor,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 2.0),
+                                                  child: Text('$hintText',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .subtitle2),
+                                                ),
+                                              ],
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 2.0),
-                                              child: Text('$hintText',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle2),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ]),
@@ -980,50 +990,26 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
               }),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: BlocBuilder<ProfileProvider, AppInfoModel>(
-                  builder: (context, signModel) {
-                if (signModel != null) {
-                  return Transform.translate(
-                    offset: const Offset(0.0, 10.0),
-                    child: SizedBox(
-                      height: 70.0,
-                      width: 70.0,
-                      child: FittedBox(
-                        child: FloatingActionButton(
-                          backgroundColor: kTransparentColor,
-                          onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => YourBasket(),
-                            ),
-                          ),
-                          child: Image.asset(
-                            'assets/ic_floating.png',
-                          ),
+              floatingActionButton: Transform.translate(
+                offset: const Offset(0.0, 10.0),
+                child: SizedBox(
+                  height: 70.0,
+                  width: 70.0,
+                  child: FittedBox(
+                    child: FloatingActionButton(
+                      backgroundColor: kTransparentColor,
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => YourBasket(),
                         ),
                       ),
+                      child: Image.asset(
+                        'assets/ic_floating.png',
+                      ),
                     ),
-                  );
-
-                  // return Container(
-                  //   decoration: BoxDecoration(
-                  //     // color: kTransparentColor,
-                  //     color: kWhiteColor,
-                  //     borderRadius: BorderRadius.circular(50.0),
-                  //   ),
-                  //   padding: const EdgeInsets.all(4.0),
-                  //   child: SizedBox(
-                  //     child: Image.asset(
-                  //       'assets/ic_floating.png',
-                  //       width: 65,
-                  //       height: 65,
-                  //     ),
-                  //   ),
-                  // );
-
-                } else {
-                  return const SizedBox.shrink();
-                }
-              }),
+                  ),
+                ),
+              ),
 
               bottomNavigationBar: BottomAppBar(
                 notchMargin: 30.0,

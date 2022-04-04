@@ -48,9 +48,7 @@ class ApiServices {
       print('The keyword is $keyword');
       var response = await http.post(
         productSearchUri,
-        body: jsonEncode(
-          <String, String>{'keyword': keyword, 'store_id': '3'},
-        ),
+        body: {'keyword': keyword, 'store_id': '3'},
       );
       print("RESPONSE IS -----> :" + response.body.toString());
       var responseJson = json.decode(response.body);

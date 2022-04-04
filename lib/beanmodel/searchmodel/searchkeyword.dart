@@ -156,12 +156,12 @@ class Varients {
   String description;
   int price;
   int mrp;
-  Null varientImage;
+  String varientImage;
   String unit;
   int quantity;
-  Null dealPrice;
-  Null validFrom;
-  Null validTo;
+  String dealPrice;
+  String validFrom;
+  String validTo;
   String isFavourite;
   int cartQty;
   int avgrating;

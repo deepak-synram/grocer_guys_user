@@ -30,7 +30,7 @@ class ProductsCardWithTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: isAlwaysSubscribe ? 385 : 327,
+      height: isAlwaysSubscribe ? 360 : 327,
       width: double.infinity,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -119,13 +119,6 @@ class ProductsCardWithTitle extends StatelessWidget {
               },
             ),
           ),
-
-          // Row(
-          //   children: [
-          //     Expanded(child: ProductCard()),
-          //     Expanded(child: ProductCard()),
-          //   ],
-          // )
         ],
       ),
     );

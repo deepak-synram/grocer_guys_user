@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/HomePage/product_details.dart';
@@ -98,22 +99,15 @@ class _ProductCardState extends State<ProductCard> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
-                      child: widget.image.contains('http') ||
-                              widget.image.contains('https')
-                          ? Center(
-                              child: Image.network(
-                                widget.image,
-                                fit: BoxFit.cover,
-                                width: 100,
-                                height: 120,
-                              ),
-                            )
-                          : Image.asset(
-                              widget.image,
-                              fit: BoxFit.cover,
-                              width: 100,
-                              height: 120,
-                            ),
+                      child: CachedNetworkImage(
+                        width: 100,
+                        imageUrl: widget.image,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            Image.asset('assets/HomeBanner/no-icon.png'),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 4.0),
@@ -121,7 +115,8 @@ class _ProductCardState extends State<ProductCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Chip(
-                            padding: EdgeInsets.only(top: 1.0, bottom: 1.0),
+                            padding:
+                                const EdgeInsets.only(top: 1.0, bottom: 1.0),
                             backgroundColor: Colors.green,
                             label: Text(
                               '50% OFF',
@@ -217,29 +212,34 @@ class _ProductCardState extends State<ProductCard> {
                 if (widget.isSubscribe != null && widget.isSubscribe) ...[
                   const SizedBox(height: 5),
                   Center(
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Subscribe(
-                            image: widget.image,
-                            price: widget.symbol + widget.newPrice,
-                            title: widget.title,
-                            id: widget.index.toString(),
-                            subTitle: widget.subTitle,
+                    child: SizedBox(
+                      height: 30.0,
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => Subscribe(
+                              image: widget.image,
+                              price: widget.symbol + widget.newPrice,
+                              title: widget.title,
+                              id: widget.index.toString(),
+                              subTitle: widget.subTitle,
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          'SUBSCRIBE @ ${widget.symbol + widget.newPrice}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: kMainColor,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: kNavigationButtonColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
                         ),
                       ),
-                      child: Text(
-                        'SUBSCRIBE @ ${widget.symbol + widget.newPrice}',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: kMainColor,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          primary: kNavigationButtonColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0))),
                     ),
                   ),
                 ],
