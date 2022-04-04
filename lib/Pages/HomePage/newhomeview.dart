@@ -14,11 +14,11 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_drawer/slide_drawer.dart';
 import 'package:user/Components/constantfile.dart';
-import 'package:user/Components/drawer.dart';
 import 'package:user/Locale/locales.dart';
-import 'package:user/Pages/Checkout/my_orders.dart';
 import 'package:user/Pages/AccountPage/account_page.dart';
+import 'package:user/Pages/Checkout/my_orders.dart';
 import 'package:user/Pages/HomePage/newhomep1.dart';
+import 'package:user/Pages/Search/search_product.dart';
 import 'package:user/Pages/locpage/locationpage.dart';
 import 'package:user/Pages/wallet/walletui.dart';
 import 'package:user/Pages/your_basket.dart';
@@ -726,44 +726,54 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                     },
                                   ),
                                   Expanded(
-                                    child: Container(
-                                      height: 40,
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 5),
-                                      decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                              color: Color(0xfff8f8f8),
-                                              width: 1),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xfff8f8f8),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const SearchProduct();
+                                        }));
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                                color: Color(0xfff8f8f8),
+                                                width: 1),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Color(0xfff8f8f8),
+                                              ),
+                                              BoxShadow(
+                                                color: Color(0xfff8f8f8),
+                                              )
+                                            ]),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Icon(
+                                                Icons.search,
+                                                color: kIconColor,
+                                              ),
                                             ),
-                                            BoxShadow(
-                                              color: Color(0xfff8f8f8),
-                                            )
-                                          ]),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8.0),
-                                            child: Icon(
-                                              Icons.search,
-                                              color: kIconColor,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 2.0),
+                                              child: Text('$hintText',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle2),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 2.0),
-                                            child: Text('$hintText',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle2),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -974,7 +984,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                   builder: (context, signModel) {
                 if (signModel != null) {
                   return Transform.translate(
-                    offset: const Offset(0.0,10.0),
+                    offset: const Offset(0.0, 10.0),
                     child: SizedBox(
                       height: 70.0,
                       width: 70.0,
@@ -1278,7 +1288,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
   void getUserPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      if (prefs.getBool('islogin')) {
+      if (prefs.getBool('islogin') ?? false) {
         userName = prefs.getString('user_name');
         islogin = true;
       } else {
