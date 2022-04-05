@@ -8,7 +8,7 @@ import 'Pages/AccountPage/refer_earn.dart';
 import 'Pages/DrawerPages/my_orders_drawer.dart';
 import 'Pages/Subscription/my_subscription_page.dart';
 import 'Pages/User/wishlist.dart';
-import 'Pages/wallet/walletui.dart';
+import 'Pages/wallet/new_wallet_ui.dart';
 
 class Constants {
   static int selectedInd = 0;
@@ -45,7 +45,7 @@ class Constants {
     const AccountPage(),
     MyOrdersDrawer(),
     MySubscriptionPage(),
-    Wallet(),
+    NewWalletUI(),
     MyWishList(),
     CouponPage(),
     null,
