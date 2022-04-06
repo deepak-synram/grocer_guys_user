@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:user/Pages/Other/app_bar.dart';
@@ -137,18 +138,28 @@ class _SubscribeState extends State<Subscribe> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Center(
-                  child: (widget.image.contains('http') ||
-                          widget.image.contains('https'))
-                      ? Image.network(
-                          widget.image,
-                          height: 100,
-                          width: 100,
-                        )
-                      : Image.asset(
-                          widget.image,
-                          height: 100,
-                          width: 100,
-                        ),
+                  child: CachedNetworkImage(
+                    width: 100,
+                    height: 100,
+                    imageUrl: widget.image,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        Image.asset('assets/HomeBanner/no-icon.png'),
+                  ),
+                  // (widget.image.contains('http') ||
+                  //         widget.image.contains('https'))
+                  //     ? Image.network(
+                  //         widget.image,
+                  //         height: 100,
+                  //         width: 100,
+                  //       )
+                  //     : Image.asset(
+                  //         widget.image,
+                  //         height: 100,
+                  //         width: 100,
+                  //       ),
                 ),
                 Expanded(
                   child: Column(

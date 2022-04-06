@@ -722,7 +722,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                                     iconSize: 40,
                                     onPressed: () {
                                       // _scaffoldKey.currentState.openDrawer();
-                                      SlideDrawer.of(context)?.toggle();
+                                      SlideDrawer?.of(context)?.toggle();
                                     },
                                   ),
                                   Expanded(

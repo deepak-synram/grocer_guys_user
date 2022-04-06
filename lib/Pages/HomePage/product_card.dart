@@ -101,6 +101,7 @@ class _ProductCardState extends State<ProductCard> {
                       padding: const EdgeInsets.only(top: 30.0),
                       child: CachedNetworkImage(
                         width: 100,
+                        height: 100,
                         imageUrl: widget.image,
                         placeholder: (context, url) => const Center(
                           child: CircularProgressIndicator(),
@@ -149,13 +150,17 @@ class _ProductCardState extends State<ProductCard> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    widget.title,
-                    textAlign: TextAlign.left,
-                    maxLines: 2,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: kMainTextColor,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 30,
+                    child: Text(
+                      widget.title,
+                      textAlign: TextAlign.left,
+                      maxLines: 2,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: kMainTextColor,
+                      ),
                     ),
                   ),
                 ),

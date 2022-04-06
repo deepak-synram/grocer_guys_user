@@ -106,7 +106,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ],
         onDone: () => _onIntroEnd(context),
-        //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
         showSkipButton: false,
         skipOrBackFlex: 0,
         nextFlex: 7,
@@ -117,27 +116,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         next: Align(
           alignment: Alignment.bottomRight,
           child: _buildImage('back.png', 60),
-          //  FloatingActionButton(
-          //   backgroundColor: kNavigationButtonColor,
-          //   child: Icon(
-          //     Icons.arrow_forward_sharp,
-          //     color: kMainColor,
-          //   ),
-          //   onPressed: null,
-          // ),
         ),
-        // overrideDone: const SizedBox.shrink(),
         done: Align(
           alignment: Alignment.bottomRight,
           child: _buildImage('back.png', 60),
-          // FloatingActionButton(
-          //   backgroundColor: kNavigationButtonColor,
-          //   child: Icon(
-          //     Icons.arrow_forward_sharp,
-          //     color: kMainColor,
-          //   ),
-          //   onPressed: null,
-          // ),
+          
         ),
         curve: Curves.fastLinearToSlowEaseIn,
         controlsMargin: const EdgeInsets.all(4),
@@ -156,91 +139,5 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
 
-    // return Stack(
-    //   children: [
-    //     IntroductionScreen(
-    //         key: introKey,
-    //         globalBackgroundColor: Colors.white,
-    //         globalHeader: Align(
-    //           alignment: Alignment.topRight,
-    //           child: SafeArea(
-    //             child: Padding(
-    //               padding: const EdgeInsets.only(top: 16, right: 16),
-    //               child: ElevatedButton(
-    //                 child: const Text('Skip >'),
-    //                 onPressed: () => _onIntroEnd(context),
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //         pages: [
-    //           PageViewModel(
-    //             title: "Fractional shares",
-    //             body:
-    //                 "Instead of having to buy an entire share, invest any amount you want.",
-    //             image: _buildImage('logo.png'),
-    //             decoration: pageDecoration,
-    //           ),
-    //           PageViewModel(
-    //             title: "Learn as you go",
-    //             body:
-    //                 "Download the Stockpile app and master the market with our mini-lesson.",
-    //             image: _buildImage('logo.png'),
-    //             decoration: pageDecoration,
-    //           ),
-    //           PageViewModel(
-    //             title: "Kids and teens",
-    //             body:
-    //                 "Kids and teens can track their stocks 24/7 and place trades that you approve.",
-    //             image: _buildImage('logo.png'),
-    //             decoration: pageDecoration,
-    //           ),
-    //         ],
-    //         onDone: () => _onIntroEnd(context),
-    //         //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
-    //         showSkipButton: false,
-    //         skipOrBackFlex: 0,
-    //         nextFlex: 0,
-    //         dotsFlex: 0,
-    //         showBackButton: false,
-    //         showNextButton: false,
-    //         skip: const Text('Skip',
-    //             style: TextStyle(fontWeight: FontWeight.w600)),
-    //         next: const Icon(Icons.arrow_forward),
-    //         overrideDone: const SizedBox.shrink(),
-    //         // done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
-    //         curve: Curves.fastLinearToSlowEaseIn,
-    //         controlsMargin: const EdgeInsets.all(4),
-    //         controlsPadding: kIsWeb
-    //             ? const EdgeInsets.all(12.0)
-    //             : const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
-    //         dotsDecorator: DotsDecorator(
-    //           size: const Size(10.0, 10.0),
-    //           color: kMainColor,
-    //           activeSize: const Size(22.0, 10.0),
-    //           activeShape: const RoundedRectangleBorder(
-    //             borderRadius: BorderRadius.all(Radius.circular(25.0)),
-    //           ),
-    //           activeColor: kNavigationButtonColor,
-    //         )),
-    //     SvgPicture.asset('assets/IntroScreen/intro_screen.svg',
-    //         fit: BoxFit.fill,
-    //         width: MediaQuery.of(context).size.width,
-    //         height: MediaQuery.of(context).size.height,
-    //         allowDrawingOutsideViewBox: false),
-    //     Positioned(
-    //       bottom: 5,
-    //       right: 5,
-    //       child: FloatingActionButton(
-    //         backgroundColor: kNavigationButtonColor,
-    //         child: Icon(
-    //           Icons.arrow_forward_sharp,
-    //           color: kMainColor,
-    //         ),
-    //         onPressed: () {},
-    //       ),
-    //     )
-    //   ],
-    // );
   }
 }
