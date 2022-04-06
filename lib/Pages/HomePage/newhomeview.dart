@@ -20,12 +20,11 @@ import 'package:user/Pages/Checkout/my_orders.dart';
 import 'package:user/Pages/HomePage/newhomep1.dart';
 import 'package:user/Pages/Search/search_product.dart';
 import 'package:user/Pages/locpage/locationpage.dart';
-import 'package:user/Pages/wallet/walletui.dart';
+import 'package:user/Pages/wallet/new_wallet_ui.dart';
 import 'package:user/Pages/your_basket.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
-import 'package:user/beanmodel/appinfo.dart';
 import 'package:user/beanmodel/appnotice/appnotice.dart';
 import 'package:user/beanmodel/appnotice/notiproductbean.dart';
 import 'package:user/beanmodel/banner/bannerdeatil.dart';
@@ -981,7 +980,7 @@ class NewHomeViewState extends State<NewHomeView> with WidgetsBindingObserver {
                     MyOrders(
                       fromHomePage: true,
                     ),
-                    Wallet(),
+                    NewWalletUI(),
                     AccountPage(navBottomProvider: navBottomProvider),
 
                     // AccountData(),

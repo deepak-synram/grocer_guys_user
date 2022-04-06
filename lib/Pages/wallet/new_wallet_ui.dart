@@ -1,12 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Theme/colors.dart';
-import 'package:user/providergrocery/cartcountprovider.dart';
-
-import '../../constants.dart';
-import '../your_basket.dart';
 
 class NewWalletUI extends StatefulWidget {
   const NewWalletUI({Key key}) : super(key: key);
@@ -141,229 +136,229 @@ class _NewWalletUIState extends State<NewWalletUI> {
         ),
       ),
       // TODO: This needs to be made functional currently copied it from newhomeview.dart
-      bottomNavigationBar: selectedTab == 0
-          ? BottomAppBar(
-              notchMargin: 30.0,
-              // clipBehavior: Clip.antiAlias,
-              shape: const CircularNotchedRectangle(),
-              color: kMainColor,
-              child: SizedBox(
-                height: 60,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          // hintText = ;
-                          // setState(() {
-                          //   Constants.selectedInd = 0;
-                          //
-                          // });
-                        },
-                        behavior: HitTestBehavior.opaque,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Icon(
-                            //   Icons.home,
-                            //   color: (Constants.selectedInd == 0)
-                            //       ? kMainColor
-                            //       : kMainTextColor,
-                            // ),
-                            Image.asset(
-                              'assets/ic_home.png',
-                              width: 20,
-                              height: 20,
-                              color: (Constants.selectedInd == 0)
-                                  ? kWhiteColor
-                                  : kNavigationButtonColor,
-                            ),
-                            Text(
-                              "Home",
-                              style: TextStyle(
-                                  color: (Constants.selectedInd == 0)
-                                      ? kWhiteColor
-                                      : kNavigationButtonColor),
-                            )
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // searchP.emitSearchNull();
-
-                          // hintText = ;
-                          // setState(() {
-                          //   Constants.selectedInd = 2;
-                          // });
-                        },
-                        behavior: HitTestBehavior.opaque,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Icon(
-                            //   Icons.search,
-                            //   color: (Constants.selectedInd == 2)
-                            //       ? kMainColor
-                            //       : kMainTextColor,
-                            // ),
-                            Image.asset(
-                              'assets/ic_order.png',
-                              width: 20,
-                              height: 20,
-                              color: (Constants.selectedInd == 1)
-                                  ? kWhiteColor
-                                  : kNavigationButtonColor,
-                            ),
-
-                            Text(
-                              "Order",
-                              style: TextStyle(
-                                  color: (Constants.selectedInd == 1)
-                                      ? kWhiteColor
-                                      : kNavigationButtonColor),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          // Navigator.of(context)
-                          //     .pushNamed(PageRoutes.yourbasket)
-                          //     .then((value) {
-                          //   navBottomProvider.hitBottomNavigation(
-                          //       0,
-                          //       appbarTitle,
-                          //       '${locale.searchOnGoGrocer}$appname');
-                          //   // hintText = ;
-                          // });
-
-                          // setState(() {
-                          //   // Constants.selectedInd = 0;
-                          // });
-                        },
-                        behavior: HitTestBehavior.opaque,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            BlocBuilder<CartCountProvider, int>(
-                                builder: (context, cartCount) {
-                              // return Badge(
-                              //   padding: const EdgeInsets.all(5),
-                              //   animationDuration:
-                              //       const Duration(milliseconds: 300),
-                              //   animationType: BadgeAnimationType.slide,
-                              //   badgeContent: Text(
-                              //     cartCount.toString(),
-                              //     style: TextStyle(
-                              //         color: kWhiteColor, fontSize: 10),
-                              //   ),
-                              //   child:
-                              return Padding(
-                                padding: const EdgeInsets.only(left: 30.0),
-                                child: Image.asset(
-                                  'assets/ic_wallet.png',
-                                  width: 20,
-                                  height: 20,
-                                  color: (Constants.selectedInd == 2)
-                                      ? kWhiteColor
-                                      : kNavigationButtonColor,
-
-                                  // Icon(
-                                  //   Icons.shopping_basket,
-                                  //   color: kMainTextColor,
-                                  // ),
-                                ),
-                              );
-                            }),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 30.0),
-                              child: Text(
-                                "Wallet",
-                                style: TextStyle(
-                                  color: (Constants.selectedInd == 2)
-                                      ? kWhiteColor
-                                      : kNavigationButtonColor,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // if (Constants.selectedInd != 0 &&
-                          //     Constants.selectedInd != 1 &&
-                          //     Constants.selectedInd != 2 &&
-                          //     Constants.selectedInd != 3) {
-                          //   cartCountP.hitCounter();
-                          // }
-                        },
-                        behavior: HitTestBehavior.opaque,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Icon(
-                            //   Icons.account_box_outlined,
-                            //   color: (Constants.selectedInd == 3)
-                            //       ? kMainColor
-                            //       : kMainTextColor,
-                            // ),
-                            Image.asset(
-                              'assets/ic_account.png',
-                              width: 20,
-                              height: 20,
-                              color: (Constants.selectedInd == 3)
-                                  ? kWhiteColor
-                                  : kNavigationButtonColor,
-                            ),
-
-                            Text(
-                              "Account",
-                              style: TextStyle(
-                                  color: (Constants.selectedInd == 3)
-                                      ? kWhiteColor
-                                      : kNavigationButtonColor),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : null,
-      // TODO: This needs to be set copied it from newhomeview.dart
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: selectedTab == 0
-          ? Transform.translate(
-              offset: const Offset(0.0, 10.0),
-              child: SizedBox(
-                height: 70.0,
-                width: 70.0,
-                child: FittedBox(
-                  child: FloatingActionButton(
-                    backgroundColor: kTransparentColor,
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => YourBasket(),
-                      ),
-                    ),
-                    child: Image.asset(
-                      'assets/ic_floating.png',
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : null,
+      // bottomNavigationBar: selectedTab == 0
+      //     ? BottomAppBar(
+      //         notchMargin: 30.0,
+      //         // clipBehavior: Clip.antiAlias,
+      //         shape: const CircularNotchedRectangle(),
+      //         color: kMainColor,
+      //         child: SizedBox(
+      //           height: 60,
+      //           child: Padding(
+      //             padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      //             child: Row(
+      //               // crossAxisAlignment: CrossAxisAlignment.center,
+      //               mainAxisSize: MainAxisSize.max,
+      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //               crossAxisAlignment: CrossAxisAlignment.center,
+      //               children: [
+      //                 GestureDetector(
+      //                   onTap: () {
+      //                     // hintText = ;
+      //                     // setState(() {
+      //                     //   Constants.selectedInd = 0;
+      //                     //
+      //                     // });
+      //                   },
+      //                   behavior: HitTestBehavior.opaque,
+      //                   child: Column(
+      //                     mainAxisAlignment: MainAxisAlignment.center,
+      //                     children: [
+      //                       // Icon(
+      //                       //   Icons.home,
+      //                       //   color: (Constants.selectedInd == 0)
+      //                       //       ? kMainColor
+      //                       //       : kMainTextColor,
+      //                       // ),
+      //                       Image.asset(
+      //                         'assets/ic_home.png',
+      //                         width: 20,
+      //                         height: 20,
+      //                         color: (Constants.selectedInd == 0)
+      //                             ? kWhiteColor
+      //                             : kNavigationButtonColor,
+      //                       ),
+      //                       Text(
+      //                         "Home",
+      //                         style: TextStyle(
+      //                             color: (Constants.selectedInd == 0)
+      //                                 ? kWhiteColor
+      //                                 : kNavigationButtonColor),
+      //                       )
+      //                     ],
+      //                   ),
+      //                 ),
+      //                 GestureDetector(
+      //                   onTap: () {
+      //                     // searchP.emitSearchNull();
+      //
+      //                     // hintText = ;
+      //                     // setState(() {
+      //                     //   Constants.selectedInd = 2;
+      //                     // });
+      //                   },
+      //                   behavior: HitTestBehavior.opaque,
+      //                   child: Column(
+      //                     mainAxisAlignment: MainAxisAlignment.center,
+      //                     children: [
+      //                       // Icon(
+      //                       //   Icons.search,
+      //                       //   color: (Constants.selectedInd == 2)
+      //                       //       ? kMainColor
+      //                       //       : kMainTextColor,
+      //                       // ),
+      //                       Image.asset(
+      //                         'assets/ic_order.png',
+      //                         width: 20,
+      //                         height: 20,
+      //                         color: (Constants.selectedInd == 1)
+      //                             ? kWhiteColor
+      //                             : kNavigationButtonColor,
+      //                       ),
+      //
+      //                       Text(
+      //                         "Order",
+      //                         style: TextStyle(
+      //                             color: (Constants.selectedInd == 1)
+      //                                 ? kWhiteColor
+      //                                 : kNavigationButtonColor),
+      //                       )
+      //                     ],
+      //                   ),
+      //                 ),
+      //                 const SizedBox(width: 10),
+      //                 GestureDetector(
+      //                   onTap: () {
+      //                     // Navigator.of(context)
+      //                     //     .pushNamed(PageRoutes.yourbasket)
+      //                     //     .then((value) {
+      //                     //   navBottomProvider.hitBottomNavigation(
+      //                     //       0,
+      //                     //       appbarTitle,
+      //                     //       '${locale.searchOnGoGrocer}$appname');
+      //                     //   // hintText = ;
+      //                     // });
+      //
+      //                     // setState(() {
+      //                     //   // Constants.selectedInd = 0;
+      //                     // });
+      //                   },
+      //                   behavior: HitTestBehavior.opaque,
+      //                   child: Column(
+      //                     mainAxisAlignment: MainAxisAlignment.center,
+      //                     children: [
+      //                       BlocBuilder<CartCountProvider, int>(
+      //                           builder: (context, cartCount) {
+      //                         // return Badge(
+      //                         //   padding: const EdgeInsets.all(5),
+      //                         //   animationDuration:
+      //                         //       const Duration(milliseconds: 300),
+      //                         //   animationType: BadgeAnimationType.slide,
+      //                         //   badgeContent: Text(
+      //                         //     cartCount.toString(),
+      //                         //     style: TextStyle(
+      //                         //         color: kWhiteColor, fontSize: 10),
+      //                         //   ),
+      //                         //   child:
+      //                         return Padding(
+      //                           padding: const EdgeInsets.only(left: 30.0),
+      //                           child: Image.asset(
+      //                             'assets/ic_wallet.png',
+      //                             width: 20,
+      //                             height: 20,
+      //                             color: (Constants.selectedInd == 2)
+      //                                 ? kWhiteColor
+      //                                 : kNavigationButtonColor,
+      //
+      //                             // Icon(
+      //                             //   Icons.shopping_basket,
+      //                             //   color: kMainTextColor,
+      //                             // ),
+      //                           ),
+      //                         );
+      //                       }),
+      //                       Padding(
+      //                         padding: const EdgeInsets.only(left: 30.0),
+      //                         child: Text(
+      //                           "Wallet",
+      //                           style: TextStyle(
+      //                             color: (Constants.selectedInd == 2)
+      //                                 ? kWhiteColor
+      //                                 : kNavigationButtonColor,
+      //                           ),
+      //                         ),
+      //                       )
+      //                     ],
+      //                   ),
+      //                 ),
+      //                 GestureDetector(
+      //                   onTap: () {
+      //                     // if (Constants.selectedInd != 0 &&
+      //                     //     Constants.selectedInd != 1 &&
+      //                     //     Constants.selectedInd != 2 &&
+      //                     //     Constants.selectedInd != 3) {
+      //                     //   cartCountP.hitCounter();
+      //                     // }
+      //                   },
+      //                   behavior: HitTestBehavior.opaque,
+      //                   child: Column(
+      //                     mainAxisAlignment: MainAxisAlignment.center,
+      //                     children: [
+      //                       // Icon(
+      //                       //   Icons.account_box_outlined,
+      //                       //   color: (Constants.selectedInd == 3)
+      //                       //       ? kMainColor
+      //                       //       : kMainTextColor,
+      //                       // ),
+      //                       Image.asset(
+      //                         'assets/ic_account.png',
+      //                         width: 20,
+      //                         height: 20,
+      //                         color: (Constants.selectedInd == 3)
+      //                             ? kWhiteColor
+      //                             : kNavigationButtonColor,
+      //                       ),
+      //
+      //                       Text(
+      //                         "Account",
+      //                         style: TextStyle(
+      //                             color: (Constants.selectedInd == 3)
+      //                                 ? kWhiteColor
+      //                                 : kNavigationButtonColor),
+      //                       )
+      //                     ],
+      //                   ),
+      //                 ),
+      //               ],
+      //             ),
+      //           ),
+      //         ),
+      //       )
+      //     : null,
+      // // TODO: This needs to be set copied it from newhomeview.dart
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: selectedTab == 0
+      //     ? Transform.translate(
+      //         offset: const Offset(0.0, 10.0),
+      //         child: SizedBox(
+      //           height: 70.0,
+      //           width: 70.0,
+      //           child: FittedBox(
+      //             child: FloatingActionButton(
+      //               backgroundColor: kTransparentColor,
+      //               onPressed: () => Navigator.of(context).push(
+      //                 MaterialPageRoute(
+      //                   builder: (context) => YourBasket(),
+      //                 ),
+      //               ),
+      //               child: Image.asset(
+      //                 'assets/ic_floating.png',
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       )
+      //     : null,
     );
   }
 

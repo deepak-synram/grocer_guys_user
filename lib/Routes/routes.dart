@@ -11,8 +11,6 @@ import 'package:user/Pages/Checkout/my_orders.dart';
 import 'package:user/Pages/DrawerPages/invoicepage.dart';
 import 'package:user/Pages/DrawerPages/my_orders_drawer.dart';
 import 'package:user/Pages/HomePage/newhomeview.dart';
-import 'package:user/Pages/Subscription/my_subscription_page.dart';
-import 'package:user/Pages/categorypage/view_all_categories.dart';
 import 'package:user/Pages/Other/add_address.dart';
 import 'package:user/Pages/Other/category_products.dart';
 import 'package:user/Pages/Other/edit_address.dart';
@@ -23,10 +21,12 @@ import 'package:user/Pages/Other/productbytags.dart';
 import 'package:user/Pages/Other/reviews.dart';
 import 'package:user/Pages/Other/seller_info.dart';
 import 'package:user/Pages/Search/searchean.dart';
+import 'package:user/Pages/Subscription/my_subscription_page.dart';
 import 'package:user/Pages/User/my_account.dart';
 import 'package:user/Pages/User/myaddres.dart';
 import 'package:user/Pages/User/wishlist.dart';
 import 'package:user/Pages/categorypage/cat_sub_product.dart';
+import 'package:user/Pages/categorypage/view_all_categories.dart';
 import 'package:user/Pages/deliveryOptions.dart';
 import 'package:user/Pages/newcategorysub.dart';
 import 'package:user/Pages/notificationactvity/notificaitonact.dart';
@@ -38,7 +38,7 @@ import 'package:user/Pages/reffernearn.dart';
 import 'package:user/Pages/settingpage.dart';
 import 'package:user/Pages/tncpage/tnc_page.dart';
 import 'package:user/Pages/track_orders.dart';
-import 'package:user/Pages/wallet/walletui.dart';
+import 'package:user/Pages/wallet/new_wallet_ui.dart';
 import 'package:user/Pages/your_basket.dart';
 import 'package:user/forgotpassword/changepassword.dart';
 import 'package:user/forgotpassword/otpverifity.dart';
@@ -144,7 +144,7 @@ class PageRoutes {
       myaccount: (context) => MyAccount(),
       myaddress: (context) => MyAddress(),
       orderscreen: (context) => MyOrdersDrawer(),
-      walletscreen: (context) => Wallet(),
+      walletscreen: (context) => const NewWalletUI(),
       paymentOption: (context) => PaymentOption(),
       orderdetails: (context) => OrderDetails(),
       trackorder: (context) => TrackOrders(),
