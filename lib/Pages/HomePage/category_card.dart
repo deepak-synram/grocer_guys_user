@@ -69,12 +69,19 @@ class CardWidget extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.only(top: 60),
-              child: Image.asset(
-                bottomImage,
-                fit: BoxFit.fitWidth,
-                height: MediaQuery.of(context).size.height * 0.5,
-                alignment: Alignment.bottomLeft,
-              ),
+              child: bottomImage.contains('http')
+                  ? Image.network(
+                      bottomImage,
+                      fit: BoxFit.fitWidth,
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      alignment: Alignment.bottomLeft,
+                    )
+                  : Image.asset(
+                      bottomImage,
+                      fit: BoxFit.fitWidth,
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      alignment: Alignment.bottomLeft,
+                    ),
             ),
           ),
         ),
@@ -92,11 +99,17 @@ class CardWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 5),
-              Image.asset(
-                icon,
-                width: iconSize,
-                height: iconSize,
-              )
+              icon.contains('http')
+                  ? Image.network(
+                      icon,
+                      width: iconSize,
+                      height: iconSize,
+                    )
+                  : Image.asset(
+                      icon,
+                      width: iconSize,
+                      height: iconSize,
+                    )
             ],
           ),
         ),

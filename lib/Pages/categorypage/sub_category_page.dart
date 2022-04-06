@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/HomePage/product_card.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
+import 'package:user/beanmodel/singleapibean.dart';
 import 'package:user/beanmodel/storefinder/storefinderbean.dart';
 import 'package:user/providergrocery/bottomnavigationnavigator.dart';
 import 'package:user/providergrocery/categoryprovider.dart';
@@ -12,8 +13,9 @@ import 'new_custom_app_bar.dart';
 class SubCategoryPage extends StatefulWidget {
   final LocEmitterModel locModel;
   final List<CartItemData> cartItemd;
+  final TopCat cat;
 
-  const SubCategoryPage({Key key, this.locModel, this.cartItemd})
+  const SubCategoryPage({Key key, this.locModel, this.cartItemd, this.cat})
       : super(key: key);
 
   @override
@@ -28,7 +30,6 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
   int selectedInd = 0;
   dynamic hintText = '--';
   String appbarTitle = '--';
-  String title = 'Fruits and Vegetables';
   dynamic lat;
   dynamic lng;
   dynamic currentAddress = 'Tap/Set to change your location.';
@@ -52,6 +53,14 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
             ),
             Align(
               alignment: const Alignment(0.0, 2.0),
+              // child: widget.cat != null
+              //     ? Image.network(
+              //         '$imagebaseUrl1 + ${widget.cat.image.substring(1)}',
+              //         height: 120,
+              //         width: 120,
+              //         // height: MediaQuery.of(context).size.height * 0.5,
+              //         alignment: Alignment.bottomCenter,
+              //       )
               child: Image.asset(
                 'assets/CategoryImages/fruits-vegitables.png',
                 height: 120,

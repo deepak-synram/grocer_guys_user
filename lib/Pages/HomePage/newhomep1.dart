@@ -41,7 +41,6 @@ import 'package:user/providergrocery/cartlistprovider.dart';
 import 'package:user/providergrocery/categoryprovider.dart';
 import 'package:user/providergrocery/locemittermodel.dart';
 import 'package:user/providergrocery/pagesnap.dart';
-import 'package:user/providergrocery/profileprovider.dart';
 import 'package:user/providergrocery/singleapiemiter.dart';
 import 'package:user/providergrocery/trndlistemitter.dart';
 
@@ -84,7 +83,30 @@ class NewHomeView1State extends State<NewHomeView1> {
   List<StoreCouponData> offers = [];
   AppNoitceProvider appNotice;
   CategoryModel _categoryModel;
-
+  List<String> staticIcon = [
+    'assets/CategoryImages/snacks-branded-food.png',
+    'assets/CategoryImages/food-grain-oil-masala.png',
+    'assets/CategoryImages/bakery-cake-dairy.png',
+    'assets/CategoryImages/fruits-vegitables.png',
+    'assets/CategoryImages/fruits-vegitables.png',
+    'assets/CategoryImages/bakery-cake-dairy.png',
+  ];
+  List<String> staticImage = [
+    'assets/CategoryImages/snacks-branded-food-bottom.png',
+    'assets/CategoryImages/food-grains-oil-masala-bottom.png',
+    'assets/CategoryImages/bakery-cake-dairy-bottom.png',
+    'assets/CategoryImages/fruit-vegitables-bottom.png',
+    'assets/CategoryImages/fruit-vegitables-bottom.png',
+    'assets/CategoryImages/bakery-cake-dairy-bottom.png',
+  ];
+  List<Color> staticColor = [
+    const Color.fromRGBO(79, 130, 50, 1.0),
+    const Color.fromRGBO(143, 41, 52, 1.0),
+    const Color.fromRGBO(101, 178, 169, 1.0),
+    const Color.fromRGBO(185, 78, 117, 1.0),
+    const Color.fromRGBO(101, 178, 169, 1.0),
+    const Color.fromRGBO(185, 78, 117, 1.0),
+  ];
   SubscriberProducts sProducts;
 
   @override
@@ -1070,84 +1092,84 @@ class NewHomeView1State extends State<NewHomeView1> {
                                           height: 10,
                                         ),
                                         Expanded(
-                                          child: ListView(
-                                            scrollDirection: Axis.horizontal,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: GestureDetector(
-                                                  onTap: () =>
-                                                      Navigator.of(context)
-                                                          .push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SubCategoryPage(
-                                                        cartItemd:
-                                                            widget.cartItemd,
-                                                        locModel:
-                                                            widget.locModel,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  child: const CategoryCard(
-                                                      title:
-                                                          'Fruits & Vegetables',
-                                                      color: Color.fromRGBO(
-                                                          79, 130, 50, 1.0),
-                                                      bottomImage:
-                                                          'assets/CategoryImages/fruit-vegitables-bottom.png',
-                                                      icon:
-                                                          'assets/CategoryImages/fruits-vegitables.png',
-                                                      bottomImgHeight: 60,
-                                                      iconSize: 65,
-                                                      fontSize: 12),
-                                                ),
-                                              ),
-                                              Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: CategoryCard(
-                                                      title:
-                                                          'Snacks & Branded Foods',
-                                                      color: Color.fromRGBO(
-                                                          143, 41, 52, 1.0),
-                                                      bottomImage:
-                                                          'assets/CategoryImages/snacks-branded-food-bottom.png',
-                                                      icon:
-                                                          'assets/CategoryImages/snacks-branded-food.png',
-                                                      bottomImgHeight: 60,
-                                                      iconSize: 65,
-                                                      fontSize: 12)),
-                                              Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: CategoryCard(
-                                                      title:
-                                                          'Bakery, Cake & Dairy',
-                                                      color: Color.fromRGBO(
-                                                          101, 178, 169, 1.0),
-                                                      bottomImage:
-                                                          'assets/CategoryImages/bakery-cake-dairy-bottom.png',
-                                                      icon:
-                                                          'assets/CategoryImages/bakery-cake-dairy.png',
-                                                      bottomImgHeight: 60,
-                                                      iconSize: 65,
-                                                      fontSize: 12)),
-                                              Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: CategoryCard(
-                                                      title:
-                                                          'Food, Grains, Oils & Masala',
-                                                      color: Color.fromRGBO(
-                                                          185, 78, 117, 1.0),
-                                                      bottomImage:
-                                                          'assets/CategoryImages/food-grains-oil-masala-bottom.png',
-                                                      icon:
-                                                          'assets/CategoryImages/food-grain-oil-masala.png',
-                                                      bottomImgHeight: 60,
-                                                      iconSize: 65,
-                                                      fontSize: 12)),
-                                            ],
-                                          ),
+                                          // child: ListView(
+                                          //   scrollDirection: Axis.horizontal,
+                                          //   children: [
+                                          //     Padding(
+                                          //       padding:
+                                          //           const EdgeInsets.all(8.0),
+                                          //       child: GestureDetector(
+                                          //         onTap: () =>
+                                          //             Navigator.of(context)
+                                          //                 .push(
+                                          //           MaterialPageRoute(
+                                          //             builder: (context) =>
+                                          //                 SubCategoryPage(
+                                          //               cartItemd:
+                                          //                   widget.cartItemd,
+                                          //               locModel:
+                                          //                   widget.locModel,
+                                          //             ),
+                                          //           ),
+                                          //         ),
+                                          //         child: const CategoryCard(
+                                          //             title:
+                                          //                 'Fruits & Vegetables',
+                                          //             color: Color.fromRGBO(
+                                          //                 79, 130, 50, 1.0),
+                                          //             bottomImage:
+                                          //                 'assets/CategoryImages/fruit-vegitables-bottom.png',
+                                          //             icon:
+                                          //                 'assets/CategoryImages/fruits-vegitables.png',
+                                          //             bottomImgHeight: 60,
+                                          //             iconSize: 65,
+                                          //             fontSize: 12),
+                                          //       ),
+                                          //     ),
+                                          //     Padding(
+                                          //         padding: EdgeInsets.all(8.0),
+                                          //         child: CategoryCard(
+                                          //             title:
+                                          //                 'Snacks & Branded Foods',
+                                          //             color: Color.fromRGBO(
+                                          //                 143, 41, 52, 1.0),
+                                          //             bottomImage:
+                                          //                 'assets/CategoryImages/snacks-branded-food-bottom.png',
+                                          //             icon:
+                                          //                 'assets/CategoryImages/snacks-branded-food.png',
+                                          //             bottomImgHeight: 60,
+                                          //             iconSize: 65,
+                                          //             fontSize: 12)),
+                                          //     Padding(
+                                          //         padding: EdgeInsets.all(8.0),
+                                          //         child: CategoryCard(
+                                          //             title:
+                                          //                 'Bakery, Cake & Dairy',
+                                          //             color: Color.fromRGBO(
+                                          //                 101, 178, 169, 1.0),
+                                          //             bottomImage:
+                                          //                 'assets/CategoryImages/bakery-cake-dairy-bottom.png',
+                                          //             icon:
+                                          //                 'assets/CategoryImages/bakery-cake-dairy.png',
+                                          //             bottomImgHeight: 60,
+                                          //             iconSize: 65,
+                                          //             fontSize: 12)),
+                                          //     Padding(
+                                          //         padding: EdgeInsets.all(8.0),
+                                          //         child: CategoryCard(
+                                          //             title:
+                                          //                 'Food, Grains, Oils & Masala',
+                                          //             color: Color.fromRGBO(
+                                          //                 185, 78, 117, 1.0),
+                                          //             bottomImage:
+                                          //                 'assets/CategoryImages/food-grains-oil-masala-bottom.png',
+                                          //             icon:
+                                          //                 'assets/CategoryImages/food-grain-oil-masala.png',
+                                          //             bottomImgHeight: 60,
+                                          //             iconSize: 65,
+                                          //             fontSize: 12)),
+                                          //   ],
+                                          // ),
                                           // ListView.builder(
                                           //     itemCount: 5,
                                           //     scrollDirection:
@@ -1168,6 +1190,50 @@ class NewHomeView1State extends State<NewHomeView1> {
                                           //                 'assets/CategoryImages/fruits-vegitables.png',
                                           //           ));
                                           //     })
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: GestureDetector(
+                                                  onTap: () =>
+                                                      Navigator.of(context)
+                                                          .push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SubCategoryPage(
+                                                        cartItemd:
+                                                            widget.cartItemd,
+                                                        locModel:
+                                                            widget.locModel,
+                                                        cat: apiData.dataModel
+                                                            .topCat[index],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: CategoryCard(
+                                                      title: apiData.dataModel
+                                                          .topCat[index].title,
+                                                      // Color(0xff+apiData.dataModel.topCat[index].iconColor) ??
+                                                      color: staticColor[index],
+                                                      bottomImage:
+                                                          // '$imagebaseUrl1 + ${apiData.dataModel.topCat[index].image.substring(1)}',
+                                                          staticImage[index],
+                                                      icon: apiData
+                                                              .dataModel
+                                                              .topCat[index]
+                                                              .otherImages ??
+                                                          staticIcon[index],
+                                                      bottomImgHeight: 60,
+                                                      iconSize: 65,
+                                                      fontSize: 12),
+                                                ),
+                                              );
+                                            },
+                                            itemCount:
+                                                apiData.dataModel.topCat.length,
+                                          ),
                                         ),
                                       ]),
                                 ),

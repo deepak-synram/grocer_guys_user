@@ -13,16 +13,16 @@ class SingleApiHomePage {
 
   SingleApiHomePage(
       {this.status,
-        this.message,
-        this.banner,
-        this.secondBanner,
-        this.topCat,
-        this.recentselling,
-        this.topselling,
-        this.dealproduct,
-        this.whatsnew,
-        this.spotlight,
-        this.subProdList});
+      this.message,
+      this.banner,
+      this.secondBanner,
+      this.topCat,
+      this.recentselling,
+      this.topselling,
+      this.dealproduct,
+      this.whatsnew,
+      this.spotlight,
+      this.subProdList});
 
   SingleApiHomePage.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -109,12 +109,12 @@ class BannerDataModel {
 
   BannerDataModel(
       {this.bannerId,
-        this.bannerName,
-        this.bannerImage,
-        this.storeId,
-        this.catId,
-        this.type,
-        this.title});
+      this.bannerName,
+      this.bannerImage,
+      this.storeId,
+      this.catId,
+      this.type,
+      this.title});
 
   BannerDataModel.fromJson(Map<String, dynamic> json) {
     bannerId = json['banner_id'];
@@ -141,26 +141,32 @@ class BannerDataModel {
 
 class TopCat {
   String title;
-  num catId;
+  int catId;
   String image;
-  num storeId;
+  String otherImages;
+  String iconColor;
+  int storeId;
   String description;
-  num stfrom;
-  num subcatCount;
+  int stfrom;
+  int subcatCount;
 
   TopCat(
       {this.title,
-        this.catId,
-        this.image,
-        this.storeId,
-        this.description,
-        this.stfrom,
-        this.subcatCount});
+      this.catId,
+      this.image,
+      this.otherImages,
+      this.iconColor,
+      this.storeId,
+      this.description,
+      this.stfrom,
+      this.subcatCount});
 
   TopCat.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     catId = json['cat_id'];
     image = json['image'];
+    otherImages = json['other_images'];
+    iconColor = json['icon_color'];
     storeId = json['store_id'];
     description = json['description'];
     stfrom = json['stfrom'];
@@ -172,6 +178,8 @@ class TopCat {
     data['title'] = this.title;
     data['cat_id'] = this.catId;
     data['image'] = this.image;
+    data['other_images'] = this.otherImages;
+    data['icon_color'] = this.iconColor;
     data['store_id'] = this.storeId;
     data['description'] = this.description;
     data['stfrom'] = this.stfrom;
@@ -207,28 +215,28 @@ class Recentselling {
 
   Recentselling(
       {this.storeId,
-        this.stock,
-        this.varientId,
-        this.productId,
-        this.productName,
-        this.productImage,
-        this.description,
-        this.price,
-        this.mrp,
-        this.varientImage,
-        this.unit,
-        this.quantity,
-        this.type,
-        this.isSubscribe,
-        this.count,
-        this.isFavourite,
-        this.cartQty,
-        this.avgrating,
-        this.countrating,
-        this.discountper,
-        this.varients,
-        this.images,
-        this.tags});
+      this.stock,
+      this.varientId,
+      this.productId,
+      this.productName,
+      this.productImage,
+      this.description,
+      this.price,
+      this.mrp,
+      this.varientImage,
+      this.unit,
+      this.quantity,
+      this.type,
+      this.isSubscribe,
+      this.count,
+      this.isFavourite,
+      this.cartQty,
+      this.avgrating,
+      this.countrating,
+      this.discountper,
+      this.varients,
+      this.images,
+      this.tags});
 
   Recentselling.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
@@ -333,28 +341,28 @@ class SubProdList {
 
   SubProdList(
       {this.storeId,
-        this.stock,
-        this.varientId,
-        this.productId,
-        this.productName,
-        this.productImage,
-        this.description,
-        this.price,
-        this.mrp,
-        this.varientImage,
-        this.unit,
-        this.quantity,
-        this.type,
-        this.isSubscribe,
-        this.count,
-        this.isFavourite,
-        this.cartQty,
-        this.avgrating,
-        this.countrating,
-        this.discountper,
-        this.varients,
-        this.images,
-        this.tags});
+      this.stock,
+      this.varientId,
+      this.productId,
+      this.productName,
+      this.productImage,
+      this.description,
+      this.price,
+      this.mrp,
+      this.varientImage,
+      this.unit,
+      this.quantity,
+      this.type,
+      this.isSubscribe,
+      this.count,
+      this.isFavourite,
+      this.cartQty,
+      this.avgrating,
+      this.countrating,
+      this.discountper,
+      this.varients,
+      this.images,
+      this.tags});
 
   SubProdList.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
@@ -453,22 +461,22 @@ class Varients {
 
   Varients(
       {this.storeId,
-        this.stock,
-        this.varientId,
-        this.description,
-        this.price,
-        this.mrp,
-        this.varientImage,
-        this.unit,
-        this.quantity,
-        this.dealPrice,
-        this.validFrom,
-        this.validTo,
-        this.isFavourite,
-        this.cartQty,
-        this.avgrating,
-        this.countrating,
-        this.discountper});
+      this.stock,
+      this.varientId,
+      this.description,
+      this.price,
+      this.mrp,
+      this.varientImage,
+      this.unit,
+      this.quantity,
+      this.dealPrice,
+      this.validFrom,
+      this.validTo,
+      this.isFavourite,
+      this.cartQty,
+      this.avgrating,
+      this.countrating,
+      this.discountper});
 
   Varients.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
@@ -578,28 +586,28 @@ class Topselling {
 
   Topselling(
       {this.storeId,
-        this.stock,
-        this.varientId,
-        this.productId,
-        this.productName,
-        this.productImage,
-        this.description,
-        this.price,
-        this.mrp,
-        this.varientImage,
-        this.unit,
-        this.quantity,
-        this.type,
-        this.isSubscribe,
-        this.count,
-        this.isFavourite,
-        this.cartQty,
-        this.avgrating,
-        this.countrating,
-        this.discountper,
-        this.varients,
-        this.images,
-        this.tags});
+      this.stock,
+      this.varientId,
+      this.productId,
+      this.productName,
+      this.productImage,
+      this.description,
+      this.price,
+      this.mrp,
+      this.varientImage,
+      this.unit,
+      this.quantity,
+      this.type,
+      this.isSubscribe,
+      this.count,
+      this.isFavourite,
+      this.cartQty,
+      this.avgrating,
+      this.countrating,
+      this.discountper,
+      this.varients,
+      this.images,
+      this.tags});
 
   Topselling.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
@@ -703,27 +711,27 @@ class Whatsnew {
 
   Whatsnew(
       {this.storeId,
-        this.stock,
-        this.varientId,
-        this.productId,
-        this.productName,
-        this.productImage,
-        this.description,
-        this.price,
-        this.mrp,
-        this.varientImage,
-        this.unit,
-        this.quantity,
-        this.type,
-        this.isSubscribe,
-        this.isFavourite,
-        this.cartQty,
-        this.avgrating,
-        this.countrating,
-        this.discountper,
-        this.varients,
-        this.images,
-        this.tags});
+      this.stock,
+      this.varientId,
+      this.productId,
+      this.productName,
+      this.productImage,
+      this.description,
+      this.price,
+      this.mrp,
+      this.varientImage,
+      this.unit,
+      this.quantity,
+      this.type,
+      this.isSubscribe,
+      this.isFavourite,
+      this.cartQty,
+      this.avgrating,
+      this.countrating,
+      this.discountper,
+      this.varients,
+      this.images,
+      this.tags});
 
   Whatsnew.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
