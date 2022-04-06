@@ -18,7 +18,7 @@ import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/HomePage/category_card.dart';
 import 'package:user/Pages/HomePage/product_card_with_title.dart';
 import 'package:user/Pages/categorypage/sub_category_page.dart';
-import 'package:user/Routes/routes.dart';
+import 'package:user/Pages/categorypage/view_all_categories.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/api_services.dart';
 import 'package:user/baseurl/baseurlg.dart';
@@ -83,6 +83,7 @@ class NewHomeView1State extends State<NewHomeView1> {
   List<StoreCouponData> offers = [];
   AppNoitceProvider appNotice;
   CategoryModel _categoryModel;
+
   List<String> staticIcon = [
     'assets/CategoryImages/snacks-branded-food.png',
     'assets/CategoryImages/food-grain-oil-masala.png',
@@ -91,6 +92,7 @@ class NewHomeView1State extends State<NewHomeView1> {
     'assets/CategoryImages/fruits-vegitables.png',
     'assets/CategoryImages/bakery-cake-dairy.png',
   ];
+
   List<String> staticImage = [
     'assets/CategoryImages/snacks-branded-food-bottom.png',
     'assets/CategoryImages/food-grains-oil-masala-bottom.png',
@@ -99,6 +101,7 @@ class NewHomeView1State extends State<NewHomeView1> {
     'assets/CategoryImages/fruit-vegitables-bottom.png',
     'assets/CategoryImages/bakery-cake-dairy-bottom.png',
   ];
+
   List<Color> staticColor = [
     const Color.fromRGBO(79, 130, 50, 1.0),
     const Color.fromRGBO(143, 41, 52, 1.0),
@@ -107,6 +110,7 @@ class NewHomeView1State extends State<NewHomeView1> {
     const Color.fromRGBO(101, 178, 169, 1.0),
     const Color.fromRGBO(185, 78, 117, 1.0),
   ];
+
   SubscriberProducts sProducts;
 
   @override
@@ -1052,28 +1056,14 @@ class NewHomeView1State extends State<NewHomeView1> {
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                // if (widget.locModel
-                                                //         .storeFinderData !=
-                                                //     null) {
-                                                //   if (!cateP
-                                                //       .state.isSearching) {
-                                                //     cateP.hitBannerDetails(
-                                                //         '${widget.locModel.storeFinderData.store_id}',
-                                                //         widget.locModel
-                                                //             .storeFinderData);
-                                                //   } else {
-                                                //     Toast.show(
-                                                //         locale.aa1, context,
-                                                //         duration: Toast
-                                                //             .LENGTH_SHORT,
-                                                //         gravity:
-                                                //             Toast.CENTER);
-                                                //   }
-                                                // }
-                                                Navigator.pushNamed(
-                                                    context,
-                                                    PageRoutes
-                                                        .viewAllCategories);
+                                                Navigator.push(context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                  return ViewAllCategory(
+                                                    cats: apiData
+                                                        .dataModel.topCat,
+                                                  );
+                                                }));
                                               },
                                               behavior: HitTestBehavior.opaque,
                                               child: Text(
@@ -1209,6 +1199,8 @@ class NewHomeView1State extends State<NewHomeView1> {
                                                             widget.locModel,
                                                         cat: apiData.dataModel
                                                             .topCat[index],
+                                                        appBarImage:
+                                                            staticImage[index],
                                                       ),
                                                     ),
                                                   ),

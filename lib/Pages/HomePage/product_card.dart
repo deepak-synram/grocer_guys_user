@@ -97,19 +97,28 @@ class _ProductCardState extends State<ProductCard> {
                 Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: CachedNetworkImage(
-                        width: 100,
-                        height: 100,
-                        imageUrl: widget.image,
-                        placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        errorWidget: (context, url, error) =>
-                            Image.asset('assets/HomeBanner/no-icon.png'),
-                      ),
-                    ),
+                    widget.image.contains('http')
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 30.0),
+                            child: CachedNetworkImage(
+                              width: 100,
+                              height: 100,
+                              imageUrl: widget.image,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Image.asset('assets/HomeBanner/no-icon.png'),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 30.0),
+                            child: Image.asset(
+                              widget.image,
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 4.0),
                       child: Row(

@@ -14,8 +14,10 @@ class SubCategoryPage extends StatefulWidget {
   final LocEmitterModel locModel;
   final List<CartItemData> cartItemd;
   final TopCat cat;
+  final String appBarImage;
 
-  const SubCategoryPage({Key key, this.locModel, this.cartItemd, this.cat})
+  const SubCategoryPage(
+      {Key key, this.locModel, this.cartItemd, this.cat, this.appBarImage})
       : super(key: key);
 
   @override
@@ -46,9 +48,9 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            const NewCustomAppBar(
+            NewCustomAppBar(
               title: 'Category',
-              backgroundImage:
+              backgroundImage: widget.appBarImage ??
                   'assets/CategoryImages/fruit-vegitables-bottom.png',
             ),
             Align(
@@ -97,12 +99,12 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
                   index: index,
                   // height: 80,
                   // width: 80,
-                  title: "Brocolli",
+                  title: "Garlic",
                   subTitle: '500g',
                   symbol: '\u{20B9}',
                   previousPrice: '35',
                   newPrice: '36.55',
-                  image: 'assets/CategoryImages/fruits-vegitables.png',
+                  image: 'assets/ProductImages/Garlic.png',
                 );
               },
             ),

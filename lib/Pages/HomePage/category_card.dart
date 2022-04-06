@@ -99,16 +99,18 @@ class CardWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 5),
-              icon.contains('http')
-                  ? Image.network(
-                      icon,
-                      width: iconSize,
-                      height: iconSize,
-                    )
-                  : Image.asset(
-                      icon,
-                      width: iconSize,
-                      height: iconSize,
+              if (icon.contains('http')) Center(
+                child: Image.network(
+                        icon,
+                        width: iconSize,
+                        height: iconSize,
+                      ),
+              ) else Center(
+                      child: Image.asset(
+                        icon,
+                        width: iconSize,
+                        height: iconSize,
+                      ),
                     )
             ],
           ),

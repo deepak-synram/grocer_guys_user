@@ -106,7 +106,8 @@ class ProductsCardWithTitle extends StatelessWidget {
                   image: _string,
                   title: _title,
                   // TODO: Change here condition after the is_subscribe is available in API
-                  isSubscribe: data[index].isSubscribe == 1,
+                  isSubscribe:
+                      data != null ? data[index].isSubscribe == 1 : false,
                   subTitle: '500g',
                   symbol: '\u{20B9}',
                   previousPrice: '35',
