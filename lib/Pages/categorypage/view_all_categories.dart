@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:user/Pages/HomePage/category_card.dart';
 import 'package:user/Pages/Other/app_bar.dart';
 import 'package:user/Pages/categorypage/sub_category_page.dart';
+import 'package:user/baseurl/api_services.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
 import 'package:user/beanmodel/singleapibean.dart';
 import 'package:user/providergrocery/locemittermodel.dart';
@@ -44,6 +45,13 @@ class _ViewAllCategoryState extends State<ViewAllCategory> {
     const Color.fromRGBO(101, 178, 169, 1.0),
     const Color.fromRGBO(185, 78, 117, 1.0),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,170 +60,60 @@ class _ViewAllCategoryState extends State<ViewAllCategory> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        // child: GridView.builder(
-        child: GridView.builder(
-          itemCount: widget.cats.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 0.8,
-            crossAxisCount: 2,
-            mainAxisSpacing: 20.0,
-            crossAxisSpacing: 20.0,
-          ),
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SubCategoryPage(
-                      cartItemd: widget.cartItemd,
-                      locModel: widget.locModel,
-                      cat: widget.cats[index],
-                      appBarImage: staticImage[index],
-                    ),
-                  ),
-                ),
-                child: CategoryCard(
-                    title: widget.cats[index].title,
-                    // Color(0xff+apiData.dataModel.topCat[index].iconColor) ??
-                    color: staticColor[index],
-                    bottomImage:
-                        // '$imagebaseUrl1 + ${apiData.dataModel.topCat[index].image.substring(1)}',
-                        staticImage[index],
-                    icon: widget.cats[index].otherImages ?? staticIcon[index],
-                    // bottomImgHeight: 60,
-                    iconSize: 85,
-                    fontSize: 16),
-              ),
-            );
-          },
-          // children: [
-          //   GestureDetector(
-          //     onTap: () {
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(builder: (context) {
-          //           return SubCategoryPage(
-          //             cartItemd: widget.cartItemd,
-          //             locModel: widget.locModel,
-          //           );
-          //         }),
-          //       );
-          //     },
-          //     child: const Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: CategoryCard(
-          //         title: 'Fruits & Vegetables',
-          //         color: Color.fromRGBO(79, 130, 50, 1.0),
-          //         bottomImage:
-          //             'assets/CategoryImages/fruit-vegitables-bottom.png',
-          //         icon: 'assets/CategoryImages/fruits-vegitables.png',
-          //         // bottomImgHeight: 80,
-          //         // height: 200,
-          //         iconSize: 85,
-          //         fontSize: 16,
-          //       ),
-          //     ),
-          //   ),
-          //   const Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: CategoryCard(
-          //           title: 'Snacks & Branded Foods',
-          //           color: Color.fromRGBO(143, 41, 52, 1.0),
-          //           bottomImage:
-          //               'assets/CategoryImages/snacks-branded-food-bottom.png',
-          //           icon: 'assets/CategoryImages/snacks-branded-food.png',
-          //           bottomImgHeight: 80,
-          //           iconSize: 85,
-          //           fontSize: 16)),
-          //   const Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: CategoryCard(
-          //           title: 'Bakery, Cake & Dairy',
-          //           color: Color.fromRGBO(101, 178, 169, 1.0),
-          //           bottomImage:
-          //               'assets/CategoryImages/bakery-cake-dairy-bottom.png',
-          //           icon: 'assets/CategoryImages/bakery-cake-dairy.png',
-          //           bottomImgHeight: 80,
-          //           iconSize: 85,
-          //           fontSize: 16)),
-          //   const Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: CategoryCard(
-          //           title: 'Food, Grains, Oils & Masala',
-          //           color: Color.fromRGBO(185, 78, 117, 1.0),
-          //           bottomImage:
-          //               'assets/CategoryImages/food-grains-oil-masala-bottom.png',
-          //           icon: 'assets/CategoryImages/food-grain-oil-masala.png',
-          //           bottomImgHeight: 40,
-          //           iconSize: 85,
-          //           fontSize: 16)),
-          // ]
-          // (context, index) => GestureDetector(
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) {
-          //         return SubCategoryPage(
-          //           cartItemd: widget.cartItemd,
-          //           locModel: widget.locModel,
-          //         );
-          //       }),
-          //     );
-          //   },
-          //   child: const Padding(
-          //     padding: EdgeInsets.all(8.0),
-          //     child: CategoryCard(
-          //       title: 'Fruits & Vegetables',
-          //       color: Color.fromRGBO(79, 130, 50, 1.0),
-          //       bottomImage:
-          //           'assets/CategoryImages/fruit-vegitables-bottom.png',
-          //       icon: 'assets/CategoryImages/fruits-vegitables.png',
-          //       // bottomImgHeight: 80,
-          //       height: 200,
-          //       width: 80,
-          //       iconSize: 85,
-          //       fontSize: 16,
-          //     ),
-          //   ),
-          // ),
-          //   const Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: CategoryCard(
-          //           title: 'Snacks & Branded Foods',
-          //           color: Color.fromRGBO(143, 41, 52, 1.0),
-          //           bottomImage:
-          //               'assets/CategoryImages/snacks-branded-food-bottom.png',
-          //           icon: 'assets/CategoryImages/snacks-branded-food.png',
-          //           bottomImgHeight: 80,
-          //           iconSize: 85,
-          //           fontSize: 16)),
-          //   const Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: CategoryCard(
-          //           title: 'Bakery, Cake & Dairy',
-          //           color: Color.fromRGBO(101, 178, 169, 1.0),
-          //           bottomImage:
-          //               'assets/CategoryImages/bakery-cake-dairy-bottom.png',
-          //           icon: 'assets/CategoryImages/bakery-cake-dairy.png',
-          //           bottomImgHeight: 80,
-          //           iconSize: 85,
-          //           fontSize: 16)),
-          //   const Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: CategoryCard(
-          //           title: 'Food, Grains, Oils & Masala',
-          //           color: Color.fromRGBO(185, 78, 117, 1.0),
-          //           bottomImage:
-          //               'assets/CategoryImages/food-grains-oil-masala-bottom.png',
-          //           icon: 'assets/CategoryImages/food-grain-oil-masala.png',
-          //           bottomImgHeight: 40,
-          //           iconSize: 85,
-          //           fontSize: 16)),
-          // ],
-        ),
+        child: widget.cats == null
+            ? FutureBuilder(
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return getGrid(snapshot.data);
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+                future: ApiServices.getTopCat('3'),
+              )
+            : getGrid(widget.cats),
       ),
+    );
+  }
+
+  Widget getGrid(List<TopCat> cats) {
+    return GridView.builder(
+      itemCount: cats.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: 0.8,
+        crossAxisCount: 2,
+        mainAxisSpacing: 20.0,
+        crossAxisSpacing: 20.0,
+      ),
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SubCategoryPage(
+                  cartItemd: widget.cartItemd,
+                  locModel: widget.locModel,
+                  cat: cats[index],
+                  appBarImage: staticImage[index],
+                ),
+              ),
+            ),
+            child: CategoryCard(
+                title: cats[index].title,
+                // Color(0xff+apiData.dataModel.topCat[index].iconColor) ??
+                color: staticColor[index],
+                bottomImage:
+                    // '$imagebaseUrl1 + ${apiData.dataModel.topCat[index].image.substring(1)}',
+                    staticImage[index],
+                icon: cats[index].otherImages ?? staticIcon[index],
+                // bottomImgHeight: 60,
+                iconSize: 85,
+                fontSize: 16),
+          ),
+        );
+      },
     );
   }
 }

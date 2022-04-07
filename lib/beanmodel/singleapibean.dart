@@ -147,7 +147,7 @@ class TopCat {
   String iconColor;
   int storeId;
   String description;
-  int stfrom;
+  num stfrom;
   int subcatCount;
 
   TopCat(

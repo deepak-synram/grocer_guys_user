@@ -45,7 +45,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   bool _isLiked = false;
   ProductDetailsModel pdm;
   bool isPDMSuccess = false;
-
+  int quantity = 1;
   @override
   void initState() {
     setState(() {
@@ -255,12 +255,22 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        if (quantity > 1) {
+                                          quantity--;
+                                        }
+                                      });
+                                    },
                                     icon: const Icon(Icons.remove_circle),
                                   ),
-                                  Text('1'),
+                                  Text('$quantity'),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        quantity++;
+                                      });
+                                    },
                                     icon: const Icon(Icons.add_circle),
                                   ),
                                 ],

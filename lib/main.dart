@@ -6,10 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_drawer/slide_drawer.dart';
-import 'package:user/Auth/Login/sign_in.dart';
-import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/Intro/splash.dart';
 import 'package:user/Routes/routes.dart';
 import 'package:user/Theme/colors.dart';
@@ -30,7 +27,7 @@ import 'package:user/providergrocery/searchprovide.dart';
 import 'package:user/providergrocery/singleapiemiter.dart';
 import 'package:user/providergrocery/trndlistemitter.dart';
 
-import 'Pages/HomePage/newhomeview.dart';
+import 'Locale/locales.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -122,203 +119,205 @@ Future<void> main() async {
         child: BlocBuilder<LanguageCubit, Locale>(
           builder: (_, locale) {
             return MaterialApp(
-                key: UniqueKey(),
-                builder: (context, child) {
-                  return child ?? const SizedBox.shrink();
-                  // final MediaQueryData data = MediaQuery.of(context);
-                  // return GestureDetector(
-                  //   onTap: () {
-                  //     FocusScope.of(context).requestFocus(FocusNode());
-                  //   },
-                  //   child: child,
-                  // );
-                },
-                debugShowCheckedModeBanner: false,
-                localizationsDelegates: const [
-                  AppLocalizationsDelegate(),
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en'),
-                  Locale('ar'),
-                  Locale('pt'),
-                  Locale('fr'),
-                  Locale('id'),
-                  Locale('es'),
-                ],
-                locale: locale,
-                theme: appTheme,
-                // home: SignIn(),
-                // initialRoute: PageRoutes.signInRoot,
-                routes: PageRoutes().routes(),
-                title: 'Grocer Guys',
-                home: Builder(
-                    builder: (context) => SlideDrawer(
-                          alignment: SlideDrawerAlignment.start,
-                          backgroundColor: const Color(0xffffc339),
-                          contentDrawer: Container(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              textBaseline: TextBaseline.ideographic,
-                              children: [
-                                Builder(
-                                  builder: (context) => IconButton(
-                                    padding: const EdgeInsets.all(0),
-                                    iconSize: 40,
-                                    onPressed: () {
-                                      SlideDrawer.of(context).toggle();
-                                    },
-                                    icon: Image.asset(
-                                      'assets/DrawerIcon/close-button.png',
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const Text(
-                                  'Hello, Dhvanil',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.location_on,
-                                          size: 30,
-                                          color: Colors.black,
-                                        ),
-                                        // const SizedBox(width: 1),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 2.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                'Home:',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
-                                              ),
-                                              Text(
-                                                'Some address which is',
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: true,
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    // const SizedBox(width: 3),
-                                    Image.asset(
-                                      'assets/DrawerIcon/pencil-icon.png',
-                                      height: 30,
-                                      width: 30,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const MItems(
-                                  index: 0,
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                const Text(
-                                  'my information',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                const SizedBox(height: 4),
-                                for (var i = 1; i < 6; i++)
-                                  MItems(
-                                    index: i,
-                                  ),
-                                const SizedBox(height: 4),
-                                const Text(
-                                  'other',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                const SizedBox(height: 4),
-                                for (var i = 6; i < 11; i++)
-                                  MItems(
-                                    index: i,
-                                  ),
-                                const SizedBox(height: 10),
-                                GestureDetector(
-                                  onTap: () {
-                                    SharedPreferences.getInstance()
-                                        .then((pref) {
-                                      pref.clear().then((value) {
-                                        Navigator.of(context)
-                                            .pushNamedAndRemoveUntil(
-                                                PageRoutes.signInRoot,
-                                                (Route<dynamic> route) =>
-                                                    false);
-                                      });
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    width: 120,
-                                    padding:
-                                        const EdgeInsets.fromLTRB(10, 5, 5, 5),
-                                    decoration: BoxDecoration(
-                                        color: Colors.blueGrey[900],
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Center(
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            'assets/DrawerIcon/log-out-white.png',
-                                            height: 25,
-                                            width: 25,
-                                          ),
-                                          const SizedBox(width: 2),
-                                          const Text(
-                                            'LOGOUT',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const Text(
-                                  'app version v2.0',
-                                  style: TextStyle(color: Colors.grey),
-                                )
-                              ],
-                            ),
-                          ),
-                          // Need to change it to splash screen
-                          child: NewHomeView(),
-                        )));
+              key: UniqueKey(),
+              builder: (context, child) {
+                return child ?? const SizedBox.shrink();
+                // final MediaQueryData data = MediaQuery.of(context);
+                // return GestureDetector(
+                //   onTap: () {
+                //     FocusScope.of(context).requestFocus(FocusNode());
+                //   },
+                //   child: child,
+                // );
+              },
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: const [
+                AppLocalizationsDelegate(),
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en'),
+                Locale('ar'),
+                Locale('pt'),
+                Locale('fr'),
+                Locale('id'),
+                Locale('es'),
+              ],
+              locale: locale,
+              theme: appTheme,
+              // home: SignIn(),
+              // initialRoute: PageRoutes.signInRoot,
+              routes: PageRoutes().routes(),
+              title: 'Grocer Guys',
+              home: SplashScreen(),
+              // home: Builder(
+              //     builder: (context) => SlideDrawer(
+              //           alignment: SlideDrawerAlignment.start,
+              //           backgroundColor: const Color(0xffffc339),
+              //           contentDrawer: Container(
+              //             padding: const EdgeInsets.all(10),
+              //             child: Column(
+              //               crossAxisAlignment: CrossAxisAlignment.baseline,
+              //               mainAxisAlignment: MainAxisAlignment.start,
+              //               textBaseline: TextBaseline.ideographic,
+              //               children: [
+              //                 Builder(
+              //                   builder: (context) => IconButton(
+              //                     padding: const EdgeInsets.all(0),
+              //                     iconSize: 40,
+              //                     onPressed: () {
+              //                       SlideDrawer.of(context).toggle();
+              //                     },
+              //                     icon: Image.asset(
+              //                       'assets/DrawerIcon/close-button.png',
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 const SizedBox(
+              //                   height: 10,
+              //                 ),
+              //                 const Text(
+              //                   'Hello, Dhvanil',
+              //                   style: TextStyle(
+              //                       fontWeight: FontWeight.bold,
+              //                       fontSize: 20),
+              //                 ),
+              //                 const SizedBox(
+              //                   height: 8,
+              //                 ),
+              //                 Row(
+              //                   mainAxisAlignment:
+              //                       MainAxisAlignment.spaceBetween,
+              //                   children: [
+              //                     Row(
+              //                       children: [
+              //                         const Icon(
+              //                           Icons.location_on,
+              //                           size: 30,
+              //                           color: Colors.black,
+              //                         ),
+              //                         // const SizedBox(width: 1),
+              //                         Padding(
+              //                           padding: const EdgeInsets.symmetric(
+              //                               horizontal: 2.0),
+              //                           child: Column(
+              //                             mainAxisAlignment:
+              //                                 MainAxisAlignment.start,
+              //                             crossAxisAlignment:
+              //                                 CrossAxisAlignment.start,
+              //                             children: const [
+              //                               Text(
+              //                                 'Home:',
+              //                                 style: TextStyle(
+              //                                     fontWeight: FontWeight.bold,
+              //                                     color: Colors.black),
+              //                               ),
+              //                               Text(
+              //                                 'Some address which is',
+              //                                 overflow: TextOverflow.ellipsis,
+              //                                 softWrap: true,
+              //                                 style: TextStyle(
+              //                                     color: Colors.black),
+              //                               )
+              //                             ],
+              //                           ),
+              //                         ),
+              //                       ],
+              //                     ),
+              //                     // const SizedBox(width: 3),
+              //                     Image.asset(
+              //                       'assets/DrawerIcon/pencil-icon.png',
+              //                       height: 30,
+              //                       width: 30,
+              //                     ),
+              //                   ],
+              //                 ),
+              //                 const SizedBox(
+              //                   height: 10,
+              //                 ),
+              //                 const MItems(
+              //                   index: 0,
+              //                 ),
+              //                 const SizedBox(
+              //                   height: 8,
+              //                 ),
+              //                 const Text(
+              //                   'my information',
+              //                   style: TextStyle(color: Colors.grey),
+              //                 ),
+              //                 const SizedBox(height: 4),
+              //                 for (var i = 1; i < 6; i++)
+              //                   MItems(
+              //                     index: i,
+              //                   ),
+              //                 const SizedBox(height: 4),
+              //                 const Text(
+              //                   'other',
+              //                   style: TextStyle(color: Colors.grey),
+              //                 ),
+              //                 const SizedBox(height: 4),
+              //                 for (var i = 6; i < 11; i++)
+              //                   MItems(
+              //                     index: i,
+              //                   ),
+              //                 const SizedBox(height: 10),
+              //                 GestureDetector(
+              //                   onTap: () {
+              //                     SharedPreferences.getInstance()
+              //                         .then((pref) {
+              //                       pref.clear().then((value) {
+              //                         Navigator.of(context)
+              //                             .pushNamedAndRemoveUntil(
+              //                                 PageRoutes.signInRoot,
+              //                                 (Route<dynamic> route) =>
+              //                                     false);
+              //                       });
+              //                     });
+              //                   },
+              //                   child: Container(
+              //                     height: 40,
+              //                     width: 120,
+              //                     padding:
+              //                         const EdgeInsets.fromLTRB(10, 5, 5, 5),
+              //                     decoration: BoxDecoration(
+              //                         color: Colors.blueGrey[900],
+              //                         borderRadius:
+              //                             BorderRadius.circular(20)),
+              //                     child: Center(
+              //                       child: Row(
+              //                         children: [
+              //                           Image.asset(
+              //                             'assets/DrawerIcon/log-out-white.png',
+              //                             height: 25,
+              //                             width: 25,
+              //                           ),
+              //                           const SizedBox(width: 2),
+              //                           const Text(
+              //                             'LOGOUT',
+              //                             style:
+              //                                 TextStyle(color: Colors.white),
+              //                           ),
+              //                         ],
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 const SizedBox(
+              //                   height: 10,
+              //                 ),
+              //                 const Text(
+              //                   'app version v2.0',
+              //                   style: TextStyle(color: Colors.grey),
+              //                 )
+              //               ],
+              //             ),
+              //           ),
+              //           // Need to change it to splash screen
+              //           child: NewHomeView(),
+              //         )));
+            );
           },
         ),
       )),
@@ -374,184 +373,6 @@ class MItems extends StatelessWidget {
     ]);
   }
 }
-
-//
-// class GroceryLogin extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MultiBlocProvider(
-//         providers: [
-//           BlocProvider<AppNoitceProvider>(
-//             create: (context) => AppNoitceProvider(),
-//           ),
-//           BlocProvider<ImageSnapReview>(
-//             create: (context) => ImageSnapReview(),
-//           ),
-//           BlocProvider<LocationEmitter>(
-//             create: (context) => LocationEmitter(),
-//           ),
-//           BlocProvider<BottomNavigationEmitter>(
-//             create: (context) => BottomNavigationEmitter(),
-//           ),
-//           BlocProvider<BanerProvider>(
-//             create: (context) => BanerProvider(),
-//           ),
-//           BlocProvider<A2CartSnap>(
-//             create: (context) =>
-//                 A2CartSnap(AddtoCartB(status: false, prodId: -1)),
-//           ),
-//           BlocProvider<CartListProvider>(
-//             create: (context) => CartListProvider(),
-//           ),
-//           BlocProvider<SingleApiEmitter>(
-//             create: (context) => SingleApiEmitter(),
-//           ),
-//           BlocProvider<SearchProvider>(
-//             create: (context) => SearchProvider(),
-//           ),
-//           BlocProvider<CategoryProvider>(
-//             create: (context) => CategoryProvider(),
-//           ),
-//           BlocProvider<CartCountProvider>(
-//             create: (context) => CartCountProvider(),
-//           ),
-//           BlocProvider<TopRecentNewDealProvider>(
-//             create: (context) => TopRecentNewDealProvider(),
-//           ),
-//           BlocProvider<ProfileProvider>(
-//             create: (context) => ProfileProvider(),
-//           ),
-//           BlocProvider<PageSnapReview>(
-//             create: (context) => PageSnapReview(0),
-//           ),
-//           BlocProvider<LanguageCubit>(
-//             create: (context) => LanguageCubit(),
-//           ),
-//         ],
-//         child: BlocBuilder<LanguageCubit, Locale>(
-//           builder: (_, locale) {
-//             return MaterialApp(
-//               builder: (context, child) {
-//                 final MediaQueryData data = MediaQuery.of(context);
-//                 return MediaQuery(
-//                   data: data.copyWith(textScaleFactor: 1.0),
-//                   child: child,
-//                 );
-//               },
-//               debugShowCheckedModeBanner: false,
-//               localizationsDelegates: const [
-//                 AppLocalizationsDelegate(),
-//                 GlobalMaterialLocalizations.delegate,
-//                 GlobalCupertinoLocalizations.delegate,
-//                 GlobalWidgetsLocalizations.delegate,
-//               ],
-//               supportedLocales: const [
-//                 Locale('en'),
-//                 Locale('ar'),
-//                 Locale('pt'),
-//                 Locale('fr'),
-//                 Locale('id'),
-//                 Locale('es'),
-//               ],
-//               locale: locale,
-//               theme: appTheme,
-//               // home: SignIn(),
-//               initialRoute: PageRoutes.signInRoot,
-//               routes: PageRoutes().routes(),
-//             );
-//           },
-//         ));
-//   }
-// }
-
-// class GroceryHome extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     getImageBaseUrl();
-//     return MultiBlocProvider(
-//         providers: [
-//           BlocProvider<AppNoitceProvider>(
-//             create: (context) => AppNoitceProvider(),
-//           ),
-//           BlocProvider<ImageSnapReview>(
-//             create: (context) => ImageSnapReview(),
-//           ),
-//           BlocProvider<LocationEmitter>(
-//             create: (context) => LocationEmitter(),
-//           ),
-//           BlocProvider<BottomNavigationEmitter>(
-//             create: (context) => BottomNavigationEmitter(),
-//           ),
-//           BlocProvider<BanerProvider>(
-//             create: (context) => BanerProvider(),
-//           ),
-//           BlocProvider<A2CartSnap>(
-//             create: (context) =>
-//                 A2CartSnap(AddtoCartB(status: false, prodId: -1)),
-//           ),
-//           BlocProvider<CartListProvider>(
-//             create: (context) => CartListProvider(),
-//           ),
-//           BlocProvider<SingleApiEmitter>(
-//             create: (context) => SingleApiEmitter(),
-//           ),
-//           BlocProvider<SearchProvider>(
-//             create: (context) => SearchProvider(),
-//           ),
-//           BlocProvider<TopRecentNewDealProvider>(
-//             create: (context) => TopRecentNewDealProvider(),
-//           ),
-//           BlocProvider<CategoryProvider>(
-//             create: (context) => CategoryProvider(),
-//           ),
-//           BlocProvider<LanguageCubit>(
-//             create: (context) => LanguageCubit(),
-//           ),
-//           BlocProvider<ProfileProvider>(
-//             create: (context) => ProfileProvider(),
-//           ),
-//           BlocProvider<PageSnapReview>(
-//             create: (context) => PageSnapReview(0),
-//           ),
-//           BlocProvider<CartCountProvider>(
-//             create: (context) => CartCountProvider(),
-//           ),
-//         ],
-//         child: BlocBuilder<LanguageCubit, Locale>(
-//           builder: (_, locale) {
-//             return MaterialApp(
-//               builder: (context, child) {
-//                 final MediaQueryData data = MediaQuery.of(context);
-//                 return MediaQuery(
-//                   data: data.copyWith(textScaleFactor: 1.0),
-//                   child: child,
-//                 );
-//               },
-//               debugShowCheckedModeBanner: false,
-//               localizationsDelegates: [
-//                 const AppLocalizationsDelegate(),
-//                 GlobalMaterialLocalizations.delegate,
-//                 GlobalCupertinoLocalizations.delegate,
-//                 GlobalWidgetsLocalizations.delegate,
-//               ],
-//               supportedLocales: [
-//                 const Locale('en'),
-//                 const Locale('ar'),
-//                 const Locale('pt'),
-//                 const Locale('fr'),
-//                 const Locale('id'),
-//                 const Locale('es'),
-//               ],
-//               locale: locale,
-//               theme: appTheme,
-//               // home: NewHomeView(),
-//               initialRoute: PageRoutes.homePage,
-//               routes: PageRoutes().routes(),
-//             );
-//           },
-//         ));
-//   }
-// }
 
 class MyHttpOverrides extends HttpOverrides {
   @override

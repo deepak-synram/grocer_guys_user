@@ -6,6 +6,7 @@ import 'package:user/baseurl/baseurlg.dart';
 import 'package:user/beanmodel/productbean/product_details_model.dart';
 import 'package:user/beanmodel/productbean/subscriber_product_model.dart';
 import 'package:user/beanmodel/searchmodel/searchkeyword.dart';
+import 'package:user/beanmodel/singleapibean.dart';
 
 class ApiServices {
   static Future<SubscriberProducts> getSubscribeProductList() async {
@@ -53,6 +54,23 @@ class ApiServices {
       print("RESPONSE IS -----> :" + response.body.toString());
       var responseJson = json.decode(response.body);
       return ProductSearchModel.fromJson(responseJson);
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  static Future<List<TopCat>> getTopCat(String storeId) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var response = await http.post(oneApiUri, body: {
+        'store_id': '$storeId'
+      }, headers: {
+        'Authorization': 'Bearer ${prefs.getString('accesstoken')}'
+      });
+      print(response.body);
+      SingleApiHomePage data1 =
+          SingleApiHomePage.fromJson(jsonDecode(response.body));
+      return data1.topCat;
     } catch (error) {
       return Future.error(error);
     }

@@ -20,7 +20,6 @@ import 'package:user/Pages/HomePage/product_card_with_title.dart';
 import 'package:user/Pages/categorypage/sub_category_page.dart';
 import 'package:user/Pages/categorypage/view_all_categories.dart';
 import 'package:user/Theme/colors.dart';
-import 'package:user/baseurl/api_services.dart';
 import 'package:user/baseurl/baseurlg.dart';
 import 'package:user/beanmodel/appinfo.dart';
 import 'package:user/beanmodel/appnotice/appnotice.dart';
@@ -28,7 +27,6 @@ import 'package:user/beanmodel/cart/addtocartbean.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
 import 'package:user/beanmodel/category/categorymodel.dart';
 import 'package:user/beanmodel/coupon/storecoupon.dart';
-import 'package:user/beanmodel/productbean/subscriber_product_model.dart';
 import 'package:user/beanmodel/singleapibean.dart' as sa;
 import 'package:user/beanmodel/tablist.dart';
 import 'package:user/providergrocery/add2cartsnap.dart';
@@ -111,17 +109,10 @@ class NewHomeView1State extends State<NewHomeView1> {
     const Color.fromRGBO(185, 78, 117, 1.0),
   ];
 
-  SubscriberProducts sProducts;
-
   @override
   void initState() {
     getapCurrency();
-    getSubscriberProducts();
     super.initState();
-  }
-
-  void getSubscriberProducts() async {
-    sProducts = await ApiServices.getSubscribeProductList();
   }
 
   void getapCurrency() async {
