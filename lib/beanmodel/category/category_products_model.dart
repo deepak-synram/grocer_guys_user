@@ -30,7 +30,7 @@ class CategoryProductsModel {
 class CategoryProducts {
   num storeId;
   num stock;
-  Null subFrequency;
+  var subFrequency;
   num isSubscribe;
   num varientId;
   num productId;
@@ -205,9 +205,9 @@ class Varients {
   String varientImage;
   String unit;
   num quantity;
-  Null dealPrice;
-  Null validFrom;
-  Null validTo;
+  var dealPrice;
+  var validFrom;
+  var validTo;
   String isFavourite;
   num cartQty;
   num avgrating;
