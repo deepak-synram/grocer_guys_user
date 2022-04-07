@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -90,28 +91,56 @@ class CardWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: fontSize,
-                    color: color,
-                    fontWeight: FontWeight.bold),
+              SizedBox(
+                height: fontSize > 15 ? 40 : 30,
+                child: Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: fontSize,
+                      color: color,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
               const SizedBox(height: 5),
-              if (icon.contains('http')) Center(
-                child: Image.network(
-                        icon,
-                        width: iconSize,
-                        height: iconSize,
-                      ),
-              ) else Center(
-                      child: Image.asset(
-                        icon,
-                        width: iconSize,
-                        height: iconSize,
-                      ),
-                    )
+              // CachedNetworkImage(
+              //   imageUrl: icon,
+              //   width: iconSize,
+              //   height: iconSize,
+              //   placeholder: (context, url) => Center(
+              //     child: Container(
+              //       padding: const EdgeInsets.all(5.0),
+              //       width: 50,
+              //       height: 180,
+              //       child: const Center(child: CircularProgressIndicator()),
+              //     ),
+              //   ),
+              //   errorWidget: (context, url, error) => Center(
+              //     child: Image.asset(
+              //       'assets/HomeBanner/no-icon.png',
+              //       fit: BoxFit.fill,
+              //     ),
+              //   ),
+              //   fit: BoxFit.fill,
+              // ),
+              if (icon.contains('http'))
+                Center(
+                  child: Image.network(
+                    icon,
+                    width: iconSize,
+                    height: iconSize,
+                  ),
+                )
+              else
+                Center(
+                  child: Image.asset(
+                    icon,
+                    width: iconSize,
+                    height: iconSize,
+                  ),
+                )
             ],
           ),
         ),
