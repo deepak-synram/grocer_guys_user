@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user/baseurl/baseurlg.dart';
+import 'package:user/beanmodel/category/category_products_model.dart';
 import 'package:user/beanmodel/productbean/product_details_model.dart';
 import 'package:user/beanmodel/productbean/subscriber_product_model.dart';
 import 'package:user/beanmodel/searchmodel/searchkeyword.dart';
@@ -72,6 +73,26 @@ class ApiServices {
           SingleApiHomePage.fromJson(jsonDecode(response.body));
       return data1.topCat;
     } catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  static Future<CategoryProductsModel> getCategoryProducts(
+      String storeId, String catId) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var response = await http.post(categoryProductsUri, body: {
+        'store_id': storeId,
+        'cat_id': catId
+      }, headers: {
+        'Authorization': 'Bearer ${prefs.getString('accesstoken')}'
+      });
+      print(response.body);
+      CategoryProductsModel data1 =
+          CategoryProductsModel.fromJson(jsonDecode(response.body));
+      return data1;
+    } catch (error) {
+      print(error);
       return Future.error(error);
     }
   }

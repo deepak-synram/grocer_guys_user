@@ -72,7 +72,7 @@ class _ViewAllSubCategoryState extends State<ViewAllSubCategory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: 'Category',
+        title: 'Sub Category',
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -100,7 +100,8 @@ class _ViewAllSubCategoryState extends State<ViewAllSubCategory> {
                 builder: (context) => SubCategoryPageDetails(
                   cartItemd: widget.cartItemd,
                   locModel: widget.locModel,
-                  cat: cats.subcategory[index],
+                  catId: cats.subcategory[index].catId.toString(),
+                  storeId: cats.subcategory[index].storeId.toString(),
                   appBarImage: staticImage[index],
                 ),
               ),

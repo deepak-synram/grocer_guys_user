@@ -113,3 +113,5 @@ var productDetailsUri =
 var productSearchUri = Uri.parse(
     'https://staging.thegroceryguys.co.in/newversion/api/searchbystore');
 var appname = 'The Grocery Guys';
+var categoryProductsUri = Uri.parse(
+    'https://staging.thegroceryguys.co.in/newversion/api/cat_product');

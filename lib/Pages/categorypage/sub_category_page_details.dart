@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/HomePage/product_card.dart';
+import 'package:user/baseurl/api_services.dart';
+import 'package:user/baseurl/baseurlg.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
 import 'package:user/beanmodel/storefinder/storefinderbean.dart';
 import 'package:user/providergrocery/bottomnavigationnavigator.dart';
@@ -12,11 +14,17 @@ import 'new_custom_app_bar.dart';
 class SubCategoryPageDetails extends StatefulWidget {
   final LocEmitterModel locModel;
   final List<CartItemData> cartItemd;
-  final dynamic cat;
+  final String storeId;
+  final String catId;
   final String appBarImage;
 
   const SubCategoryPageDetails(
-      {Key key, this.locModel, this.cartItemd, this.cat, this.appBarImage})
+      {Key key,
+      this.locModel,
+      this.cartItemd,
+      this.appBarImage,
+      this.storeId,
+      this.catId})
       : super(key: key);
 
   @override
@@ -65,41 +73,56 @@ class _SubCategoryPageDetailsState extends State<SubCategoryPageDetails> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 60),
-            GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.7,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
+      body: FutureBuilder(
+        builder: (context, snapshot) {
+          print(snapshot.data.toString());
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 60),
+                  GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.7,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data.data.length,
+                    itemBuilder: (context, index) {
+                      return ProductCard(
+                        total: snapshot.data.data.length,
+                        isSubscribe: false,
+                        locModel: widget.locModel,
+                        catP: cateP,
+                        locale: locale,
+                        index: index,
+                        // height: 80,
+                        // width: 80,
+                        title: snapshot.data.data[index].productName,
+                        subTitle:
+                            '${snapshot.data.data[index].quantity} ${snapshot.data.data[index].unit}',
+                        symbol: '\u{20B9}',
+                        previousPrice: '${snapshot.data.data[index].mrp}',
+                        newPrice: '${snapshot.data.data[index].price}',
+                        image:
+                            '$imagebaseUrl1${snapshot.data.data[index].productImage.toString().substring(1)}',
+                      );
+                    },
+                  ),
+                ],
               ),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return ProductCard(
-                  total: 4,
-                  isSubscribe: false,
-                  locModel: widget.locModel,
-                  catP: cateP,
-                  locale: locale,
-                  index: index,
-                  // height: 80,
-                  // width: 80,
-                  title: "Garlic",
-                  subTitle: '500g',
-                  symbol: '\u{20B9}',
-                  previousPrice: '35',
-                  newPrice: '36.55',
-                  image: 'assets/ProductImages/Garlic.png',
-                );
-              },
-            ),
-          ],
-        ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+        future: ApiServices.getCategoryProducts(widget.storeId, widget.catId),
       ),
     );
   }
