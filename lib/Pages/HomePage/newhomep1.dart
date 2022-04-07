@@ -17,7 +17,7 @@ import 'package:user/Components/constantfile.dart';
 import 'package:user/Locale/locales.dart';
 import 'package:user/Pages/HomePage/category_card.dart';
 import 'package:user/Pages/HomePage/product_card_with_title.dart';
-import 'package:user/Pages/categorypage/sub_category_page.dart';
+import 'package:user/Pages/categorypage/sub_category.dart';
 import 'package:user/Pages/categorypage/view_all_categories.dart';
 import 'package:user/Theme/colors.dart';
 import 'package:user/baseurl/baseurlg.dart';
@@ -1183,15 +1183,15 @@ class NewHomeView1State extends State<NewHomeView1> {
                                                           .push(
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          SubCategoryPage(
+                                                          ViewAllSubCategory(
                                                         cartItemd:
                                                             widget.cartItemd,
                                                         locModel:
                                                             widget.locModel,
                                                         cat: apiData.dataModel
                                                             .topCat[index],
-                                                        appBarImage:
-                                                            staticImage[index],
+                                                        // appBarImage:
+                                                        //     staticImage[index],
                                                       ),
                                                     ),
                                                   ),

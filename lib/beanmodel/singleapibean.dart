@@ -149,6 +149,7 @@ class TopCat {
   String description;
   num stfrom;
   int subcatCount;
+  List<Subcategory> subcategory;
 
   TopCat(
       {this.title,
@@ -159,7 +160,8 @@ class TopCat {
       this.storeId,
       this.description,
       this.stfrom,
-      this.subcatCount});
+      this.subcatCount,
+      this.subcategory});
 
   TopCat.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -171,6 +173,12 @@ class TopCat {
     description = json['description'];
     stfrom = json['stfrom'];
     subcatCount = json['subcat_count'];
+    if (json['subcategory'] != null) {
+      subcategory = new List<Subcategory>();
+      json['subcategory'].forEach((v) {
+        subcategory.add(new Subcategory.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -184,6 +192,54 @@ class TopCat {
     data['description'] = this.description;
     data['stfrom'] = this.stfrom;
     data['subcat_count'] = this.subcatCount;
+    if (this.subcategory != null) {
+      data['subcategory'] = this.subcategory.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Subcategory {
+  String title;
+  int catId;
+  String image;
+  Null otherImages;
+  String iconColor;
+  int storeId;
+  String description;
+  num stfrom;
+
+  Subcategory(
+      {this.title,
+      this.catId,
+      this.image,
+      this.otherImages,
+      this.iconColor,
+      this.storeId,
+      this.description,
+      this.stfrom});
+
+  Subcategory.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    catId = json['cat_id'];
+    image = json['image'];
+    otherImages = json['other_images'];
+    iconColor = json['icon_color'];
+    storeId = json['store_id'];
+    description = json['description'];
+    stfrom = json['stfrom'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['title'] = this.title;
+    data['cat_id'] = this.catId;
+    data['image'] = this.image;
+    data['other_images'] = this.otherImages;
+    data['icon_color'] = this.iconColor;
+    data['store_id'] = this.storeId;
+    data['description'] = this.description;
+    data['stfrom'] = this.stfrom;
     return data;
   }
 }

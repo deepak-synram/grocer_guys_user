@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:user/Pages/HomePage/category_card.dart';
 import 'package:user/Pages/Other/app_bar.dart';
-import 'package:user/Pages/categorypage/sub_category_page.dart';
+import 'package:user/Pages/categorypage/sub_category.dart';
 import 'package:user/baseurl/api_services.dart';
 import 'package:user/beanmodel/cart/cartitembean.dart';
 import 'package:user/beanmodel/singleapibean.dart';
@@ -51,7 +51,6 @@ class _ViewAllCategoryState extends State<ViewAllCategory> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,11 +91,10 @@ class _ViewAllCategoryState extends State<ViewAllCategory> {
           child: GestureDetector(
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => SubCategoryPage(
+                builder: (context) => ViewAllSubCategory(
                   cartItemd: widget.cartItemd,
                   locModel: widget.locModel,
                   cat: cats[index],
-                  appBarImage: staticImage[index],
                 ),
               ),
             ),
